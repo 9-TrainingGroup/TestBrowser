@@ -16,7 +16,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#FFFFFF"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp">
+
+            <ImageButton
+                android:id="@+id/star"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:background="#FFFFFF"
+                android:src="@drawable/button_back" />
 
             <EditText
                 android:id="@+id/urlEdit"
@@ -26,12 +36,21 @@
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="6dp"
+                android:layout_weight="1"
                 android:background="@drawable/rounded_edittext"
                 android:imeOptions="actionGo"
                 android:inputType="textUri"
                 android:maxLines="1"
                 android:selectAllOnFocus="true"
                 android:textAlignment="center" />
+
+            <ImageButton
+                android:id="@+id/refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:background="#FFFFFF"
+                android:src="@drawable/button_back" />
 
         </LinearLayout>
 
