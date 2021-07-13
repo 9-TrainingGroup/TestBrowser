@@ -3,6 +3,8 @@ package com.alva.testbrowser;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -25,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(getResources().getColor(android.R.color.white));
 
         webViewContainer = findViewById(R.id.webViewContainer);
         urlEdit = findViewById(R.id.urlEdit);

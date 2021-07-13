@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,27 +8,118 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
 
-        <EditText
-            android:id="@+id/urlEdit"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@null"
-            android:imeOptions="actionGo"
-            android:inputType="textUri"
-            android:maxLines="1"
-            android:selectAllOnFocus="true" />
+            android:background="#FFFFFF"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/urlEdit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/rounded_edittext"
+                android:imeOptions="actionGo"
+                android:inputType="textUri"
+                android:maxLines="1"
+                android:selectAllOnFocus="true"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/webViewContainer"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <FrameLayout
+            android:id="@+id/webViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#FAFAFA"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageButton
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#FAFAFA"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/button_back" />
+
+            <ImageButton
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#FAFAFA"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/button_forward" />
+
+            <ImageButton
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#FAFAFA"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/button_menu" />
+
+            <ImageButton
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#FAFAFA"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/button_history" />
+
+            <ImageButton
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#FAFAFA"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/button_navigation" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
