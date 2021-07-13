@@ -3,6 +3,7 @@ package com.alva.testbrowser;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -31,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(getResources().getColor(android.R.color.white));
+        window.setStatusBarColor(getResources().getColor(android.R.color.darker_gray));
+        window.setNavigationBarColor(getResources().getColor(android.R.color.white));
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
 
         webViewContainer = findViewById(R.id.webViewContainer);
         urlEdit = findViewById(R.id.urlEdit);
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 if (i == EditorInfo.IME_ACTION_GO
                         || keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER
                         && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-                    webView.loadUrl(textView.getText().toString());
+                    searchOrUrl(textView.getText().toString());
                     UiUtils.hideKeyboard(textView);
                     return true;
                 }
@@ -64,5 +67,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void searchOrUrl(String url){
+        webView.loadUrl(url);
     }
 }

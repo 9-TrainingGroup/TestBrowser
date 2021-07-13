@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TestBrowser</string>
+    <string name="urlEditHint">Search or type web address</string>
 </resources>

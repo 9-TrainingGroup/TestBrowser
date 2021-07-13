@@ -36,6 +36,7 @@
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="6dp"
+                android:hint="@string/urlEditHint"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_edittext"
                 android:imeOptions="actionGo"
