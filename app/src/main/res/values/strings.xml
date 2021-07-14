@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">TestBrowser</string>
+    <string name="urlEditHint">Search or type web address</string>
+    <string name="bookmark">书签</string>
+    <string name="history">历史</string>
     <string name="photo_tag">%d / %d</string>
     <string name="button_save_image">saveButton</string>
     <string name="button_back">backButton</string>

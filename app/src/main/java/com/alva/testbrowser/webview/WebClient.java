@@ -14,9 +14,7 @@ import android.webkit.WebViewClient;
 public class WebClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        Uri uri = request.getUrl();
-        String scheme = uri.getScheme();
-        return scheme != null && !scheme.startsWith("http");
+        return false;
     }
 
     @Override
