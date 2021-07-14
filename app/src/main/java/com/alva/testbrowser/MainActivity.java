@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String HTTPS = "https://";
     public static final String FILE = "file://";
 
-    private FrameLayout webViewContainer;
     private EditText urlEdit;
     private WebViewExt webView;
 
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         window.setNavigationBarColor(getResources().getColor(android.R.color.white));
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
 
-        webViewContainer = findViewById(R.id.webViewContainer);
+        FrameLayout webViewContainer = findViewById(R.id.webViewContainer);
         urlEdit = findViewById(R.id.urlEdit);
         webView = new WebViewExt(this);
         webViewContainer.addView(webView);
