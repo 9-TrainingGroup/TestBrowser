@@ -7,4 +7,5 @@
     <color name="gray">#F2F2F7</color>
     <color name="primaryDarkColor">#424242</color>
     <color name="cyan">#00FFFF</color>
+    <color name="black">#000000</color>
 </resources>

@@ -106,20 +106,20 @@ public class MainActivity extends AppCompatActivity {
             keyword = HTTP + keyword;
         }
 
-        String converUrl;
+        String coverUrl;
         if (isSearch) {
             try {
                 keyword = URLEncoder.encode(keyword, "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            converUrl = "http://www.baidu.com/s?wd=" + keyword + "&ie=UTF-8";
+            coverUrl = "http://www.baidu.com/s?wd=" + keyword + "&ie=UTF-8";
         } else if (!validURL) {
-            converUrl = HTTP + keyword;
+            coverUrl = HTTP + keyword;
         } else {
-            converUrl = keyword;
+            coverUrl = keyword;
         }
-        return converUrl;
+        return coverUrl;
     }
 
 }
