@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">TestBrowser</string>
+    <string name="photo_tag">%d / %d</string>
+    <string name="button_save_image">saveButton</string>
+    <string name="button_back">backButton</string>
 </resources>

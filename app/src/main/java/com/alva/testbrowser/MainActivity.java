@@ -17,6 +17,7 @@ import com.alva.testbrowser.ui.UrlBarController;
 import com.alva.testbrowser.util.UiUtils;
 import com.alva.testbrowser.webview.WebViewExt;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private FrameLayout webViewContainer;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         webView.init(new UrlBarController(urlEdit));
         webView.loadUrl("https://baidu.com");
+        webView.addJavascriptInterface(new JavascriptInterface(this), "imageListener");
     }
 
     @Override

@@ -38,6 +38,11 @@ public class WebViewExt extends WebView {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
 
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setSupportZoom(true);
+
         setWebViewClient(new WebClient());
         setWebChromeClient(new ChromeClient(callback));
     }
