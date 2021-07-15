@@ -1,4 +1,4 @@
-package com.alva.testbrowser
+package com.alva.testbrowser.Adapter
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import com.alva.testbrowser.*
 import com.alva.testbrowser.databinding.CellBookmarkBinding
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 

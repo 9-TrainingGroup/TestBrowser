@@ -40,5 +40,8 @@ class WebListActivity : AppCompatActivity() {
                 else -> getString(R.string.history)
             }
         }.attach()
+        binding.backButton.setOnClickListener {
+            onBackPressed()
+        }
     }
 }

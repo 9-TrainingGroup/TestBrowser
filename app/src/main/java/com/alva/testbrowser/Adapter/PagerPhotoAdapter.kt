@@ -1,10 +1,11 @@
-package com.alva.testbrowser
+package com.alva.testbrowser.Adapter
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.PagerPhotoViewBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
