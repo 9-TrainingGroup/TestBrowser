@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.webkit.JavascriptInterface
+import com.alva.testbrowser.Activity.PhotoActivity
 
 class JavascriptInterface(private val context: Context) {
     private val imageUrls: ArrayList<String> = ArrayList()

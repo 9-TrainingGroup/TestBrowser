@@ -8,27 +8,35 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alva.testbrowser.Adapter.CompleteAdapter;
 import com.alva.testbrowser.ui.UrlBarController;
 import com.alva.testbrowser.util.UiUtils;
 import com.alva.testbrowser.webview.WebViewExt;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String HTTP = "http://";
     public static final String HTTPS = "https://";
     public static final String FILE = "file://";
 
-    private EditText urlEdit;
+    private AutoCompleteTextView urlEdit;
+    private ImageButton goBack;
+    private ImageButton goForward;
+    private ImageButton refresh;
     private WebViewExt webView;
 
     @Override
@@ -62,9 +70,21 @@ public class MainActivity extends AppCompatActivity {
 
         FrameLayout webViewContainer = findViewById(R.id.webViewContainer);
         urlEdit = findViewById(R.id.urlEdit);
+        goBack = findViewById(R.id.goBack);
+        goForward = findViewById(R.id.goForward);
+        refresh = findViewById(R.id.refresh);
         webView = new WebViewExt(this);
         webViewContainer.addView(webView);
 
+        initUrlEdit();
+    }
+
+    private void initUrlEdit() {
+
+        List<String> list = new ArrayList<>();
+        CompleteAdapter adapter = new CompleteAdapter(this, R.layout.item_icon_left, list);
+        urlEdit.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         urlEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -79,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return false;
             }
+        });
+        urlEdit.setOnItemClickListener((parent, view, position, id) -> {
+            String url = ((TextView) view.findViewById(R.id.record_item_time)).getText().toString();
+            webView.loadUrl(coverKeywordLoadOrSearch(url));
         });
     }
 
@@ -122,4 +146,20 @@ public class MainActivity extends AppCompatActivity {
         return coverUrl;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.goBack:
+                webView.goBack();
+                break;
+            case R.id.goForward:
+                webView.goForward();
+                break;
+            case R.id.refresh:
+                webView.reload();
+                break;
+            default:
+                break;
+        }
+    }
 }

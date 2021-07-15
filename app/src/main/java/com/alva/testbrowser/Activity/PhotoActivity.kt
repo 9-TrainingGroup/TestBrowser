@@ -1,4 +1,4 @@
-package com.alva.testbrowser
+package com.alva.testbrowser.Activity
 
 import android.Manifest
 import android.content.ContentValues
@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -18,6 +17,8 @@ import androidx.core.view.get
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.alva.testbrowser.PagerPhotoAdapter
+import com.alva.testbrowser.PagerPhotoViewHolder
 import com.alva.testbrowser.databinding.ActivityPhotoBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

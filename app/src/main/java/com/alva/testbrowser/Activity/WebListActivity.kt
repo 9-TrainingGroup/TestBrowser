@@ -1,9 +1,10 @@
-package com.alva.testbrowser
+package com.alva.testbrowser.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.alva.testbrowser.*
 import com.alva.testbrowser.databinding.ActivityWebListBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
