@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".WebListActivity"
+            android:name=".Activity.WebListActivity"
             android:exported="true" />
         <activity
-            android:name=".PhotoActivity"
+            android:name=".Activity.PhotoActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
