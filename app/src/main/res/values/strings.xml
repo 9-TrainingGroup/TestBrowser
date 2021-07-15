@@ -6,4 +6,12 @@
     <string name="photo_tag">%d / %d</string>
     <string name="button_save_image">saveButton</string>
     <string name="button_back">backButton</string>
+    <string name="menu_delete">删除</string>
+    <string name="dialog_delete_history_title">确定清空历史记录？</string>
+    <string name="dialog_delete_bookmark_title">确定清空书签？</string>
+    <string name="dialog_positive_message">确定</string>
+    <string name="dialog_negative_message">取消</string>
+    <string name="menu_edit">编辑</string>
+    <string name="dialog_edit_title">编辑书签</string>
+    <string name="dialog_add_title">添加书签</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.alva.testbrowser;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -41,6 +43,15 @@ public class MainActivity extends AppCompatActivity {
         webView.init(new UrlBarController(urlEdit));
         webView.loadUrl("https://baidu.com");
         webView.addJavascriptInterface(new JavascriptInterface(this), "imageListener");
+
+        // TODO: 2021/7/16  
+        ImageView imageView = findViewById(R.id.imageView4);
+        imageView.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, WebListActivity.class);
+            startActivity(intent);
+        });
+        // TODO: 2021/7/16
+        webView.loadUrl(getIntent().getStringExtra("webUrl"));
     }
 
     @Override

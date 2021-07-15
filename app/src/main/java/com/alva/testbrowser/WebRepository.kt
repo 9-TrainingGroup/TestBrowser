@@ -51,7 +51,7 @@ abstract class BookmarkDatabase : RoomDatabase() {
                     context,
                     BookmarkDatabase::class.java,
                     "bookmark_database"
-                ).allowMainThreadQueries().build()
+                ).build()
             }
             return INSTANCE!!
         }
@@ -74,7 +74,7 @@ abstract class HistoryDatabase : RoomDatabase() {
                     context,
                     HistoryDatabase::class.java,
                     "history_database"
-                ).allowMainThreadQueries().build()
+                ).build()
             }
             return INSTANCE!!
         }
