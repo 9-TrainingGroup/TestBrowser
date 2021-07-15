@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
+            android:name=".WebListActivity"
+            android:exported="true" />
+        <activity
             android:name=".PhotoActivity"
             android:exported="true" />
         <activity
