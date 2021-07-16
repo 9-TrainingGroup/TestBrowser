@@ -1,6 +1,5 @@
 package com.alva.testbrowser.Adapter
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -23,12 +22,11 @@ class BookmarkAdapter(private val viewModel: BookmarkViewModel) :
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
         val webs = viewModel.allWebsLive.value!![position]
         holder.viewBinding.textView.text = webs.name
         holder.itemView.setOnClickListener {
-            // TODO: 2021/7/16
+            // TODO: 2021/7/16：传递网页给MainActivity
             val intent = Intent(Intent.ACTION_VIEW)
             intent.putExtra("webUrl", webs.url)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -56,7 +54,6 @@ class BookmarkAdapter(private val viewModel: BookmarkViewModel) :
                                     )
                                     web.id = webs.id
                                     viewModel.updateWebs(web)
-                                    notifyDataSetChanged()
                                 }
                                 .setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
                                     dialog.cancel()
@@ -96,7 +93,7 @@ class HistoryAdapter(private val viewModel: HistoryViewModel) :
         val webs = viewModel.allWebsLive.value!![position]
         holder.viewBinding.textView.text = webs.name
         holder.itemView.setOnClickListener {
-            // TODO: 2021/7/16
+            // TODO: 2021/7/16：传递网页给MainActivity
             val intent = Intent()
             intent.putExtra("webUrl", webs.url)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
