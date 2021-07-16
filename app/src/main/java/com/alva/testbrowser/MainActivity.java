@@ -24,6 +24,7 @@ import com.alva.testbrowser.Adapter.CompleteAdapter;
 import com.alva.testbrowser.ui.UrlBarController;
 import com.alva.testbrowser.util.UiUtils;
 import com.alva.testbrowser.webview.WebViewExt;
+import com.alva.testbrowser.webview.WebViewPool;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String HTTPS = "https://";
     public static final String FILE = "file://";
 
+    private WebViewPool webViewPool;
     private AutoCompleteTextView urlEdit;
     private WebViewExt webView;
     private long exitTime;
@@ -44,6 +46,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        webViewPool = WebViewPool.getInstance();
+        WebViewPool.init(this);
+
+        // TODO: 2021/7/16：添加书签及历史记录到数据库
+        //webView.getTitle();
+        //webView.getUrl();
+        //webView.copyBackForwardList().getCurrentItem().getTitle();
+        //webView.copyBackForwardList().getCurrentItem().getUrl();
+        // TODO: 2021/7/16：点击书签或历史记录打开网页
 
         init();
     }
@@ -80,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         refresh.setOnClickListener(this);
         history.setOnClickListener(this);
         drawerDialog.setOnClickListener(this);
-        webView = new WebViewExt(this);
+        webView = webViewPool.getWebView(this);
         webViewContainer.addView(webView);
 
         initUrlEdit();
@@ -115,16 +127,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             webView.loadUrl(coverKeywordLoadOrSearch(url));
         });
         webView.init(new UrlBarController(urlEdit));
-        webView.loadUrl("https://baidu.com");
-        webView.addJavascriptInterface(new JavascriptInterface(this), "imageListener");
 
-        // TODO: 2021/7/16：添加书签及历史记录到数据库
-        //webView.getTitle();
-        //webView.getUrl();
-        //webView.copyBackForwardList().getCurrentItem().getTitle();
-        //webView.copyBackForwardList().getCurrentItem().getUrl();
-        // TODO: 2021/7/16：点击书签或历史记录打开网页
-        webView.loadUrl(getIntent().getStringExtra("webUrl"));
+
     }
 
 
