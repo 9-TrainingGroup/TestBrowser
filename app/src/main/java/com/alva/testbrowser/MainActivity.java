@@ -12,12 +12,13 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alva.testbrowser.Activity.WebListActivity;
 import com.alva.testbrowser.Adapter.CompleteAdapter;
 import com.alva.testbrowser.ui.UrlBarController;
@@ -36,10 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String FILE = "file://";
 
     private AutoCompleteTextView urlEdit;
-    private ImageButton goBack;
-    private ImageButton goForward;
-    private ImageButton refresh;
     private WebViewExt webView;
+    private long exitTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,24 +46,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         init();
-
-        webView.init(new UrlBarController(urlEdit));
-        webView.loadUrl("https://baidu.com");
-        webView.addJavascriptInterface(new JavascriptInterface(this), "imageListener");
-
-        // TODO: 2021/7/16：添加书签及历史记录到数据库
-        //webView.getTitle();
-        //webView.getUrl();
-        //webView.copyBackForwardList().getCurrentItem().getTitle();
-        //webView.copyBackForwardList().getCurrentItem().getUrl();
-        // TODO: 2021/7/16：点击跳转WebListActivity
-        ImageView imageView = findViewById(R.id.imageView4);
-        imageView.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, WebListActivity.class);
-            startActivity(intent);
-        });
-        // TODO: 2021/7/16：点击书签或历史记录打开网页
-        webView.loadUrl(getIntent().getStringExtra("webUrl"));
     }
 
     @Override
@@ -76,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * 初始化ui,并绑定相关view
+     */
     private void init() {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -86,15 +70,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FrameLayout webViewContainer = findViewById(R.id.webViewContainer);
         urlEdit = findViewById(R.id.urlEdit);
-        goBack = findViewById(R.id.goBack);
-        goForward = findViewById(R.id.goForward);
-        refresh = findViewById(R.id.refresh);
+        ImageButton goBack = findViewById(R.id.goBack);
+        ImageButton goForward = findViewById(R.id.goForward);
+        ImageButton refresh = findViewById(R.id.refresh);
+        ImageButton history = findViewById(R.id.history);
+        ImageButton drawerDialog = findViewById(R.id.drawerDialog);
+        goBack.setOnClickListener(this);
+        goForward.setOnClickListener(this);
+        refresh.setOnClickListener(this);
+        history.setOnClickListener(this);
+        drawerDialog.setOnClickListener(this);
         webView = new WebViewExt(this);
         webViewContainer.addView(webView);
 
         initUrlEdit();
     }
 
+    /**
+     * 初始化webView
+     */
     private void initUrlEdit() {
 
         List<String> list = new ArrayList<>();
@@ -120,6 +114,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String url = ((TextView) view.findViewById(R.id.record_item_time)).getText().toString();
             webView.loadUrl(coverKeywordLoadOrSearch(url));
         });
+        webView.init(new UrlBarController(urlEdit));
+        webView.loadUrl("https://baidu.com");
+        webView.addJavascriptInterface(new JavascriptInterface(this), "imageListener");
+
+        // TODO: 2021/7/16：添加书签及历史记录到数据库
+        //webView.getTitle();
+        //webView.getUrl();
+        //webView.copyBackForwardList().getCurrentItem().getTitle();
+        //webView.copyBackForwardList().getCurrentItem().getUrl();
+        // TODO: 2021/7/16：点击书签或历史记录打开网页
+        webView.loadUrl(getIntent().getStringExtra("webUrl"));
     }
 
 
@@ -162,11 +167,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return coverUrl;
     }
 
+    /**
+     * 主页clickListener
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.goBack:
-                webView.goBack();
+                if (webView.canGoBack()) {
+                    webView.stopLoading();
+                    webView.goBack();
+                } else {
+                    if ((System.currentTimeMillis() - exitTime) > 1000) {
+                        Toast.makeText(this, "再按一次退出程序",
+                                Toast.LENGTH_SHORT).show();
+                        exitTime = System.currentTimeMillis();
+                    } else {
+                        finish();
+                        System.exit(0);
+                    }
+                }
                 break;
             case R.id.goForward:
                 webView.goForward();
@@ -174,8 +194,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.refresh:
                 webView.reload();
                 break;
+            case R.id.drawerDialog:
+                new MaterialDialog.Builder(MainActivity.this)
+                        .title("标题")
+                        .content("内容")
+                        .positiveText("确认")
+                        .negativeText("取消")
+                        .show();
+                break;
+            case R.id.history:
+                Intent intent = new Intent(MainActivity.this, WebListActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webView.removeAllViews();
+        webView.destroy();
     }
 }

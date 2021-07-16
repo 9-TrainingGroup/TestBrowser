@@ -29,13 +29,15 @@ public class ChromeClient extends WebChromeClient {
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
         super.onProgressChanged(view, newProgress);
-        progressView.setVisibility(View.VISIBLE);
         progressView.setProgress(newProgress);
-        view.onPause();
         if (newProgress == 100) {
             //加载完毕进度条消失
             view.onResume();
             progressView.setVisibility(View.GONE);
+        } else {
+            //更新进度
+            view.onPause();
+            progressView.setVisibility(View.VISIBLE);
         }
     }
 }

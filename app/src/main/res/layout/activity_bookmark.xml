@@ -4,10 +4,10 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/bmcolumn"
-            android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bmcolumn"
+        android:orientation="horizontal">
         <ImageView android:layout_width="60dp" android:layout_height="60dp"
                    android:src="@drawable/button_back"
                    android:layout_marginStart="20dp"
@@ -27,11 +27,27 @@
                   android:textSize="50sp"
                   android:id="@+id/tohistory"/>
     </LinearLayout>
-    <ListView
-            android:id="@+id/listView1"
+    <FrameLayout
+        android:id="@+id/favoritesAndHisotry_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/bmcolumn">
+        <ListView
+            android:id="@+id/favoritesAndHisotry_content_favorite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/bmcolumn"
-    />
+            android:divider="#E2E2E2"
+            android:dividerHeight="1dp">
+        </ListView>
+        <ListView
+            android:id="@+id/favoritesAndHisotry_content_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#E2E2E2"
+            android:dividerHeight="1dp"
+            android:visibility="gone">
+        </ListView>
+    </FrameLayout>
+
 </RelativeLayout>
 

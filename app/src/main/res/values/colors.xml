@@ -8,4 +8,5 @@
     <color name="primaryDarkColor">#424242</color>
     <color name="cyan">#00FFFF</color>
     <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 </resources>
