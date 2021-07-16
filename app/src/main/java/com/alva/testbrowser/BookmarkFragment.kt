@@ -1,17 +1,24 @@
 package com.alva.testbrowser
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alva.testbrowser.Adapter.BookmarkAdapter
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.alva.testbrowser.databinding.FragmentBookmarkBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class BookmarkFragment : Fragment() {
     private var _binding: FragmentBookmarkBinding? = null
@@ -65,8 +72,44 @@ class BookmarkFragment : Fragment() {
                         dialog.cancel()
                     }
                     .show()
-            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+            builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+                setTextColor(Color.GRAY)
+                isEnabled = false
+            }
             builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+            dialogBinding.editTextName.requestFocus()
+            lifecycleScope.launch {
+                delay(100)
+                (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
+                    dialogBinding.editTextName,
+                    0
+                )
+            }
+            dialogBinding.editTextUrl.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (s.toString().isNotEmpty()) {
+                        builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+                            setTextColor(Color.BLACK)
+                            isEnabled = true
+                        }
+                    } else {
+                        builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+                            setTextColor(Color.GRAY)
+                            isEnabled = false
+                        }
+                    }
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            })
         }
     }
 
