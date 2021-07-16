@@ -38,7 +38,7 @@ public class WebViewExt extends WebView {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    public void init(Callback callback){
+    public void init(Callback callback) {
         progressView = new ProgressView(getContext());
         progressView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2px(getContext(), 4)));
         progressView.setColor(R.color.cyan);
@@ -48,14 +48,15 @@ public class WebViewExt extends WebView {
         WebSettings settings = getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
-
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setDomStorageEnabled(true);
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
         settings.setBuiltInZoomControls(true);
         settings.setSupportZoom(true);
 
         setWebViewClient(new WebClient());
-        setWebChromeClient(new ChromeClient(callback,progressView));
+        setWebChromeClient(new ChromeClient(callback, progressView));
     }
 
     private int dp2px(Context context, float dp) {
@@ -63,7 +64,7 @@ public class WebViewExt extends WebView {
         return (int) (dp * scale + 0.5f);
     }
 
-    public interface Callback{
+    public interface Callback {
         void onReceivedTitle(WebView view, String title);
     }
 }
