@@ -36,9 +36,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String FILE = "file://";
 
     private AutoCompleteTextView urlEdit;
-    private ImageButton goBack;
-    private ImageButton goForward;
-    private ImageButton refresh;
     private WebViewExt webView;
 
     @Override
@@ -57,12 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //webView.getUrl();
         //webView.copyBackForwardList().getCurrentItem().getTitle();
         //webView.copyBackForwardList().getCurrentItem().getUrl();
-        // TODO: 2021/7/16：点击跳转WebListActivity
-        ImageView imageView = findViewById(R.id.imageView4);
-        imageView.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, WebListActivity.class);
-            startActivity(intent);
-        });
         // TODO: 2021/7/16：点击书签或历史记录打开网页
         webView.loadUrl(getIntent().getStringExtra("webUrl"));
     }
@@ -76,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * 初始化ui,并绑定相关view
+     */
     private void init() {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -86,9 +80,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FrameLayout webViewContainer = findViewById(R.id.webViewContainer);
         urlEdit = findViewById(R.id.urlEdit);
-        goBack = findViewById(R.id.goBack);
-        goForward = findViewById(R.id.goForward);
-        refresh = findViewById(R.id.refresh);
+        ImageButton goBack = findViewById(R.id.goBack);
+        ImageButton goForward = findViewById(R.id.goForward);
+        ImageButton refresh = findViewById(R.id.refresh);
+        ImageButton history = findViewById(R.id.history);
+        goBack.setOnClickListener(this);
+        goForward.setOnClickListener(this);
+        refresh.setOnClickListener(this);
+        history.setOnClickListener(this);
         webView = new WebViewExt(this);
         webViewContainer.addView(webView);
 
@@ -162,6 +161,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return coverUrl;
     }
 
+    /**
+     * 主页clickListener
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -173,6 +175,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.refresh:
                 webView.reload();
+                break;
+            case R.id.history:
+                Intent intent = new Intent(MainActivity.this, WebListActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;

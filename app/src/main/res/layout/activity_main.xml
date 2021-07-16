@@ -100,7 +100,7 @@
                 app:srcCompat="@drawable/button_forward" />
 
             <ImageButton
-                android:id="@+id/imageView3"
+                android:id="@+id/drawers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -111,7 +111,7 @@
                 app:srcCompat="@drawable/button_menu" />
 
             <ImageButton
-                android:id="@+id/imageView4"
+                android:id="@+id/history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -122,7 +122,7 @@
                 app:srcCompat="@drawable/button_history" />
 
             <ImageButton
-                android:id="@+id/imageView5"
+                android:id="@+id/windowSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
