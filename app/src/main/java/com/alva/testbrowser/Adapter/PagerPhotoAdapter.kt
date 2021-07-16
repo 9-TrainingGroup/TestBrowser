@@ -53,9 +53,7 @@ class PagerPhotoAdapter(private val images: ArrayList<String>) :
             .into(holder.viewBinding.pagerPhoto)
     }
 
-    override fun getItemCount(): Int {
-        return images.size
-    }
+    override fun getItemCount() = images.size
 }
 
 class PagerPhotoViewHolder(val viewBinding: PagerPhotoViewBinding) :

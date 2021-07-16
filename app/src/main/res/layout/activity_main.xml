@@ -43,13 +43,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="8"
                 android:background="#FFFFFF"
-                android:src="@drawable/button_back" />
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/button_refresh" />
 
         </LinearLayout>
 
 
     </com.google.android.material.appbar.AppBarLayout>
-
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

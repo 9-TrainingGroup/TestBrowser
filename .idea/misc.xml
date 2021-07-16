@@ -10,6 +10,7 @@
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/button_history.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/button_menu.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/button_navigation.xml" value="0.265625" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/button_refresh.xml" value="0.2361111111111111" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/button_save_image.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_add.xml" value="0.2361111111111111" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_add_gray.xml" value="0.2361111111111111" />
@@ -30,6 +31,8 @@
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_menu.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_menu_gray.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_photo.xml" value="0.265625" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_refresh.xml" value="0.2361111111111111" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_refresh_gray.xml" value="0.2361111111111111" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/rounded_edittext.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/activity_book.xml" value="0.22175925925925927" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/activity_bookmark.xml" value="0.24947916666666667" />
