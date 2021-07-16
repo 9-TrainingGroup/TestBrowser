@@ -1,6 +1,7 @@
 package com.alva.testbrowser.webview;
 
 import android.view.View;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -27,13 +28,16 @@ public class ChromeClient extends WebChromeClient {
 
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
+        super.onProgressChanged(view, newProgress);
+        progressView.setProgress(newProgress);
         if (newProgress == 100) {
             //加载完毕进度条消失
+            view.onResume();
             progressView.setVisibility(View.GONE);
         } else {
             //更新进度
-            progressView.setProgress(newProgress);
+            view.onPause();
+            progressView.setVisibility(View.VISIBLE);
         }
-        super.onProgressChanged(view, newProgress);
     }
 }
