@@ -1,12 +1,15 @@
 package com.alva.testbrowser.Adapter
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.alva.testbrowser.*
@@ -15,7 +18,6 @@ import com.alva.testbrowser.databinding.DialogEditWebBinding
 
 class BookmarkAdapter(private val viewModel: BookmarkViewModel) :
     RecyclerView.Adapter<BookmarkViewHolder>() {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
         CellBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
             return BookmarkViewHolder(this)
@@ -24,7 +26,12 @@ class BookmarkAdapter(private val viewModel: BookmarkViewModel) :
 
     override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
         val webs = viewModel.allWebsLive.value!![position]
-        holder.viewBinding.textView.text = webs.name
+        if (webs.name.isEmpty()) {
+            holder.viewBinding.textView.text = webs.url
+            holder.viewBinding.textView.textSize = 20F
+        } else {
+            holder.viewBinding.textView.text = webs.name
+        }
         holder.itemView.setOnClickListener {
             // TODO: 2021/7/16：传递网页给MainActivity
             val intent = Intent(Intent.ACTION_VIEW)
@@ -61,6 +68,41 @@ class BookmarkAdapter(private val viewModel: BookmarkViewModel) :
                                 .show()
                         builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                         builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                        binding.editTextName.requestFocus()
+                        (it.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
+                            binding.editTextName,
+                            0
+                        )
+                        binding.editTextUrl.addTextChangedListener(object : TextWatcher {
+                            override fun beforeTextChanged(
+                                s: CharSequence?,
+                                start: Int,
+                                count: Int,
+                                after: Int
+                            ) {
+                            }
+
+                            override fun onTextChanged(
+                                s: CharSequence?,
+                                start: Int,
+                                before: Int,
+                                count: Int
+                            ) {
+                                if (s.toString().isNotEmpty()) {
+                                    builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+                                        setTextColor(Color.BLACK)
+                                        isEnabled = true
+                                    }
+                                } else {
+                                    builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+                                        setTextColor(Color.GRAY)
+                                        isEnabled = false
+                                    }
+                                }
+                            }
+
+                            override fun afterTextChanged(s: Editable?) {}
+                        })
                     }
                     R.id.deleteItem -> viewModel.deleteWebs(webs)
                 }
@@ -81,7 +123,6 @@ class BookmarkViewHolder(val viewBinding: CellBookmarkBinding) :
 
 class HistoryAdapter(private val viewModel: HistoryViewModel) :
     RecyclerView.Adapter<HistoryViewHolder>() {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         CellBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
             return HistoryViewHolder(this)
@@ -89,7 +130,6 @@ class HistoryAdapter(private val viewModel: HistoryViewModel) :
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        Log.d("Hello", "onBindViewHolder: ${viewModel.allWebsLive.value}")
         val webs = viewModel.allWebsLive.value!![position]
         holder.viewBinding.textView.text = webs.name
         holder.itemView.setOnClickListener {
