@@ -8,16 +8,16 @@ import androidx.room.PrimaryKey;
 public class History {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    public int historyid;
+    private int historyid;
 
     @ColumnInfo(name = "title")
-    public String title;
+    private String title;
 
     @ColumnInfo(name = "url")
-    public String url;
+    private String url;
 
     @ColumnInfo(name = "time")
-    public String time;
+    private String time;
 
     public History(String title, String url, String time) {
         this.title = title;
