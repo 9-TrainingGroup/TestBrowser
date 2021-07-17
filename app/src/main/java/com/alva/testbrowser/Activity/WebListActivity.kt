@@ -2,7 +2,6 @@ package com.alva.testbrowser.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alva.testbrowser.*
 import com.alva.testbrowser.databinding.ActivityWebListBinding
@@ -15,16 +14,6 @@ class WebListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityWebListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val bookmarkViewModel by viewModels<BookmarkViewModel>()
-        val historyViewModel by viewModels<HistoryViewModel>()
-        repeat(20) {
-            bookmarkViewModel.insertWebs(Bookmark("百度", "https://www.baidu.com"))
-        }
-        repeat(20) {
-            historyViewModel.insertWebs(History("百度", "https://www.baidu.com"))
-        }
-
 
         binding.viewPager.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount() = 2

@@ -6,6 +6,9 @@
     <string name="photo_tag">%d / %d</string>
     <string name="button_save_image">saveButton</string>
     <string name="button_back">backButton</string>
+    <string name="button_back_message">再按一次返回键退出</string>
+    <string name="saved_success">存储成功</string>
+    <string name="save_failed">存储失败</string>
     <string name="menu_delete">删除</string>
     <string name="dialog_delete_history_title">确定清空历史记录？</string>
     <string name="dialog_delete_bookmark_title">确定清空书签？</string>

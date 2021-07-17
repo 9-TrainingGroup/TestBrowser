@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.alva.testbrowser.Adapter.PagerPhotoAdapter
 import com.alva.testbrowser.Adapter.PagerPhotoViewHolder
+import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.ActivityPhotoBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -35,7 +36,11 @@ class PhotoActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         onBackPressedDispatcher.addCallback(this) {
-            Toast.makeText(this@PhotoActivity, "再按一次返回键退出", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this@PhotoActivity,
+                getString(R.string.button_back_message),
+                Toast.LENGTH_SHORT
+            ).show()
             isEnabled = false
             lifecycleScope.launch {
                 delay(1500)
@@ -63,7 +68,7 @@ class PhotoActivity : AppCompatActivity() {
                 if (permissions[Manifest.permission.WRITE_EXTERNAL_STORAGE] == true) {
                     lifecycleScope.launch { savePhoto() }
                 } else {
-                    Toast.makeText(this, "存储失败", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.save_failed), Toast.LENGTH_SHORT).show()
                 }
             }
         binding.saveButton.setOnClickListener {
@@ -92,14 +97,14 @@ class PhotoActivity : AppCompatActivity() {
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             ContentValues()
         ) ?: kotlin.run {
-            Toast.makeText(this, "存储失败", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.save_failed), Toast.LENGTH_SHORT).show()
             return
         }
         this.contentResolver.openOutputStream(saveUri).use {
             if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)) {  //保存图片
-                Toast.makeText(this, "存储成功", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.saved_success), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "存储失败", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.save_failed), Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable-mdpi/pg.xml" value="0.12685185185185185" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/button_back.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/button_forward.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/button_history.xml" value="0.265625" />
@@ -17,7 +18,12 @@
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_history_gray.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_menu.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_menu_gray.xml" value="0.265625" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/activity_bookmark.xml" value="0.1125" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/activity_web_list.xml" value="0.22175925925925927" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/cell_bookmark.xml" value="0.1125" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/fragment_bookmark.xml" value="0.22175925925925927" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/pager_photo_view.xml" value="0.22175925925925927" />
       </map>
     </option>
   </component>

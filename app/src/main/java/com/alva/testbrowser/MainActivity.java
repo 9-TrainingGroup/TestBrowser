@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alva.testbrowser.Activity.WebListActivity;
@@ -50,22 +51,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         webViewPool = WebViewPool.getInstance();
         WebViewPool.init(this);
 
-        // TODO: 2021/7/16：添加书签及历史记录到数据库
-        //webView.getTitle();
-        //webView.getUrl();
-        //webView.copyBackForwardList().getCurrentItem().getTitle();
-        //webView.copyBackForwardList().getCurrentItem().getUrl();
-        // TODO: 2021/7/16：点击书签或历史记录打开网页
-
         init();
+//        BookmarkViewModel bookmarkViewModel = new ViewModelProvider(this).get(BookmarkViewModel.class);
+//        bookmarkViewModel.insertWebs(new Bookmark(webView.getTitle(), webView.getUrl()));
     }
 
     @Override
     public void onBackPressed() {
         if (webView.canGoBack()) {
+            webView.stopLoading();
             webView.goBack();
         } else {
-            super.onBackPressed();
+            if ((System.currentTimeMillis() - exitTime) > 1000) {
+                Toast.makeText(this, "再按一次退出程序",
+                        Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
         }
     }
 
@@ -178,19 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.goBack:
-                if (webView.canGoBack()) {
-                    webView.stopLoading();
-                    webView.goBack();
-                } else {
-                    if ((System.currentTimeMillis() - exitTime) > 1000) {
-                        Toast.makeText(this, "再按一次退出程序",
-                                Toast.LENGTH_SHORT).show();
-                        exitTime = System.currentTimeMillis();
-                    } else {
-                        finish();
-                        System.exit(0);
-                    }
-                }
+                onBackPressed();
                 break;
             case R.id.goForward:
                 webView.goForward();
