@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity
-data class Bookmark @JvmOverloads constructor(
+data class Bookmarktest @JvmOverloads constructor(
     var name: String,
     var url: String,
     @PrimaryKey(autoGenerate = true) var id: Int = 0
@@ -15,7 +15,7 @@ data class Bookmark @JvmOverloads constructor(
 
 @Parcelize
 @Entity
-data class History @JvmOverloads constructor(
+data class Historytest @JvmOverloads constructor(
     var name: String,
     var url: String,
     @PrimaryKey(autoGenerate = true) var id: Int = 0

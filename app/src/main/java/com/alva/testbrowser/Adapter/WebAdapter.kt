@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alva.testbrowser.*
 import com.alva.testbrowser.databinding.CellBookmarkBinding
 import com.alva.testbrowser.databinding.DialogEditWebBinding
-import com.alva.testbrowser.test.Bookmark
+import com.alva.testbrowser.test.Bookmarktest
 import com.alva.testbrowser.test.WebViewModel
 
 class BookmarkAdapter(private val viewModel: WebViewModel) :
@@ -57,7 +57,7 @@ class BookmarkAdapter(private val viewModel: WebViewModel) :
                                 .setTitle(R.string.dialog_edit_title)
                                 .setView(v)
                                 .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
-                                    val web = Bookmark(
+                                    val web = Bookmarktest(
                                         binding.editTextName.text.toString(),
                                         binding.editTextUrl.text.toString()
                                     )

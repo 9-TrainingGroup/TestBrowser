@@ -1,22 +1,9 @@
 package com.alva.testbrowser.webview;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.view.KeyEvent;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import androidx.annotation.Nullable;
-
-import com.alva.testbrowser.R;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
 
 /**
  * @author Alva

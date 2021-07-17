@@ -63,7 +63,7 @@ class BookmarkFragment : Fragment() {
                     .setTitle(R.string.dialog_add_title)
                     .setView(v)
                     .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
-                        val web = Bookmark(
+                        val web = Bookmarktest(
                             dialogBinding.editTextName.text.toString(),
                             dialogBinding.editTextUrl.text.toString()
                         )
