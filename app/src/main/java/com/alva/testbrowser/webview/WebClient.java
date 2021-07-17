@@ -1,5 +1,6 @@
 package com.alva.testbrowser.webview;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.KeyEvent;
@@ -14,6 +15,8 @@ import com.alva.testbrowser.R;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 
 /**
  * @author Alva
@@ -49,5 +52,7 @@ public class WebClient extends WebViewClient {
                 " }" +
                 "}" +
                 "})()");
+        // TODO: 2021/7/17 数据库插入历史记录
+        view.copyBackForwardList().getCurrentItem().getTitle();
     }
 }

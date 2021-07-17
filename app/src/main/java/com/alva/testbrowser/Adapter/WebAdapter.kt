@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alva.testbrowser.*
 import com.alva.testbrowser.databinding.CellBookmarkBinding
 import com.alva.testbrowser.databinding.DialogEditWebBinding
+import com.alva.testbrowser.test.Bookmark
+import com.alva.testbrowser.test.WebViewModel
 
-class BookmarkAdapter(private val viewModel: BookmarkViewModel) :
+class BookmarkAdapter(private val viewModel: WebViewModel) :
     RecyclerView.Adapter<BookmarkViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
         CellBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
@@ -25,7 +27,7 @@ class BookmarkAdapter(private val viewModel: BookmarkViewModel) :
     }
 
     override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
-        val webs = viewModel.allWebsLive.value!![position]
+        val webs = viewModel.allBookmark.value!![position]
         if (webs.name.isEmpty()) {
             holder.viewBinding.textView.text = webs.url
             holder.viewBinding.textView.textSize = 20F
@@ -114,14 +116,14 @@ class BookmarkAdapter(private val viewModel: BookmarkViewModel) :
     }
 
     override fun getItemCount(): Int {
-        return viewModel.allWebsLive.value!!.size
+        return viewModel.allBookmark.value!!.size
     }
 }
 
 class BookmarkViewHolder(val viewBinding: CellBookmarkBinding) :
     RecyclerView.ViewHolder(viewBinding.root)
 
-class HistoryAdapter(private val viewModel: HistoryViewModel) :
+class HistoryAdapter(private val viewModel: WebViewModel) :
     RecyclerView.Adapter<HistoryViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         CellBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
@@ -130,7 +132,7 @@ class HistoryAdapter(private val viewModel: HistoryViewModel) :
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        val webs = viewModel.allWebsLive.value!![position]
+        val webs = viewModel.allHistory.value!![position]
         holder.viewBinding.textView.text = webs.name
         holder.itemView.setOnClickListener {
             // TODO: 2021/7/16：传递网页给MainActivity
@@ -155,7 +157,7 @@ class HistoryAdapter(private val viewModel: HistoryViewModel) :
     }
 
     override fun getItemCount(): Int {
-        return viewModel.allWebsLive.value!!.size
+        return viewModel.allHistory.value!!.size
     }
 }
 

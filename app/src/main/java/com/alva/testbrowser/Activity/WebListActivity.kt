@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alva.testbrowser.*
 import com.alva.testbrowser.databinding.ActivityWebListBinding
+import com.alva.testbrowser.test.BookmarkFragment
+import com.alva.testbrowser.test.HistoryFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class WebListActivity : AppCompatActivity() {

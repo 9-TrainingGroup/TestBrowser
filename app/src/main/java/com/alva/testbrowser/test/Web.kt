@@ -1,4 +1,4 @@
-package com.alva.testbrowser
+package com.alva.testbrowser.test
 
 import android.os.Parcelable
 import androidx.room.Entity

@@ -1,4 +1,4 @@
-package com.alva.testbrowser
+package com.alva.testbrowser.test
 
 import android.app.AlertDialog
 import android.content.Context
@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alva.testbrowser.Adapter.BookmarkAdapter
+import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.alva.testbrowser.databinding.FragmentBookmarkBinding
 import kotlinx.coroutines.delay
@@ -36,16 +37,16 @@ class BookmarkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel by activityViewModels<BookmarkViewModel>()
+        val viewModel by activityViewModels<WebViewModel>()
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.allWebsLive.observe(viewLifecycleOwner, {
+        viewModel.allBookmark.observe(viewLifecycleOwner, {
             binding.recyclerView.adapter = BookmarkAdapter(viewModel)
         })
         binding.deleteButton.setOnClickListener {
             val builder: AlertDialog = AlertDialog.Builder(requireContext())
                 .setTitle(R.string.dialog_delete_bookmark_title)
                 .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
-                    viewModel.deleteAllWebs()
+                    viewModel.deleteAllBookmark()
                 }
                 .setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
                     dialog.cancel()
