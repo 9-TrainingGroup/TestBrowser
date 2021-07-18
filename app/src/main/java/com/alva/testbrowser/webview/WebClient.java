@@ -1,6 +1,7 @@
 package com.alva.testbrowser.webview;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -12,7 +13,9 @@ import android.webkit.WebViewClient;
 public class WebClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        return false;
+        Uri url = request.getUrl();
+        String scheme = url.getScheme();
+        return scheme != null && !scheme.startsWith("http");
     }
 
     @Override

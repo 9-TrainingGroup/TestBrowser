@@ -35,18 +35,6 @@ class PhotoActivity : AppCompatActivity() {
         binding = ActivityPhotoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        onBackPressedDispatcher.addCallback(this) {
-            Toast.makeText(
-                this@PhotoActivity,
-                getString(R.string.button_back_message),
-                Toast.LENGTH_SHORT
-            ).show()
-            isEnabled = false
-            lifecycleScope.launch {
-                delay(1500)
-                isEnabled = true
-            }
-        }
         val bundle = intent.getBundleExtra("bundle")!!
         images = bundle.getStringArrayList("imageUrls")!!
         val index = bundle.getInt("index")
@@ -83,9 +71,6 @@ class PhotoActivity : AppCompatActivity() {
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 )
             }
-        }
-        binding.backButton.setOnClickListener {
-            onBackPressed()
         }
     }
 
