@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
+            android:name=".test.NewsActivity"
+            android:exported="true" />
+        <activity
             android:name=".Activity.WebListActivity"
             android:exported="true" />
         <activity

@@ -1,10 +1,8 @@
 package com.alva.testbrowser.webview;
 
 import android.view.View;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.EditText;
 
 /**
  * @author Alva

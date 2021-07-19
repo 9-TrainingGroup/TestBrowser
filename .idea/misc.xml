@@ -18,13 +18,22 @@
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_history_gray.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_menu.xml" value="0.265625" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_baseline_menu_gray.xml" value="0.265625" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/ic_outline_wb_cloudy.xml" value="0.2361111111111111" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/drawable/rounded_edittext.xml" value="0.2361111111111111" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout-land/activity_news.xml" value="0.21041666666666667" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/activity_bookmark.xml" value="0.1125" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/activity_news.xml" value="0.22175925925925927" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/activity_photo.xml" value="0.22175925925925927" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/activity_web_list.xml" value="0.22175925925925927" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/cell_bookmark.xml" value="0.22175925925925927" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/cell_news.xml" value="0.22175925925925927" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/fragment_bookmark.xml" value="0.22175925925925927" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/fragment_news.xml" value="0.176171875" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/pager_photo_view.xml" value="0.22175925925925927" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/menu/menu_bookmark.xml" value="0.22175925925925927" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/menu/menu_history.xml" value="0.22175925925925927" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/menu/menu_news.xml" value="0.22175925925925927" />
       </map>
     </option>
   </component>
@@ -36,7 +45,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android API 30 Platform" project-jdk-type="Android SDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android API 30 Platform" project-jdk-type="Android SDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

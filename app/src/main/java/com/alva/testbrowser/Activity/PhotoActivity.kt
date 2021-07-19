@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -22,7 +21,6 @@ import com.alva.testbrowser.Adapter.PagerPhotoAdapter
 import com.alva.testbrowser.Adapter.PagerPhotoViewHolder
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.ActivityPhotoBinding
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 
@@ -35,18 +33,18 @@ class PhotoActivity : AppCompatActivity() {
         binding = ActivityPhotoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        onBackPressedDispatcher.addCallback(this) {
-            Toast.makeText(
-                this@PhotoActivity,
-                getString(R.string.button_back_message),
-                Toast.LENGTH_SHORT
-            ).show()
-            isEnabled = false
-            lifecycleScope.launch {
-                delay(1500)
-                isEnabled = true
-            }
-        }
+//        onBackPressedDispatcher.addCallback(this) {
+//            Toast.makeText(
+//                this@PhotoActivity,
+//                getString(R.string.button_back_message),
+//                Toast.LENGTH_SHORT
+//            ).show()
+//            isEnabled = false
+//            lifecycleScope.launch {
+//                delay(1500)
+//                isEnabled = true
+//            }
+//        }
         val bundle = intent.getBundleExtra("bundle")!!
         images = bundle.getStringArrayList("imageUrls")!!
         val index = bundle.getInt("index")

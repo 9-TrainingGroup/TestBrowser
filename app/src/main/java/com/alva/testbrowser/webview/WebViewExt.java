@@ -2,7 +2,6 @@ package com.alva.testbrowser.webview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;

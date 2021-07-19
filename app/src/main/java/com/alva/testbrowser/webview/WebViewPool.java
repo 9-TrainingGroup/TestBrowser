@@ -2,14 +2,8 @@ package com.alva.testbrowser.webview;
 
 import android.content.Context;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-
-import android.widget.LinearLayout;
-
-import androidx.core.content.ContextCompat;
 
 import com.alva.testbrowser.JavascriptInterface;
-import com.alva.testbrowser.R;
 
 import java.util.ArrayList;
 import java.util.List;
