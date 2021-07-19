@@ -16,11 +16,13 @@
             android:name=".test.NewsActivity"
             android:exported="true" />
         <activity
-            android:name=".Activity.WebListActivity"
+            android:name=".test.WebListActivity"
             android:exported="true" />
         <activity
             android:name=".Activity.PhotoActivity"
             android:exported="true" />
+        <activity android:name=".Activity.RecordActivity"
+            android:exported="true"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

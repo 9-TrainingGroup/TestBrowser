@@ -6,11 +6,14 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.alva.testbrowser.R;
+
+import java.util.Map;
 
 /**
  * @author Alva
@@ -65,5 +68,10 @@ public class WebViewExt extends WebView {
 
     public interface Callback {
         void onReceivedTitle(WebView view, String title);
+    }
+
+    @Override
+    public void loadUrl(@NonNull String url, @NonNull Map<String, String> additionalHttpHeaders) {
+        super.loadUrl(url, additionalHttpHeaders);
     }
 }

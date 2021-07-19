@@ -1,4 +1,4 @@
-package com.alva.testbrowser.Adapter
+package com.alva.testbrowser.test
 
 import android.app.AlertDialog
 import android.content.Context
@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alva.testbrowser.*
 import com.alva.testbrowser.databinding.CellBookmarkBinding
 import com.alva.testbrowser.databinding.DialogEditWebBinding
-import com.alva.testbrowser.test.Bookmarktest
-import com.alva.testbrowser.test.WebViewModel
 
 class BookmarkAdapter(private val viewModel: WebViewModel) :
     RecyclerView.Adapter<BookmarkViewHolder>() {

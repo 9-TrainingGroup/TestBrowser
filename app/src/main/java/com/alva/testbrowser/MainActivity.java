@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.alva.testbrowser.Activity.RecordActivity;
 import com.alva.testbrowser.Adapter.CompleteAdapter;
 import com.alva.testbrowser.test.NewsActivity;
 import com.alva.testbrowser.ui.UrlBarController;
@@ -90,11 +91,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ImageButton refresh = findViewById(R.id.refresh);
         ImageButton history = findViewById(R.id.history);
         ImageButton drawerDialog = findViewById(R.id.drawerDialog);
+        ImageButton windowSwitch = findViewById(R.id.windowSwitch);
         goBack.setOnClickListener(this);
         goForward.setOnClickListener(this);
         refresh.setOnClickListener(this);
         history.setOnClickListener(this);
         drawerDialog.setOnClickListener(this);
+        windowSwitch.setOnClickListener(this);
         webView = webViewPool.getWebView(this);
         webViewContainer.addView(webView);
 
@@ -198,10 +201,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .show();
                 break;
             case R.id.history:
-                Intent intent = new Intent(MainActivity.this, NewsActivity.class);
+                Intent intent = new Intent(MainActivity.this, RecordActivity.class);
                 startActivity(intent);
                 break;
             default:
+                startActivity(new Intent(MainActivity.this, NewsActivity.class));
                 break;
         }
     }
