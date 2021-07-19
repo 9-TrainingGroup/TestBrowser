@@ -14,8 +14,11 @@ public interface HistoryDao {
     List<History> getAll();
 
     @Insert
-    void insertAll(History... histories);
+    void insert(History... histories);
 
     @Delete
     void delete(History history);
+
+    @Query("DELETE FROM history")
+    void deleteAll();
 }
