@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.alva.testbrowser.R;
+import com.alva.testbrowser.database.History;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -126,10 +127,9 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
     private final CompleteFilter filter = new CompleteFilter();
 
     /**
-     *
      * @param recordList String为占位符,实际需要包含title,url,time的自定义数据类型
      */
-    public CompleteAdapter(Context context, int layoutResId, List<String> recordList) {
+    public CompleteAdapter(Context context, int layoutResId, List<History> recordList) {
         this.context = context;
         this.layoutResId = layoutResId;
         this.originalList = new ArrayList<>();
@@ -137,8 +137,11 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
         getRecordList(recordList);
     }
 
-    private void getRecordList(List<String> recordList) {
-        //TODO 将recordList中的数据导入originalList中
+    private void getRecordList(List<History> recordList) {
+        for (History a : recordList) {
+            CompleteItem completeItem = new CompleteItem(a.getTitle(),a.getUrl(),Long.valueOf(a.getTime()));
+            originalList.add(completeItem);
+        }
     }
 
     @Override

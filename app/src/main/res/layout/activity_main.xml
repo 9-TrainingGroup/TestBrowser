@@ -122,7 +122,7 @@
                 app:srcCompat="@drawable/button_history" />
 
             <ImageButton
-                android:id="@+id/windowSwitch"
+                android:id="@+id/tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

@@ -70,6 +70,7 @@ public class WebViewExt extends WebView {
         void onReceivedTitle(WebView view, String title);
     }
 
+
     @Override
     public void loadUrl(@NonNull String url, @NonNull Map<String, String> additionalHttpHeaders) {
         super.loadUrl(url, additionalHttpHeaders);

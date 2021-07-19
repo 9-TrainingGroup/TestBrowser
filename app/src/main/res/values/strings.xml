@@ -20,4 +20,5 @@
     <string name="footer_loading">正在加载</string>
     <string name="footer_error">加载出错，点击重试</string>
     <string name="footer_success">加载完毕</string>
+    <string name="album_title_tab">Opened Tabs</string>
 </resources>
