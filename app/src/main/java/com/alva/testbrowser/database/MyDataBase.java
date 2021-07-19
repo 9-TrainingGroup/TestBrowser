@@ -3,19 +3,28 @@ package com.alva.testbrowser.database;
 import android.content.Context;
 
 import androidx.room.Database;
-import androidx.room.Entity;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Database(entities = {Bookmark.class, History.class},version = 1,exportSchema = false)
-public abstract class MyDataBase extends RoomDatabase {
+public abstract class MyDatabase extends RoomDatabase {
     public abstract HistoryDao historyDao();
     public abstract BookmarkDao bookmarkDao();
 
-    private static MyDataBase myDataBase;
-    public static MyDataBase getMyDataBase(Context context){
+    private static final int NUMBER_OF_THREAD = 5;
+    static final ExecutorService databaseWriteExecutor =
+            Executors.newFixedThreadPool(NUMBER_OF_THREAD);
+
+    private static MyDatabase myDataBase;
+    public static MyDatabase getMyDataBase(){
+        return myDataBase;
+    }
+    public static MyDatabase getMyDataBase(Context context){
         if (myDataBase == null){
-            myDataBase= Room.databaseBuilder(context,MyDataBase.class,"myDatabase")
+            myDataBase= Room.databaseBuilder(context, MyDatabase.class,"myDatabase")
                     .allowMainThreadQueries().build();
         }
 

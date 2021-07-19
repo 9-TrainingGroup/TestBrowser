@@ -12,19 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.alva.testbrowser.Adapter.HistoryAdapter;
 import com.alva.testbrowser.R;
-import com.alva.testbrowser.database.History;
-import com.alva.testbrowser.database.HistoryDao;
-import com.alva.testbrowser.database.MyDataBase;
+import com.alva.testbrowser.database.MyDatabase;
 import com.alva.testbrowser.database.RecordViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
 /*历史记录列表展示及操作*/
 
 public class HistoryFragment extends Fragment implements AdapterView.OnItemClickListener {
-    private List<History> historyList = new ArrayList<>();
-    MyDataBase dataBase;
+    MyDatabase dataBase;
     RecordViewModel recordViewModel;
+    HistoryAdapter adapter;
 
 
     @Override
@@ -32,9 +27,11 @@ public class HistoryFragment extends Fragment implements AdapterView.OnItemClick
         View view = inflater.inflate(R.layout.history_layout, container, false);
         ListView listView = view.findViewById(R.id.history_view);
 
+//        RecordViewModel recordViewModel = new ViewModelProvider(requireActivity()).get(RecordViewModel.class);
+
         recordViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(RecordViewModel.class);
         recordViewModel.getAllHistory();
-        HistoryAdapter adapter = new HistoryAdapter(getActivity(), R.layout.simple_adapter_item,recordViewModel.historyList);
+        adapter = new HistoryAdapter(getActivity(), R.layout.simple_adapter_item,recordViewModel.historyList);
         listView.setAdapter(adapter);
 
 /*      未创建ViewModel前的操作
@@ -52,5 +49,14 @@ public class HistoryFragment extends Fragment implements AdapterView.OnItemClick
         switch (view.getId()) {
         }
     }
+
+//    recordViewModel.getAllHistoriesLive().observe(this, new Observer<List<History>>() {
+//        @Override
+//        public void onChanged(List<History> historyList) {
+//            int temp = myAdapter1.getItemCount();
+//            adapter.setAllWords(words);
+//        }
+//    });
+
 
 }
