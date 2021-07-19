@@ -1,5 +1,6 @@
 package com.alva.testbrowser;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,16 +17,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alva.testbrowser.Activity.RecordActivity;
 import com.alva.testbrowser.Adapter.CompleteAdapter;
+import com.alva.testbrowser.database.History;
+import com.alva.testbrowser.database.RecordViewModel;
 import com.alva.testbrowser.test.NewsActivity;
 import com.alva.testbrowser.ui.UrlBarController;
 import com.alva.testbrowser.util.UiUtils;
 import com.alva.testbrowser.webview.WebViewExt;
 import com.alva.testbrowser.webview.WebViewPool;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String FILE = "file://";
 
     private WebViewPool webViewPool;
+    private AlertDialog dialog_tabPreview;
     private AutoCompleteTextView urlEdit;
     private WebViewExt webView;
     private long exitTime;
@@ -91,13 +97,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ImageButton refresh = findViewById(R.id.refresh);
         ImageButton history = findViewById(R.id.history);
         ImageButton drawerDialog = findViewById(R.id.drawerDialog);
-        ImageButton windowSwitch = findViewById(R.id.windowSwitch);
+        ImageButton dialogTab = findViewById(R.id.tab);
         goBack.setOnClickListener(this);
         goForward.setOnClickListener(this);
         refresh.setOnClickListener(this);
         history.setOnClickListener(this);
         drawerDialog.setOnClickListener(this);
-        windowSwitch.setOnClickListener(this);
+        dialogTab.setOnClickListener(this);
         webView = webViewPool.getWebView(this);
         webViewContainer.addView(webView);
 
@@ -105,12 +111,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
+     *  初始化窗口切换Dialog
+     */
+    private void initDialogTab(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
+
+    }
+
+    /**
      * 初始化webView
      */
     private void initUrlEdit() {
 
-        List<String> list = new ArrayList<>();
-        CompleteAdapter adapter = new CompleteAdapter(this, R.layout.item_icon_left, list);
+        RecordViewModel record = new RecordViewModel(getApplication());
+        record.getAllHistory();
+        CompleteAdapter adapter = new CompleteAdapter(this, R.layout.item_icon_left, record.historyList);
         urlEdit.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         urlEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -203,6 +218,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.history:
                 Intent intent = new Intent(MainActivity.this, RecordActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.tab:
+
                 break;
             default:
                 startActivity(new Intent(MainActivity.this, NewsActivity.class));
