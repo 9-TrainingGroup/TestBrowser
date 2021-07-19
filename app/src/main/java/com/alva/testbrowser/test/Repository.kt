@@ -6,13 +6,11 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 
 object Repository {
-    private const val PAGE_SIZE = 10
-
     private val newsService = NewsService.create()
 
     fun getPagingData(): Flow<PagingData<NewsItem>> {
         return Pager(
-            PagingConfig(pageSize = PAGE_SIZE)
+            PagingConfig(50)
         ) {
             NewsPagingSource(newsService)
         }.flow

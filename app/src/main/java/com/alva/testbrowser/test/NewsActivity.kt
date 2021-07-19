@@ -16,8 +16,8 @@ class NewsActivity : AppCompatActivity() {
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.appbar.layoutParams.height =
-            windowManager.currentWindowMetrics.bounds.height() / 2 - 56
+//        binding.appbar.layoutParams.height =
+//            windowManager.currentWindowMetrics.bounds.height() / 2 - 56
         binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
 
         })

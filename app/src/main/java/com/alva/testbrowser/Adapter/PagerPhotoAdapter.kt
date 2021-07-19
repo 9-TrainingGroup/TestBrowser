@@ -15,11 +15,13 @@ import com.bumptech.glide.request.target.Target
 
 class PagerPhotoAdapter(private val images: ArrayList<String>) :
     RecyclerView.Adapter<PagerPhotoViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerPhotoViewHolder {
-        PagerPhotoViewBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
-            return PagerPhotoViewHolder(this)
-        }
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PagerPhotoViewHolder(
+        PagerPhotoViewBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    )
 
     override fun onBindViewHolder(holder: PagerPhotoViewHolder, position: Int) {
         holder.viewBinding.shimmerLayout.apply {

@@ -3,10 +3,11 @@ package com.alva.testbrowser.test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface NewsService {
-    @GET("nc/article/headline/T1348647853363/0-100.html")
-    suspend fun searchNews(): News
+    @GET("nc/article/headline/T1348647853363/{page}-10.html")
+    suspend fun searchNews(@Path("page") page: Int): News
 
     companion object {
         private const val BASE_URL = "http://c.m.163.com/"
