@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -215,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.history:
                 Intent intent = new Intent(MainActivity.this, RecordActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
                 break;
             case R.id.tab:
 
@@ -230,5 +232,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
         webView.removeAllViews();
         webView.destroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    String url = data.getStringExtra("open_url");
+                    Log.d("open-url",url);
+                    webView.loadUrl(url);
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
