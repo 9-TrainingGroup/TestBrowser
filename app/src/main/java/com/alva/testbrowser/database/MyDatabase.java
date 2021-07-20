@@ -18,16 +18,16 @@ public abstract class MyDatabase extends RoomDatabase {
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREAD);
 
-    private static MyDatabase myDataBase;
-    public static MyDatabase getMyDataBase(){
-        return myDataBase;
+    private static MyDatabase myDatabase;
+    public static MyDatabase getMyDatabase(){
+        return myDatabase;
     }
-    public static MyDatabase getMyDataBase(Context context){
-        if (myDataBase == null){
-            myDataBase= Room.databaseBuilder(context, MyDatabase.class,"myDatabase")
+    public static MyDatabase getMyDatabase(Context context){
+        if (myDatabase == null){
+            myDatabase= Room.databaseBuilder(context, MyDatabase.class,"myDatabase")
                     .allowMainThreadQueries().build();
         }
 
-        return myDataBase;
+        return myDatabase;
     }
 }

@@ -14,7 +14,7 @@ public class RecordRepository {
     private final List<History> allHistories;
 
     public RecordRepository(Context context) {
-        MyDatabase myDatabase = MyDatabase.getMyDataBase(context.getApplicationContext());
+        MyDatabase myDatabase = MyDatabase.getMyDatabase(context.getApplicationContext());
         bookmarkDao = myDatabase.bookmarkDao();
         historyDao = myDatabase.historyDao();
         allBookmarksLive = bookmarkDao.getAllBookmarks();

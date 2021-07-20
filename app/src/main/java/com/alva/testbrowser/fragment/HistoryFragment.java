@@ -35,7 +35,7 @@ public class HistoryFragment extends Fragment implements AdapterView.OnItemClick
         listView.setAdapter(adapter);
 
 /*      未创建ViewModel前的操作
-        dataBase = MyDataBase.getMyDataBase(getActivity());
+        dataBase = MyDatabase.getMyDatabase(getActivity());
         HistoryDao historyDao = dataBase.historyDao();
         historyList = historyDao.getAll();
         HistoryAdapter adapter = new HistoryAdapter(getActivity(), R.layout.simple_adapter_item, historyList);

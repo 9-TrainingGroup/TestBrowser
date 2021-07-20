@@ -55,7 +55,7 @@ public class WebClient extends WebViewClient {
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         History history = new History(gettitle,url,simpleDateFormat.format(date));
-        MyDatabase database = MyDatabase.getMyDataBase();
+        MyDatabase database = MyDatabase.getMyDatabase();
         database.historyDao().insertHistory(history);
 
     }
