@@ -139,7 +139,7 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
 
     private void getRecordList(List<History> recordList) {
         for (History a : recordList) {
-            CompleteItem completeItem = new CompleteItem(a.getTitle(),a.getUrl(),Long.valueOf(a.getTime()));
+            CompleteItem completeItem = new CompleteItem(a.getTitle(),a.getUrl(),Long.valueOf("123123"));
             originalList.add(completeItem);
         }
     }
