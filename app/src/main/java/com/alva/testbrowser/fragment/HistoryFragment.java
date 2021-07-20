@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
@@ -32,6 +34,7 @@ public class HistoryFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.history_layout, container, false);
         ListView listView = view.findViewById(R.id.history_view);
+        ImageButton button = view.findViewById(R.id.historyDelete);
 
 
         recordViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(RecordViewModel.class);
@@ -60,16 +63,43 @@ public class HistoryFragment extends Fragment{
             }
         });
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(getActivity());
+                dialogbuilder.setTitle("DELETE");
+                dialogbuilder.setMessage("确认删除所有历史记录吗");
+                dialogbuilder.setCancelable(false);
+                dialogbuilder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    //按了确定后删除数据，并且刷新列表
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        recordViewModel.deleteAllHistories();
+                        adapter.clear();
+                    }
+                });
+                dialogbuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog dialog = dialogbuilder.create();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            }
+        });
+
 
         return view;
     }
 
     public void confirm(int position,ListView listView){
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-        dialog.setTitle("DELETE");
-        dialog.setMessage("确认删除吗");
-        dialog.setCancelable(false);
-        dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(getActivity());
+        dialogbuilder.setTitle("DELETE");
+        dialogbuilder.setMessage("确认删除吗");
+        dialogbuilder.setCancelable(false);
+        dialogbuilder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             //按了确定后删除数据，并且刷新列表
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -84,12 +114,15 @@ public class HistoryFragment extends Fragment{
                 listView.setAdapter(adapter);
             }
         });
-        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        dialogbuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }
         });
+        AlertDialog dialog = dialogbuilder.create();
         dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
     }
 
 
