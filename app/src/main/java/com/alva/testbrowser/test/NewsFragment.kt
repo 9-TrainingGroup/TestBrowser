@@ -34,7 +34,7 @@ class NewsFragment : Fragment() {
         binding.recyclerView.adapter =
             adapter.withLoadStateFooter(FooterAdapter { adapter.retry() })
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getPagingData().collectLatest {
+            viewModel.pagingData.collectLatest {
                 adapter.submitData(it)
             }
         }
@@ -54,6 +54,7 @@ class NewsFragment : Fragment() {
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(3000)
                         binding.swipeRefresh.isRefreshing = false
+                        adapter.refresh().run { binding.swipeRefresh.isRefreshing = true }
                     }
                 }
             }

@@ -1,6 +1,5 @@
 package com.alva.testbrowser;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,9 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alva.testbrowser.Activity.RecordActivity;
 import com.alva.testbrowser.Adapter.CompleteAdapter;
-import com.alva.testbrowser.database.History;
 import com.alva.testbrowser.database.RecordViewModel;
-import com.alva.testbrowser.test.NewsActivity;
 import com.alva.testbrowser.ui.UrlBarController;
 import com.alva.testbrowser.util.UiUtils;
 import com.alva.testbrowser.webview.WebViewExt;
@@ -34,8 +31,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -58,8 +53,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WebViewPool.init(this);
 
         init();
-//        BookmarkViewModel bookmarkViewModel = new ViewModelProvider(this).get(BookmarkViewModel.class);
-//        bookmarkViewModel.insertWebs(new Bookmark(webView.getTitle(), webView.getUrl()));
     }
 
     @Override
@@ -111,9 +104,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     *  初始化窗口切换Dialog
+     * 初始化窗口切换Dialog
      */
-    private void initDialogTab(){
+    private void initDialogTab() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
 
     }
@@ -221,9 +214,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.tab:
 
-                break;
             default:
-                startActivity(new Intent(MainActivity.this, NewsActivity.class));
+
                 break;
         }
     }

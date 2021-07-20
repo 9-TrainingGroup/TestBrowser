@@ -18,11 +18,13 @@ import com.alva.testbrowser.databinding.DialogEditWebBinding
 
 class BookmarkAdapter(private val viewModel: WebViewModel) :
     RecyclerView.Adapter<BookmarkViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
-        CellBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
-            return BookmarkViewHolder(this)
-        }
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BookmarkViewHolder(
+        CellBookmarkBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    )
 
     override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
         val webs = viewModel.allBookmark.value!![position]
@@ -33,7 +35,7 @@ class BookmarkAdapter(private val viewModel: WebViewModel) :
             holder.viewBinding.textView.text = webs.name
         }
         holder.itemView.setOnClickListener {
-            // TODO: 2021/7/16：传递网页给MainActivity
+            //传递网页给MainActivity
             val intent = Intent(Intent.ACTION_VIEW)
             intent.putExtra("webUrl", webs.url)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -123,17 +125,19 @@ class BookmarkViewHolder(val viewBinding: CellBookmarkBinding) :
 
 class HistoryAdapter(private val viewModel: WebViewModel) :
     RecyclerView.Adapter<HistoryViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
-        CellBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
-            return HistoryViewHolder(this)
-        }
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HistoryViewHolder(
+        CellBookmarkBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    )
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         val webs = viewModel.allHistory.value!![position]
         holder.viewBinding.textView.text = webs.name
         holder.itemView.setOnClickListener {
-            // TODO: 2021/7/16：传递网页给MainActivity
+            //传递网页给MainActivity
             val intent = Intent()
             intent.putExtra("webUrl", webs.url)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

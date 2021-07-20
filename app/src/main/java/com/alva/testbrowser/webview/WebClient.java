@@ -42,7 +42,5 @@ public class WebClient extends WebViewClient {
                 " }" +
                 "}" +
                 "})()");
-        // TODO: 2021/7/17 数据库插入历史记录
-        view.copyBackForwardList().getCurrentItem().getTitle();
     }
 }

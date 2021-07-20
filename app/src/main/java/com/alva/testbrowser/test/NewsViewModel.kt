@@ -7,7 +7,5 @@ import androidx.paging.cachedIn
 import kotlinx.coroutines.flow.Flow
 
 class NewsViewModel : ViewModel() {
-    fun getPagingData(): Flow<PagingData<NewsItem>> {
-        return Repository.getPagingData().cachedIn(viewModelScope)
-    }
+    val pagingData: Flow<PagingData<NewsItem>> = Repository.getPagingData().cachedIn(viewModelScope)
 }

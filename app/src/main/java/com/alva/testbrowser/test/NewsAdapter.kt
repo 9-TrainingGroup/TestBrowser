@@ -2,9 +2,11 @@ package com.alva.testbrowser.test
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.paging.PagingDataAdapter
@@ -56,6 +58,12 @@ class NewsAdapter : PagingDataAdapter<NewsItem, NewsViewHolder>(DiffCallback) {
                         return false.also { holder.viewBinding.shimmerLayout.stopShimmerAnimation() }
                     }
                 }).into(holder.viewBinding.imageView)
+            holder.itemView.setOnClickListener {
+                Bundle().apply {
+                    putString("NEWS_POSITION", newsItem.url)
+                    it.findNavController().navigate(R.id.action_newsFragment_to_webFragment, this)
+                }
+            }
         }
     }
 
