@@ -28,4 +28,7 @@ public interface HistoryDao {
 
     @Query("SELECT * FROM history order by id desc")
     List<History> getAll();
+
+    @Query("delete from history where url==:url and time==:data")
+    void deletesameHistory(String url, String data);
 }
