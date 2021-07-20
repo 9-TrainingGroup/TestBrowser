@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -38,14 +39,18 @@ class NewsFragment : Fragment() {
                 adapter.submitData(it)
             }
         }
+        viewModel.initial.observe(viewLifecycleOwner, {
+            binding.recyclerView.isVisible = it
+        })
         adapter.addLoadStateListener {
             when (it.refresh) {
                 is LoadState.NotLoading -> {
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(800)
                         binding.swipeRefresh.isRefreshing = false
+                        binding.recyclerView.visibility = View.VISIBLE
+                        viewModel.initial.value = true
                     }
-                    binding.recyclerView.visibility = View.VISIBLE
                 }
                 is LoadState.Loading -> {
                     binding.swipeRefresh.isRefreshing = true

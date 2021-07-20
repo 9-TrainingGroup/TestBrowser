@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.alva.testbrowser.R;
+import com.alva.testbrowser.database.Bookmark;
 import com.alva.testbrowser.database.History;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
 
     private static class CompleteItem {
         private final String title;
-        private final Long time;
+        private final String time;
 
         String getTitle() {
             return title;
@@ -80,7 +81,7 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
             return index;
         }
 
-        long getTime() {
+        String getTime() {
             return time;
         }
 
@@ -88,7 +89,7 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
             this.index = index;
         }
 
-        private CompleteItem(String title, String url, Long time) {
+        private CompleteItem(String title, String url, String time) {
             this.title = title;
             this.url = url;
             this.time = time;
@@ -126,20 +127,22 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
     private final List<CompleteItem> resultList;
     private final CompleteFilter filter = new CompleteFilter();
 
-    /**
-     * @param recordList String为占位符,实际需要包含title,url,time的自定义数据类型
-     */
-    public CompleteAdapter(Context context, int layoutResId, List<History> recordList) {
+
+    public CompleteAdapter(Context context, int layoutResId, List<History> historyList, List<Bookmark> bookmarkList) {
         this.context = context;
         this.layoutResId = layoutResId;
         this.originalList = new ArrayList<>();
         this.resultList = new ArrayList<>();
-        getRecordList(recordList);
+        getRecordList(historyList, bookmarkList);
     }
 
-    private void getRecordList(List<History> recordList) {
-        for (History a : recordList) {
-            CompleteItem completeItem = new CompleteItem(a.getTitle(),a.getUrl(),Long.valueOf("123123"));
+    private void getRecordList(List<History> historyList, List<Bookmark> bookmarkList) {
+        for (History a : historyList) {
+            CompleteItem completeItem = new CompleteItem(a.getTitle(), a.getUrl(), a.getTime());
+            originalList.add(completeItem);
+        }
+        for (Bookmark a : bookmarkList){
+            CompleteItem completeItem = new CompleteItem(a.getTitle(), a.getUrl(),"BookMark");
             originalList.add(completeItem);
         }
     }
@@ -166,10 +169,9 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
 
         if (view == null) {
             view = LayoutInflater.from(context).inflate(layoutResId, null, false);
-            view.setBackgroundColor(ContextCompat.getColor(context, R.color.primaryDarkColor));
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             holder = new Holder();
             holder.titleView = view.findViewById(R.id.record_item_title);
-            holder.titleView.setTextColor(Color.WHITE);
             holder.urlView = view.findViewById(R.id.record_item_time);
             holder.iconView = view.findViewById(R.id.record_item_icon);
             view.setTag(holder);
@@ -182,8 +184,11 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
         holder.urlView.setVisibility(View.GONE);
         holder.urlView.setText(item.url);
 
-        //TODO 通过time设置iconView中的图标
-
+        if (item.getTime().equals("BookMark")){
+            holder.iconView.setImageResource(R.drawable.button_menu);
+        }else {
+            holder.iconView.setImageResource(R.drawable.button_history);
+        }
         holder.iconView.setVisibility(View.VISIBLE);
 
         return view;

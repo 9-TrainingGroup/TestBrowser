@@ -16,5 +16,5 @@ data class NewsItem(
     @SerializedName("imgsrc") val img: String,
     @SerializedName("source") val author: String,
     @SerializedName("lmodify") val time: String,
-    @SerializedName("url") val url: String
+    @SerializedName("url") var url: String
 ) : Parcelable

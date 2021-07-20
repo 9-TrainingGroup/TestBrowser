@@ -1,20 +1,26 @@
 package com.alva.testbrowser;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.WebView;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +29,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.alva.testbrowser.Activity.RecordActivity;
 import com.alva.testbrowser.Adapter.CompleteAdapter;
 import com.alva.testbrowser.database.RecordViewModel;
+import com.alva.testbrowser.test.NewsActivity;
 import com.alva.testbrowser.ui.UrlBarController;
 import com.alva.testbrowser.util.UiUtils;
 import com.alva.testbrowser.webview.WebViewExt;
@@ -31,6 +38,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,11 +46,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String HTTPS = "https://";
     public static final String FILE = "file://";
 
-    private WebViewPool webViewPool;
+    //dialog_tab
     private AlertDialog dialog_tabPreview;
+    private LinearLayout tab_container;
+    private ImageButton tab_openOverView;
+
+    private FrameLayout webViewContainer;
+    private WebViewPool webViewPool;
     private AutoCompleteTextView urlEdit;
     private WebViewExt webView;
     private long exitTime;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +90,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 初始化ui,并绑定相关view
      */
     private void init() {
+        context = MainActivity.this;
+
+        initView();
+        initUrlEdit();
+        initDialogTab();
+    }
+
+    private void initView(){
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -83,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         window.setNavigationBarColor(getResources().getColor(android.R.color.white));
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
 
-        FrameLayout webViewContainer = findViewById(R.id.webViewContainer);
+        webViewContainer = findViewById(R.id.webViewContainer);
         urlEdit = findViewById(R.id.urlEdit);
         ImageButton goBack = findViewById(R.id.goBack);
         ImageButton goForward = findViewById(R.id.goForward);
@@ -97,10 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         history.setOnClickListener(this);
         drawerDialog.setOnClickListener(this);
         dialogTab.setOnClickListener(this);
-        webView = webViewPool.getWebView(this);
-        webViewContainer.addView(webView);
-
-        initUrlEdit();
+        addAlbum("https://www.baidu.com");
     }
 
     /**
@@ -108,7 +127,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void initDialogTab() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
+        View dialogView = View.inflate(context, R.layout.dialog_tabs, null);
 
+        tab_container = dialogView.findViewById(R.id.tab_container);
+        tab_openOverView = dialogView.findViewById(R.id.tab_openOverView);
+        tab_openOverView.setOnClickListener(view -> {
+            dialog_tabPreview.cancel();
+
+        });
+
+        builder.setView(dialogView);
+        dialog_tabPreview = builder.create();
+        Objects.requireNonNull(dialog_tabPreview.getWindow()).setGravity(Gravity.BOTTOM);
+        dialog_tabPreview.setOnCancelListener(dialog ->
+                dialog_tabPreview.hide());
     }
 
     /**
@@ -118,7 +150,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         RecordViewModel record = new RecordViewModel(getApplication());
         record.getAllHistory();
-        CompleteAdapter adapter = new CompleteAdapter(this, R.layout.item_icon_left, record.historyList);
+        record.getAllBookmarks();
+        CompleteAdapter adapter = new CompleteAdapter(context, R.layout.item_icon_left, record.historyList,record.bookmarkList);
         urlEdit.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         urlEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -141,6 +174,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             webView.loadUrl(coverKeywordLoadOrSearch(url));
         });
         webView.init(new UrlBarController(urlEdit));
+
+
+    }
+
+    private synchronized void addAlbum(String url){
+        webView = webViewPool.getWebView(context);
+        webViewContainer.addView(webView);
 
 
     }
@@ -192,7 +232,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.goBack:
-                onBackPressed();
+                if (webView.canGoBack()) {
+                    onBackPressed();
+                } else {
+                    startActivity(new Intent(MainActivity.this, NewsActivity.class));
+                }
                 break;
             case R.id.goForward:
                 webView.goForward();
@@ -210,10 +254,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.history:
                 Intent intent = new Intent(MainActivity.this, RecordActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
                 break;
             case R.id.tab:
-
+                dialog_tabPreview.show();
             default:
 
                 break;
@@ -225,5 +269,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
         webView.removeAllViews();
         webView.destroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    String url = data.getStringExtra("open_url");
+                    Log.d("open-url",url);
+                    webView.loadUrl(url);
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
