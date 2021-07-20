@@ -5,12 +5,18 @@ import android.net.Uri;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import com.alva.testbrowser.database.History;
+import com.alva.testbrowser.database.MyDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author Alva
  * @since 2021/7/11 20:59
  */
 public class WebClient extends WebViewClient {
+
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         Uri url = request.getUrl();
@@ -42,5 +48,13 @@ public class WebClient extends WebViewClient {
                 " }" +
                 "}" +
                 "})()");
+        String gettitle = view.copyBackForwardList().getCurrentItem().getTitle();
+        String geturl = view.copyBackForwardList().getCurrentItem().getUrl();
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        History history = new History(gettitle,url,simpleDateFormat.format(date));
+        MyDatabase database = MyDatabase.getMyDatabase();
+        database.historyDao().insertHistory(history);
+
     }
 }

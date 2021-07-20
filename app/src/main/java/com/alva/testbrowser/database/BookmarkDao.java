@@ -1,26 +1,38 @@
 package com.alva.testbrowser.database;
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Update;
+import androidx.lifecycle.LiveData;
+import androidx.room.*;
+
+import java.util.List;
 
 @Dao
 public interface BookmarkDao {
 
-    /*添加网址记录
+    /*添加书签
     * url不可重复*/
     @Insert
-    void insertAll(Bookmark bookmark);
+    void insertBookmark(Bookmark ... bookmarks);
 
-    /*更新网址记录
+    /*更改书签title
     * 参数：title*/
     @Update
-    void updateTitle(Bookmark bookmark);
+    void updateTitle(Bookmark ... bookmarks);
 
-    /*删除某个网址记录*/
+    /*删除此书签*/
     @Delete
-    void delete(Bookmark bookmarks);
+    void deleteBookmark(Bookmark ... bookmarks);
+
+    /*删除全部书签*/
+    @Query("delete from bookmark")
+    void deleteAllBookmarks();
+
+    /*返回所有书签*/
+    @Query("select * from bookmark")
+    LiveData<List<Bookmark>> getAllBookmarks();
+
+    /*返回所有书签*/
+    @Query("select * from bookmark")
+    List<Bookmark> getAll();
 
 //    /*删除全部网址记录*/
 //    @Delete

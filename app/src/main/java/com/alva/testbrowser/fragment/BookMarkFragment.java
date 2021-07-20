@@ -10,10 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alva.testbrowser.Adapter.BookmarkAdapter;
-import com.alva.testbrowser.Adapter.HistoryAdapter;
 import com.alva.testbrowser.R;
 import com.alva.testbrowser.database.Bookmark;
-import com.alva.testbrowser.database.MyDataBase;
+import com.alva.testbrowser.database.MyDatabase;
 import com.alva.testbrowser.database.RecordViewModel;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ import java.util.List;
 
 public class BookMarkFragment extends Fragment {
     private List<Bookmark> bookmarkList = new ArrayList<>();
-    MyDataBase dataBase;
+    MyDatabase dataBase;
     RecordViewModel recordViewModel;
 
     @Override
@@ -29,10 +28,9 @@ public class BookMarkFragment extends Fragment {
         View view = inflater.inflate(R.layout.bookmark_layout,container,false);
 
         ListView listView = view.findViewById(R.id.bookmark_view);
-
-        recordViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(RecordViewModel.class);
-        recordViewModel.getALLBookmark();
-        BookmarkAdapter adapter = new BookmarkAdapter(getActivity(), R.layout.simple_adapter_item,recordViewModel.bookmarkList);
+        this.recordViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(RecordViewModel.class);
+        this.recordViewModel.getAllBookmarks();
+        BookmarkAdapter adapter = new BookmarkAdapter(getActivity(), R.layout.simple_adapter_item, this.recordViewModel.bookmarkList);
         listView.setAdapter(adapter);
 
         return view;
