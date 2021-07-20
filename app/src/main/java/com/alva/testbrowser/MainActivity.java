@@ -23,6 +23,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.alva.testbrowser.Activity.RecordActivity;
 import com.alva.testbrowser.Adapter.CompleteAdapter;
 import com.alva.testbrowser.database.RecordViewModel;
+import com.alva.testbrowser.test.NewsActivity;
 import com.alva.testbrowser.ui.UrlBarController;
 import com.alva.testbrowser.util.UiUtils;
 import com.alva.testbrowser.webview.WebViewExt;
@@ -192,7 +193,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.goBack:
-                onBackPressed();
+                if (webView.canGoBack()) {
+                    onBackPressed();
+                } else {
+                    startActivity(new Intent(MainActivity.this, NewsActivity.class));
+                }
                 break;
             case R.id.goForward:
                 webView.goForward();

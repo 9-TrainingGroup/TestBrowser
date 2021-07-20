@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface NewsService {
-    @GET("nc/article/headline/T1348647853363/{page}-10.html")
+    @GET("nc/article/headline/T1348647853363/{page}-100.html")
     suspend fun searchNews(@Path("page") page: Int): News
 
     companion object {
