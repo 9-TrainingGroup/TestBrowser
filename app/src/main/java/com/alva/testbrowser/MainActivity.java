@@ -1,25 +1,17 @@
 package com.alva.testbrowser;
 
-<<<<<<< HEAD
-import android.app.Activity;
-=======
 import android.content.Context;
->>>>>>> 080452af6917a479a73188678cc5ef541e736470
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-<<<<<<< HEAD
-=======
 import android.view.Gravity;
->>>>>>> 080452af6917a479a73188678cc5ef541e736470
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.webkit.WebView;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -33,7 +25,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.alva.testbrowser.Activity.RecordActivity;
 import com.alva.testbrowser.Adapter.CompleteAdapter;
 import com.alva.testbrowser.database.Bookmark;
@@ -277,17 +268,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    protected  void onActivityResult(int requestCode,int resultCode , @Nullable @org.jetbrains.annotations.Nullable Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-
-                if (resultCode == RESULT_OK) {
-                    String url = data.getStringExtra("open_url");
-                    Log.d("open-url", url);
-                    webView.loadUrl(url);
-
-        }
-    }
 
     @Override
     protected void onDestroy() {
