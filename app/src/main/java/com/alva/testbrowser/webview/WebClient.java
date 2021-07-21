@@ -48,13 +48,5 @@ public class WebClient extends WebViewClient {
                 " }" +
                 "}" +
                 "})()");
-        String gettitle = view.copyBackForwardList().getCurrentItem().getTitle();
-        String geturl = view.copyBackForwardList().getCurrentItem().getUrl();
-        Date date = new Date(System.currentTimeMillis());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        History history = new History(gettitle,url,simpleDateFormat.format(date));
-        MyDatabase database = MyDatabase.getMyDatabase();
-        database.historyDao().insertHistory(history);
-
     }
 }

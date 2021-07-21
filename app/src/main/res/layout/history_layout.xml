@@ -29,13 +29,14 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
-            android:id="@+id/button"
+            android:id="@+id/historyDelete"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="176dp"
+            android:layout_marginStart="188dp"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:src="@drawable/button_delete"
+            android:background="@color/white"
             android:text="Button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

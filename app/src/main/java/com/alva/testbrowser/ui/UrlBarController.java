@@ -19,6 +19,6 @@ public class UrlBarController implements WebViewExt.Callback {
 
     @Override
     public void onReceivedTitle(WebView view, String title) {
-        mEdit.setText(title);
+        mEdit.setText(view.getUrl());
     }
 }

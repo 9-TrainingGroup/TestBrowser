@@ -25,6 +25,9 @@ class NewsAdapter : PagingDataAdapter<NewsItem, NewsViewHolder>(DiffCallback) {
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val newsItem = getItem(position)
         if (newsItem != null) {
+            if (newsItem.url == "") {
+                newsItem.url = "https://3g.163.com/.html"
+            }
             holder.viewBinding.apply {
                 shimmerLayout.apply {
                     setShimmerColor(Color.argb(178, 255, 255, 255))

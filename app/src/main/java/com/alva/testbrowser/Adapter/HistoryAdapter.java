@@ -16,12 +16,14 @@ import java.util.List;
 
 public class HistoryAdapter extends ArrayAdapter<History> {
     private int resourceID;
-
+    private List<History> historyList;
 
     public HistoryAdapter(@NonNull Context context, int resource, @NonNull List<History> objects) {
         super(context, resource, objects);
         resourceID = resource;
+        historyList = objects;
     }
+
 
     @Override
     public View getView(int position,View convertView,ViewGroup parent) {
@@ -32,6 +34,12 @@ public class HistoryAdapter extends ArrayAdapter<History> {
         title.setText(history.getTitle());
         url.setText(history.getUrl());
         return view;
+    }
+
+    //删除指定项并刷新listview
+    public void deleteItem(int position){
+        historyList.remove(position);
+        notifyDataSetChanged();
     }
 
     public void clear(){

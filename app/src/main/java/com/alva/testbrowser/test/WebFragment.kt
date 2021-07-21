@@ -37,9 +37,9 @@ class WebFragment : Fragment() {
         val webViewPool = WebViewPool()
         WebViewPool.init(requireContext())
         val webView: WebViewExt = webViewPool.getWebView(requireContext())
-        binding.webView.addView(webView)
         webView.init()
         webView.loadUrl(arguments?.getString("NEWS_POSITION").toString())
+        binding.webView.addView(webView)
     }
 
     override fun onDestroyView() {
@@ -73,7 +73,6 @@ private fun WebViewExt.init() {
         override fun onProgressChanged(view: WebView?, newProgress: Int) {
             super.onProgressChanged(view, newProgress)
             progressView.setProgress(newProgress)
-            view!!.isVisible = newProgress == 100
             progressView.isVisible = newProgress != 100
         }
     }
