@@ -122,9 +122,8 @@ public class BookMarkFragment extends Fragment {
             }
         });
         AlertDialog dialog = builder.create();
-
         dialog.show();
-        ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+        ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
         ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLUE);
     }
 
