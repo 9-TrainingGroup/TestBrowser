@@ -39,6 +39,10 @@ public class BookmarkAdapter extends ArrayAdapter<Bookmark> {
         notifyDataSetChanged();
     }
 
+    public void updateBookmarkItem(int position, String title){
+        bookmarkList.get(position).setTitle(title);
+        notifyDataSetChanged();
+    }
     public void deleteAllBookmark(){
         bookmarkList.clear();
         notifyDataSetChanged();

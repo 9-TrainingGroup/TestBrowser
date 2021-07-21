@@ -37,4 +37,5 @@ public interface BookmarkDao {
     /*删除该url的书签记录*/
     @Query("delete from bookmark where url==:url")
     void deleteSameBookmark(String url);
+
 }

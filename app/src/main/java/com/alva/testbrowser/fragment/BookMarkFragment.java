@@ -6,13 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.*;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -60,8 +60,26 @@ public class BookMarkFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Bookmark bookmark= recordViewModel.bookmarkList.get(position);
                 Log.d("longClick",bookmark.getTitle());
-                //弹出对话框
-                confirm(position,listView);
+                //弹出菜单
+                PopupMenu popupMenu = new PopupMenu(getActivity(),view );
+                popupMenu.getMenuInflater().inflate(R.menu.menu_bookmark, popupMenu.getMenu());
+                popupMenu.show();
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()){
+                            case R.id.editItem:
+                                optionEdit(position,listView);
+                                break;
+                            case R.id.deleteItem:
+                                optionDelete(position,listView);
+                                break;
+                            default:
+                                throw new IllegalStateException("Unexpected value: " + menuItem.getItemId());
+                        }
+                        return true;
+                    }
+                });
                 return true;
             }
         });
@@ -96,7 +114,7 @@ public class BookMarkFragment extends Fragment {
         return view;
     }
 
-    public void confirm(int position,ListView listView){
+    public void optionDelete(int position,ListView listView){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("DELETE");
         builder.setMessage("是否删除此书签？");
@@ -106,14 +124,13 @@ public class BookMarkFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Bookmark bookmark = recordViewModel.bookmarkList.get(position);
-                Log.d("output_title",bookmark.getTitle());
+//                Log.d("output_title",bookmark.getTitle());
                 recordViewModel.deleteBookmark(bookmark);
-                Log.d("delete_url",bookmark.getUrl());
+//                Log.d("delete_url",bookmark.getUrl());
                 recordViewModel.getAllBookmarks();
                 //从列表中删除
                 adapter.deleBookmarkItem(position);
-                Log.d("dele_length", String.valueOf(recordViewModel.bookmarkList.size()));
-                listView.setAdapter(adapter);
+//                Log.d("dele_length", String.valueOf(recordViewModel.bookmarkList.size()));
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -125,6 +142,33 @@ public class BookMarkFragment extends Fragment {
         dialog.show();
         ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
         ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLUE);
+    }
+
+    public void optionEdit(int position,ListView listView){
+        final EditText editText = new EditText(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),3);
+        builder.setTitle("请输入新标题");
+        builder.setView(editText);
+        editText.setText(recordViewModel.bookmarkList.get(position).getTitle());
+        //单点全选
+        editText.setSelectAllOnFocus(true);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String title = editText.getText().toString();
+                adapter.updateBookmarkItem(position, title);
+                Bookmark bookmark = recordViewModel.bookmarkList.get(position);
+                bookmark.setTitle(title);
+                recordViewModel.updateBookmark(bookmark);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.create().show();
     }
 
 }

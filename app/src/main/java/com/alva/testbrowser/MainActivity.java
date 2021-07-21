@@ -262,7 +262,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        .show();
                 Bookmark bookmark = new Bookmark(webView.getTitle(), webView.getUrl());
                 RecordViewModel recordViewModel = new ViewModelProvider(this).get(RecordViewModel.class);
+                recordViewModel.deleteSameBookmark(webView.getUrl());
                 recordViewModel.insertBookmark(bookmark);
+                Toast.makeText(this,"已收藏",Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.history:
