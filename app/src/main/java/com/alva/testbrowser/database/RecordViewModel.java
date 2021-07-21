@@ -32,6 +32,7 @@ public class RecordViewModel extends AndroidViewModel {
     public void deleteBookmark(Bookmark bookmark) { recordRepository.deleteBookmarks(bookmark); }
     public void deleteAllBookmarks() { recordRepository.deleteAllBookmarks(); }
     public void getAllBookmarks(){ bookmarkList = recordRepository.getAllBookmarks(); }
+    public void deleteSameBookmark(String url) { recordRepository.deleteSameBookmark(url); }
     /*历史管理*/
     public void insertHistory(History history) { recordRepository.insertHistory(history); }
     public void deleteHistory(History history) { recordRepository.deleteHistory(history); }

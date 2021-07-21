@@ -17,6 +17,7 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.alva.testbrowser.Adapter.BookmarkAdapter;
 import com.alva.testbrowser.R;
 import com.alva.testbrowser.database.Bookmark;
 import com.alva.testbrowser.database.MyDatabase;
@@ -30,7 +31,7 @@ public class BookMarkFragment extends Fragment {
     private List<Bookmark> bookmarkList = new ArrayList<>();
     MyDatabase dataBase;
     RecordViewModel recordViewModel;
-    BookmarkAdapter1 adapter;
+    BookmarkAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class BookMarkFragment extends Fragment {
         this.recordViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(RecordViewModel.class);
         this.recordViewModel.getAllBookmarks();
         //BookmarkAdapter1 adapter = new BookmarkAdapter1(getActivity(), R.layout.simple_adapter_item, this.recordViewModel.bookmarkList);
-        adapter = new BookmarkAdapter1(getActivity(), R.layout.simple_adapter_item,recordViewModel.bookmarkList);
+        adapter = new BookmarkAdapter(getActivity(), R.layout.simple_adapter_item,recordViewModel.bookmarkList);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -77,7 +78,7 @@ public class BookMarkFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         recordViewModel.deleteAllBookmarks();
-                        adapter.clear();
+                        adapter.deleteAllBookmark();
                         adapter.notifyDataSetChanged();
                     }
                 });
@@ -110,7 +111,7 @@ public class BookMarkFragment extends Fragment {
                 Log.d("delete_url",bookmark.getUrl());
                 recordViewModel.getAllBookmarks();
                 //从列表中删除
-                adapter.deleteItem(position);
+                adapter.deleBookmarkItem(position);
                 Log.d("dele_length", String.valueOf(recordViewModel.bookmarkList.size()));
                 listView.setAdapter(adapter);
             }
@@ -121,9 +122,8 @@ public class BookMarkFragment extends Fragment {
             }
         });
         AlertDialog dialog = builder.create();
-
         dialog.show();
-        ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+        ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
         ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLUE);
     }
 

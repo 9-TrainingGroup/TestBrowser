@@ -31,10 +31,10 @@ public interface BookmarkDao {
     LiveData<List<Bookmark>> getAllBookmarks();
 
     /*返回所有书签*/
-    @Query("select * from bookmark")
+    @Query("select * from bookmark order by bookmarkid desc")
     List<Bookmark> getAll();
 
-//    /*删除全部网址记录*/
-//    @Delete
-//    void deleteAll();
+    /*删除该url的书签记录*/
+    @Query("delete from bookmark where url==:url")
+    void deleteSameBookmark(String url);
 }
