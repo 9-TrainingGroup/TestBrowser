@@ -1,14 +1,22 @@
 package com.alva.testbrowser.test
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class NewsViewModel : ViewModel() {
     val initial: MutableLiveData<Boolean> = MutableLiveData<Boolean>().also { it.value = false }
 
-    val pagingData: Flow<PagingData<NewsItem>> = Repository.getPagingData().cachedIn(viewModelScope)
+    var pagingData: Flow<PagingData<NewsItem>> = Repository.getPagingData().cachedIn(viewModelScope)
+
+    fun filter() {
+        pagingData.map { pagingData ->
+            pagingData.filter {
+                it.title.contains("1")
+            }
+        }
+    }
 }

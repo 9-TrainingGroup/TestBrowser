@@ -35,7 +35,6 @@ class WebFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val webViewPool = WebViewPool()
-        WebViewPool.init(requireContext())
         val webView: WebViewExt = webViewPool.getWebView(requireContext())
         webView.init()
         webView.loadUrl(arguments?.getString("NEWS_POSITION").toString())
@@ -68,9 +67,11 @@ private fun WebViewExt.init() {
     settings.builtInZoomControls = true
     settings.setSupportZoom(true)
 
-    webViewClient = WebClient()
+    webViewClient = object : WebClient() {
+
+    }
     webChromeClient = object : WebChromeClient() {
-        override fun onProgressChanged(view: WebView?, newProgress: Int) {
+        override fun onProgressChanged(view: WebView, newProgress: Int) {
             super.onProgressChanged(view, newProgress)
             progressView.setProgress(newProgress)
             progressView.isVisible = newProgress != 100

@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.PagerPhotoViewBinding
@@ -13,8 +15,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 
-class PagerPhotoAdapter(private val images: ArrayList<String>) :
-    RecyclerView.Adapter<PagerPhotoViewHolder>() {
+class PagerPhotoAdapter : ListAdapter<String, PagerPhotoViewHolder>(DiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PagerPhotoViewHolder(
         PagerPhotoViewBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -30,7 +31,7 @@ class PagerPhotoAdapter(private val images: ArrayList<String>) :
             startShimmerAnimation()
         }
         Glide.with(holder.itemView)
-            .load(images[position])
+            .load(getItem(position))
             .placeholder(R.drawable.ic_baseline_photo)
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
@@ -55,7 +56,15 @@ class PagerPhotoAdapter(private val images: ArrayList<String>) :
             .into(holder.viewBinding.pagerPhoto)
     }
 
-    override fun getItemCount() = images.size
+    object DiffCallback : DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+            return oldItem == newItem
+        }
+    }
 }
 
 class PagerPhotoViewHolder(val viewBinding: PagerPhotoViewBinding) :

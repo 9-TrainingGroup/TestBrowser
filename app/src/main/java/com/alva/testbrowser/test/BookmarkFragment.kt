@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.alva.testbrowser.databinding.FragmentBookmarkBinding
@@ -37,7 +36,6 @@ class BookmarkFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel by activityViewModels<WebViewModel>()
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.allBookmark.observe(viewLifecycleOwner, {
             binding.recyclerView.adapter = BookmarkAdapter(viewModel)
         })

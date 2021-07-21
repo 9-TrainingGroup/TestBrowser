@@ -26,7 +26,7 @@ class NewsAdapter : PagingDataAdapter<NewsItem, NewsViewHolder>(DiffCallback) {
         val newsItem = getItem(position)
         if (newsItem != null) {
             if (newsItem.url == "") {
-                newsItem.url = "https://3g.163.com/.html"
+                newsItem.url = "https://3g.163.com/news/article/${newsItem.id}.html"
             }
             holder.viewBinding.apply {
                 shimmerLayout.apply {

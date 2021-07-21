@@ -43,11 +43,9 @@ public class ChromeClient extends WebChromeClient {
         progressView.setProgress(newProgress);
         if (newProgress == 100) {
             //加载完毕进度条消失
-            view.onResume();
             progressView.setVisibility(View.GONE);
         } else {
             //更新进度
-            view.onPause();
             progressView.setVisibility(View.VISIBLE);
         }
     }

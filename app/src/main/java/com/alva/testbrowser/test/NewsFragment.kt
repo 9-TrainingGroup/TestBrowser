@@ -1,6 +1,7 @@
 package com.alva.testbrowser.test
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +40,7 @@ class NewsFragment : Fragment() {
                 adapter.submitData(it)
             }
         }
+        Log.d("Hello", "onViewCreated: ${viewModel.pagingData}")
         viewModel.initial.observe(viewLifecycleOwner, {
             binding.recyclerView.isVisible = it
         })
@@ -64,8 +66,10 @@ class NewsFragment : Fragment() {
                 }
             }
         }
+//        viewModel.filter()
         binding.swipeRefresh.setOnRefreshListener {
-            adapter.refresh()
+            viewModel.filter()
+            Log.d("Hello", "onViewCreated: ${viewModel.pagingData}")
         }
     }
 

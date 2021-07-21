@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.FragmentHistoryBinding
 
@@ -29,7 +28,6 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel by activityViewModels<WebViewModel>()
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.allHistory.observe(viewLifecycleOwner, {
             binding.recyclerView.adapter = HistoryAdapter(viewModel)
         })
