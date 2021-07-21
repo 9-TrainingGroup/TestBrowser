@@ -1,9 +1,11 @@
 package com.alva.testbrowser;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -15,13 +17,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alva.testbrowser.Activity.RecordActivity;
 import com.alva.testbrowser.Adapter.CompleteAdapter;
+import com.alva.testbrowser.database.Bookmark;
 import com.alva.testbrowser.database.RecordViewModel;
 import com.alva.testbrowser.ui.UrlBarController;
 import com.alva.testbrowser.util.UiUtils;
@@ -201,13 +206,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 webView.reload();
                 break;
             case R.id.drawerDialog:
-                new MaterialDialog.Builder(MainActivity.this)
-                        .title("标题")
-                        .content("内容")
-                        .positiveText("确认")
-                        .negativeText("取消")
-                        .show();
+//                new MaterialDialog.Builder(MainActivity.this)
+//                        .title("标题")
+//                        .content("内容")
+//                        .positiveText("确认")
+//                        .negativeText("取消")
+//                        .show();
+                Bookmark bookmark=new Bookmark(webView.getTitle(),webView.getUrl());
+                RecordViewModel recordViewModel= new ViewModelProvider(this).get(RecordViewModel.class);
+                recordViewModel.insertBookmark(bookmark);
                 break;
+
             case R.id.history:
                 Intent intent = new Intent(MainActivity.this, RecordActivity.class);
                 startActivity(intent);
@@ -217,6 +226,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
 
                 break;
+        }
+    }
+
+    @Override
+    protected  void onActivityResult(int requestCode,int resultCode , @Nullable @org.jetbrains.annotations.Nullable Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+
+                if (resultCode == RESULT_OK) {
+                    String url = data.getStringExtra("open_url");
+                    Log.d("open-url", url);
+                    webView.loadUrl(url);
+
         }
     }
 
