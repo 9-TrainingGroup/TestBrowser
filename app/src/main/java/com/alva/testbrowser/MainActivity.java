@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.drawerDialog:
 //                new MaterialDialog.Builder(MainActivity.this)
-//                        .title("标题")
+//                        .title("标题")\
 //                        .content("内容")
 //                        .positiveText("确认")
 //                        .negativeText("取消")

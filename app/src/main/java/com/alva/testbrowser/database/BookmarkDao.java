@@ -31,7 +31,7 @@ public interface BookmarkDao {
     LiveData<List<Bookmark>> getAllBookmarks();
 
     /*返回所有书签*/
-    @Query("select * from bookmark")
+    @Query("select * from bookmark order by bookmarkid desc")
     List<Bookmark> getAll();
 
 //    /*删除全部网址记录*/

@@ -14,10 +14,12 @@ import java.util.List;
 
 public class BookmarkAdapter extends ArrayAdapter<Bookmark> {
     private int resourceID;
+    private List<Bookmark> bookmarkList;
 
     public BookmarkAdapter(Context context, int resource, List<Bookmark> objects) {
         super(context, resource, objects);
         resourceID = resource;
+        bookmarkList = objects;
     }
 
 
@@ -30,5 +32,15 @@ public class BookmarkAdapter extends ArrayAdapter<Bookmark> {
         title.setText(bookmark.getTitle());
         url.setText(bookmark.getUrl());
         return view;
+    }
+
+    public void deleBookmarkItem(int position){
+        bookmarkList.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void deleteAllBookmark(){
+        bookmarkList.clear();
+        notifyDataSetChanged();
     }
 }
