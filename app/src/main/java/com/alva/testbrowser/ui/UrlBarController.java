@@ -11,14 +11,17 @@ import com.alva.testbrowser.webview.WebViewExt;
  */
 public class UrlBarController implements WebViewExt.Callback {
 
-   private EditText mEdit;
+    private EditText mEdit;
+    private WebViewExt mWebView;
 
-    public UrlBarController(EditText editText){
+    public UrlBarController(EditText editText,WebViewExt webView) {
         mEdit = editText;
+        mWebView = webView;
     }
 
     @Override
     public void onReceivedTitle(WebView view, String title) {
         mEdit.setText(view.getUrl());
+        mWebView.setAlbumTitle(title);
     }
 }
