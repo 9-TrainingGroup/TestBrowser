@@ -79,14 +79,6 @@ class NewsFragment(val type: Int) : Fragment() {
         }
         binding.swipeRefresh.setOnRefreshListener {
             adapter.refresh()
-//            viewModel.filter("媒体")
-//            adapter.refresh()
-//            viewLifecycleOwner.lifecycleScope.launch {
-//                viewModel.pagingData.collectLatest {
-//                    adapter.submitData(it)
-//                }
-//            }
-//            Log.d("Hello", "onViewCreated: ${viewModel.pagingData}")
         }
         requireActivity().findViewById<ImageButton>(R.id.refreshNews).setOnClickListener {
             adapter.refresh()

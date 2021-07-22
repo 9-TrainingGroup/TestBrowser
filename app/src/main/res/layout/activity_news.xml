@@ -42,7 +42,7 @@
                 app:layout_collapseMode="none">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/urlEdit"
+                    android:id="@+id/searchEdit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"

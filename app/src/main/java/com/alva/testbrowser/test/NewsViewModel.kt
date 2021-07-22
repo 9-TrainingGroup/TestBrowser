@@ -5,6 +5,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class NewsViewModel : ViewModel() {
@@ -22,9 +23,13 @@ class NewsViewModel : ViewModel() {
     private val _pagingDataYD: MutableLiveData<PagingData<NewsItem>> = MutableLiveData()
     val pagingDataYD: LiveData<PagingData<NewsItem>> = _pagingDataYD
 
-    fun getPagingData(type: String) {
+    fun getPagingData(content: String, type: String) {
         viewModelScope.launch {
-            repository.getPagingData(type).cachedIn(viewModelScope).collectLatest {
+            repository.getPagingData(type).cachedIn(viewModelScope).map { pagingData ->
+                pagingData.filter {
+                    it.title.contains(content)
+                }
+            }.collectLatest {
                 when (type) {
                     "T1348647853363" -> _pagingDataTT.value = it
                     "T1467284926140" -> _pagingDataJX.value = it
@@ -34,18 +39,4 @@ class NewsViewModel : ViewModel() {
             }
         }
     }
-
-    fun filter(content: String) {
-        _pagingDataTT.value = _pagingDataTT.value?.filter {
-            it.title.contains(content)
-        }
-    }
-
-//    fun filter(content: String) {
-//        pagingData = pagingData.map { pagingData ->
-//            pagingData.filter {
-//                it.title.contains(content)
-//            }
-//        } as StateFlow<PagingData<NewsItem>>
-//    }
 }
