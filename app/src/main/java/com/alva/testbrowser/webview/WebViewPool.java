@@ -17,7 +17,7 @@ public class WebViewPool {
     private static List<WebViewExt> available = new ArrayList<>();
     private static List<WebViewExt> inUse = new ArrayList<>();
     private static final byte[] lock = new byte[]{};
-    private static int maxSize = 2;
+    private static int maxSize = 1;
     private int currentSize = 0;
     private static long startTimes = 0;
     private static volatile WebViewPool instance = null;
@@ -40,7 +40,6 @@ public class WebViewPool {
     public static void init(Context context) {
         for (int i = 0; i < maxSize; i++) {
             WebViewExt webView = new WebViewExt(context);
-            webView.loadUrl(DEMO_URL);
             webView.addJavascriptInterface(new JavascriptInterface(context), "imageListener");
             available.add(webView);
         }
@@ -66,6 +65,22 @@ public class WebViewPool {
         }
     }
 
+    public WebViewExt getWebViewByIndex(Context context,int index){
+        synchronized (lock){
+            if (inUse.size() < index + 1){
+                return null;
+            }
+            return inUse.get(index);
+        }
+    }
+
+    private void setIndex(){
+        int n = 0;
+        for (WebViewExt webViewExt: inUse){
+            webViewExt.setIndex(n++);
+        }
+    }
+
  
     /**
      * 回收webview ,不解绑
@@ -81,13 +96,10 @@ public class WebViewPool {
         webView.clearHistory();
         synchronized (lock) {
             inUse.remove(webView);
-            if (available.size() < maxSize) {
-                available.add(webView);
-            } else {
                 webView = null;
-            }
             currentSize--;
         }
+        setIndex();
     }
  
     /**
@@ -112,6 +124,10 @@ public class WebViewPool {
             }
             currentSize--;
         }
+    }
+
+    public int getSize(){
+        return inUse.size();
     }
  
     /**

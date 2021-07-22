@@ -3,6 +3,7 @@ package com.alva.testbrowser;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -33,6 +36,8 @@ import com.alva.testbrowser.database.RecordViewModel;
 import com.alva.testbrowser.test.NewsActivity;
 import com.alva.testbrowser.ui.UrlBarController;
 import com.alva.testbrowser.util.UiUtils;
+import com.alva.testbrowser.webview.AlbumController;
+import com.alva.testbrowser.webview.BrowserController;
 import com.alva.testbrowser.webview.WebViewExt;
 import com.alva.testbrowser.webview.WebViewPool;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -41,7 +46,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, BrowserController {
 
     public static final String HTTP = "http://";
     public static final String HTTPS = "https://";
@@ -133,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tab_container = dialogView.findViewById(R.id.tab_container);
         tab_openOverView = dialogView.findViewById(R.id.tab_openOverView);
         tab_openOverView.setOnClickListener(view -> {
-            addAlbum(null);
+            addAlbum("https://www.baidu.com");
             dialog_tabPreview.cancel();
         });
 
@@ -179,9 +184,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private synchronized void addAlbum(String url) {
+        if (webView != null) {
+            webView.deactivate();
+        }
         webView = webViewPool.getWebView(context);
-        webViewContainer.addView(webView);
-        webView.init(new UrlBarController(urlEdit,webView));
+        webView.init(new UrlBarController(urlEdit, webView), webViewPool.getSize());
+        webView.setBrowserController(this);
 
         if (!url.isEmpty()) {
             webView.loadUrl(url);
@@ -189,9 +197,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             webView.loadUrl("https://github.com/9-TrainingGroup/TestBrowser");
         }
 
-        View albumView = webView.getAlbumView();
-        tab_container.addView(albumView,LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        webView.activate();
+        webViewContainer.removeAllViews();
+        webViewContainer.addView(webView);
 
+        View albumView = webView.getAlbumView();
+        tab_container.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        webView.setIndex(webViewPool.getSize() - 1);
     }
 
 
@@ -264,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 RecordViewModel recordViewModel = new ViewModelProvider(this).get(RecordViewModel.class);
                 recordViewModel.deleteSameBookmark(webView.getUrl());
                 recordViewModel.insertBookmark(bookmark);
-                Toast.makeText(this,"已收藏",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "已收藏", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.history:
@@ -302,4 +314,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+    @Override
+    public void showAlbum(AlbumController albumController) {
+        synchronized (this) {
+            webView.deactivate();
+            int index = albumController.getIndex();
+            WebViewExt webViewExt = webViewPool.getWebViewByIndex(context, index);
+            webView = webViewExt;
+            webViewContainer.removeAllViews();
+            webViewContainer.addView(webView);
+            urlEdit.setText(webView.getUrl());
+            webView.activate();
+        }
+    }
+
+    @Override
+    public void removeAlbum(AlbumController albumController) {
+        if (webViewPool.getSize() == 1) {
+            webView.loadUrl("https://www.baidu.com");
+            return;
+        }
+        int index = albumController.getIndex();
+        tab_container.removeViewAt(index);
+        WebViewExt webViewExt = webViewPool.getWebViewByIndex(context, index);
+        if (this.webView.getIndex() == webViewExt.getIndex()) {
+            index = index == 0 ? 1 : index;
+            this.webView = webViewPool.getWebViewByIndex(context, index);
+            webViewContainer.removeAllViews();
+            webViewContainer.addView(webView);
+            webView.activate();
+        }
+        webViewPool.removeWebView(webViewExt);
+        dialog_tabPreview.cancel();
+    }
+
 }
