@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,8 +20,7 @@ import com.alva.testbrowser.Adapter.BookmarkAdapter;
 import com.alva.testbrowser.R;
 import com.alva.testbrowser.database.Bookmark;
 import com.alva.testbrowser.database.MyDatabase;
-import com.alva.testbrowser.database.RecordViewModel;
-import com.alva.testbrowser.test.BookmarkAdapter1;
+import com.alva.testbrowser.util.RecordViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

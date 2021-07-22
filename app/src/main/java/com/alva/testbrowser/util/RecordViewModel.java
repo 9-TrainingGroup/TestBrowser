@@ -1,4 +1,4 @@
-package com.alva.testbrowser.database;
+package com.alva.testbrowser.util;
 
 
 import android.app.Application;
@@ -7,6 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import androidx.lifecycle.LiveData;
+
+import com.alva.testbrowser.database.Bookmark;
+import com.alva.testbrowser.database.History;
+import com.alva.testbrowser.database.RecordRepository;
 import com.alva.testbrowser.webview.WebClient;
 import org.jetbrains.annotations.NotNull;
 

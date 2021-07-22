@@ -1,4 +1,4 @@
-package com.alva.testbrowser
+package com.alva.testbrowser.util
 
 import android.content.Context
 import android.content.Intent

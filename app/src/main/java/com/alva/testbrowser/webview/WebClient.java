@@ -5,11 +5,6 @@ import android.net.Uri;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import com.alva.testbrowser.database.History;
-import com.alva.testbrowser.database.MyDatabase;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author Alva

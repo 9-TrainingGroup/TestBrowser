@@ -3,7 +3,7 @@ package com.alva.testbrowser.webview;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import com.alva.testbrowser.JavascriptInterface;
+import com.alva.testbrowser.util.JavascriptInterface;
 
 import java.util.ArrayList;
 import java.util.List;

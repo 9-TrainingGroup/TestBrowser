@@ -1,11 +1,11 @@
-package com.alva.testbrowser.test
+package com.alva.testbrowser.database
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 
-object Repository {
+object NewsRepository {
     private val newsService = NewsService.create()
 
     fun getPagingData(type: String): Flow<PagingData<NewsItem>> {

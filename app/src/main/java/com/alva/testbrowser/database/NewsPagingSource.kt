@@ -1,4 +1,4 @@
-package com.alva.testbrowser.test
+package com.alva.testbrowser.database
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

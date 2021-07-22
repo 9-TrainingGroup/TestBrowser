@@ -1,4 +1,4 @@
-package com.alva.testbrowser.test
+package com.alva.testbrowser.fragment
 
 import android.os.Bundle
 import android.text.Editable
@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.FragmentInfoBinding
+import com.alva.testbrowser.util.NewsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 

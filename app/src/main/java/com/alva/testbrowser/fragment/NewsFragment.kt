@@ -1,4 +1,4 @@
-package com.alva.testbrowser.test
+package com.alva.testbrowser.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,8 +9,11 @@ import android.widget.ImageButton
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import com.alva.testbrowser.Adapter.FooterAdapter
+import com.alva.testbrowser.Adapter.NewsAdapter
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.FragmentNewsBinding
+import com.alva.testbrowser.util.NewsViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

@@ -24,7 +24,7 @@ import com.alva.testbrowser.Adapter.HistoryAdapter;
 import com.alva.testbrowser.R;
 import com.alva.testbrowser.database.History;
 import com.alva.testbrowser.database.MyDatabase;
-import com.alva.testbrowser.database.RecordViewModel;
+import com.alva.testbrowser.util.RecordViewModel;
 
 import org.jetbrains.annotations.NotNull;
 /*历史记录列表展示及操作*/

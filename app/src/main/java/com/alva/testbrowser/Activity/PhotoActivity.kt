@@ -22,7 +22,7 @@ import com.alva.testbrowser.Adapter.PagerPhotoAdapter
 import com.alva.testbrowser.Adapter.PagerPhotoViewHolder
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.ActivityPhotoBinding
-import com.alva.testbrowser.test.PhotoViewModel
+import com.alva.testbrowser.util.PhotoViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

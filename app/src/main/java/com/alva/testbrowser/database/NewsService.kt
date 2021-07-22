@@ -1,4 +1,4 @@
-package com.alva.testbrowser.test
+package com.alva.testbrowser.database
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

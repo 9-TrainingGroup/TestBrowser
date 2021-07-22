@@ -1,4 +1,4 @@
-package com.alva.testbrowser.test
+package com.alva.testbrowser.fragment
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -24,7 +24,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.alva.testbrowser.R
 import com.alva.testbrowser.database.Bookmark
-import com.alva.testbrowser.database.RecordViewModel
+import com.alva.testbrowser.util.RecordViewModel
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.alva.testbrowser.databinding.FragmentWebBinding
 import com.alva.testbrowser.webview.*

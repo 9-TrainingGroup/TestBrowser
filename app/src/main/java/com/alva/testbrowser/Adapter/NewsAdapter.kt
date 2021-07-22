@@ -1,4 +1,4 @@
-package com.alva.testbrowser.test
+package com.alva.testbrowser.Adapter
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -13,6 +13,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alva.testbrowser.R
+import com.alva.testbrowser.database.NewsItem
 import com.alva.testbrowser.databinding.CellNewsBinding
 import com.alva.testbrowser.databinding.FooterNewsBinding
 import com.bumptech.glide.Glide

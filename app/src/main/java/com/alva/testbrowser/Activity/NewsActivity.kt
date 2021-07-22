@@ -1,9 +1,8 @@
-package com.alva.testbrowser.test
+package com.alva.testbrowser.Activity
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment

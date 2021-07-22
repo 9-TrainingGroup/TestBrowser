@@ -1,15 +1,17 @@
-package com.alva.testbrowser.test
+package com.alva.testbrowser.util
 
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
+import com.alva.testbrowser.database.NewsItem
+import com.alva.testbrowser.database.NewsRepository
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class NewsViewModel : ViewModel() {
-    private val repository: Repository = Repository
+    private val repository: NewsRepository = NewsRepository
 
     private val _pagingDataTT: MutableLiveData<PagingData<NewsItem>> = MutableLiveData()
     val pagingDataTT: LiveData<PagingData<NewsItem>> = _pagingDataTT

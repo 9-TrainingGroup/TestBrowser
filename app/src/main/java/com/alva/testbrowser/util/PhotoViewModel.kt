@@ -1,4 +1,4 @@
-package com.alva.testbrowser.test
+package com.alva.testbrowser.util
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
