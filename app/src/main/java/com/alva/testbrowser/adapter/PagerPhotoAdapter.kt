@@ -1,4 +1,4 @@
-package com.alva.testbrowser.Adapter
+package com.alva.testbrowser.adapter
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable

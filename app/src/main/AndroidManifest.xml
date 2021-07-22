@@ -16,19 +16,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".Activity.NewsActivity"
+            android:name=".activity.NewsActivity"
             android:exported="true" />
         <activity
             android:name=".test.WebListActivity"
             android:exported="true" />
         <activity
-            android:name=".Activity.PhotoActivity"
+            android:name=".activity.PhotoActivity"
             android:exported="true" />
         <activity
-            android:name=".Activity.RecordActivity"
+            android:name=".activity.RecordActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>

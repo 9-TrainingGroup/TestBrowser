@@ -1,7 +1,6 @@
-package com.alva.testbrowser.Adapter;
+package com.alva.testbrowser.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

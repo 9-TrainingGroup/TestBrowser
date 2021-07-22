@@ -9,8 +9,8 @@ import android.widget.ImageButton
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import com.alva.testbrowser.Adapter.FooterAdapter
-import com.alva.testbrowser.Adapter.NewsAdapter
+import com.alva.testbrowser.adapter.FooterAdapter
+import com.alva.testbrowser.adapter.NewsAdapter
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.FragmentNewsBinding
 import com.alva.testbrowser.util.NewsViewModel

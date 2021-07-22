@@ -16,7 +16,7 @@ import android.widget.*;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.alva.testbrowser.Adapter.BookmarkAdapter;
+import com.alva.testbrowser.adapter.BookmarkAdapter;
 import com.alva.testbrowser.R;
 import com.alva.testbrowser.database.Bookmark;
 import com.alva.testbrowser.database.MyDatabase;

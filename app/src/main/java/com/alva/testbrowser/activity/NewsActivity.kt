@@ -1,4 +1,4 @@
-package com.alva.testbrowser.Activity
+package com.alva.testbrowser.activity
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity

@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.alva.testbrowser.*
+import com.alva.testbrowser.activity.MainActivity
 import com.alva.testbrowser.databinding.CellBookmarkBinding
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 

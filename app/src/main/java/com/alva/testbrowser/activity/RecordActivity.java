@@ -1,6 +1,5 @@
-package com.alva.testbrowser.Activity;
+package com.alva.testbrowser.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -11,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.alva.testbrowser.MainActivity;
 import com.alva.testbrowser.R;
 import com.alva.testbrowser.fragment.BookMarkFragment;
 import com.alva.testbrowser.fragment.HistoryFragment;

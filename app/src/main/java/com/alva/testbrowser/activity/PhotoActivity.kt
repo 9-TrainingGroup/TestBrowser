@@ -1,4 +1,4 @@
-package com.alva.testbrowser.Activity
+package com.alva.testbrowser.activity
 
 import android.Manifest
 import android.content.ContentValues
@@ -18,8 +18,8 @@ import androidx.core.view.get
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.alva.testbrowser.Adapter.PagerPhotoAdapter
-import com.alva.testbrowser.Adapter.PagerPhotoViewHolder
+import com.alva.testbrowser.adapter.PagerPhotoAdapter
+import com.alva.testbrowser.adapter.PagerPhotoViewHolder
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.ActivityPhotoBinding
 import com.alva.testbrowser.util.PhotoViewModel

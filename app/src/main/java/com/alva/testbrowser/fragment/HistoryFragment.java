@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.alva.testbrowser.Adapter.HistoryAdapter;
+import com.alva.testbrowser.adapter.HistoryAdapter;
 import com.alva.testbrowser.R;
 import com.alva.testbrowser.database.History;
 import com.alva.testbrowser.database.MyDatabase;

@@ -1,4 +1,4 @@
-package com.alva.testbrowser.Adapter;
+package com.alva.testbrowser.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
