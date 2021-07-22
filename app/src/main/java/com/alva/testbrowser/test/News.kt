@@ -6,7 +6,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class News(
-    @SerializedName("T1348647853363") val item: List<NewsItem>
+    @SerializedName("T1348647853363") val itemTT: List<NewsItem>,
+    @SerializedName("T1467284926140") val itemJX: List<NewsItem>,
+    @SerializedName("T1348648517839") val itemYL: List<NewsItem>,
+    @SerializedName("T1348649079062") val itemYD: List<NewsItem>
 ) : Parcelable
 
 @Parcelize

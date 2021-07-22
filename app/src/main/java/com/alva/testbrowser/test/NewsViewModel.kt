@@ -3,24 +3,38 @@ package com.alva.testbrowser.test
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class NewsViewModel : ViewModel() {
-    val initial: MutableLiveData<Boolean> = MutableLiveData<Boolean>().also { it.value = false }
+    private val repository: Repository = Repository
 
-    val pagingData: Flow<PagingData<NewsItem>> =
-        Repository.getPagingData("T1348647853363").cachedIn(viewModelScope)
+    val pagingDataTT: MutableLiveData<PagingData<NewsItem>> = MutableLiveData()
 
-    val jxData: Flow<PagingData<NewsItem>> =
-        Repository.getPagingData("T1467284926140").cachedIn(viewModelScope)
+    val pagingDataJX: MutableLiveData<PagingData<NewsItem>> = MutableLiveData()
 
-    val ylData: Flow<PagingData<NewsItem>> =
-        Repository.getPagingData("T1348648517839").cachedIn(viewModelScope)
+    val pagingDataYL: MutableLiveData<PagingData<NewsItem>> = MutableLiveData()
 
-    val ydData: Flow<PagingData<NewsItem>> =
-        Repository.getPagingData("T1348649079062").cachedIn(viewModelScope)
+    val pagingDataYD: MutableLiveData<PagingData<NewsItem>> = MutableLiveData()
+
+    fun getPagingData(type: String) {
+        viewModelScope.launch {
+            repository.getPagingData(type).cachedIn(viewModelScope).collectLatest {
+                when (type) {
+                    "T1348647853363" -> pagingDataTT.value = it
+                    "T1467284926140" -> pagingDataJX.value = it
+                    "T1348648517839" -> pagingDataYL.value = it
+                    else -> pagingDataYD.value = it
+                }
+            }
+        }
+    }
 
 //    fun filter(content: String) {
-//        pagingData = Repository.filter(content)
+//        pagingData = pagingData.map { pagingData ->
+//            pagingData.filter {
+//                it.title.contains(content)
+//            }
+//        } as StateFlow<PagingData<NewsItem>>
 //    }
 }

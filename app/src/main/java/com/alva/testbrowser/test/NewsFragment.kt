@@ -5,16 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.alva.testbrowser.databinding.FragmentNewsBinding
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class NewsFragment(private val type: Int) : Fragment() {
+class NewsFragment(val type: Int) : Fragment() {
     private var _binding: FragmentNewsBinding? = null
     private val binding get() = _binding!!
 
@@ -35,25 +33,28 @@ class NewsFragment(private val type: Int) : Fragment() {
         val viewModel by activityViewModels<NewsViewModel>()
         binding.recyclerView.adapter =
             adapter.withLoadStateFooter(FooterAdapter { adapter.retry() })
-        viewLifecycleOwner.lifecycleScope.launch {
-            when (type) {
-                0 -> viewModel.pagingData.collectLatest {
+        when (type) {
+            0 -> viewModel.pagingDataTT.observe(viewLifecycleOwner, {
+                viewLifecycleOwner.lifecycleScope.launch {
                     adapter.submitData(it)
                 }
-                1 -> viewModel.jxData.collectLatest {
+            })
+            1 -> viewModel.pagingDataJX.observe(viewLifecycleOwner, {
+                viewLifecycleOwner.lifecycleScope.launch {
                     adapter.submitData(it)
                 }
-                2 -> viewModel.ylData.collectLatest {
+            })
+            2 -> viewModel.pagingDataYL.observe(viewLifecycleOwner, {
+                viewLifecycleOwner.lifecycleScope.launch {
                     adapter.submitData(it)
                 }
-                3 -> viewModel.ydData.collectLatest {
+            })
+            else -> viewModel.pagingDataYD.observe(viewLifecycleOwner, {
+                viewLifecycleOwner.lifecycleScope.launch {
                     adapter.submitData(it)
                 }
-            }
+            })
         }
-        viewModel.initial.observe(viewLifecycleOwner, {
-            binding.recyclerView.isVisible = it
-        })
         adapter.addLoadStateListener {
             when (it.refresh) {
                 is LoadState.NotLoading -> {
@@ -61,7 +62,6 @@ class NewsFragment(private val type: Int) : Fragment() {
                         delay(800)
                         binding.swipeRefresh.isRefreshing = false
                         binding.recyclerView.visibility = View.VISIBLE
-                        viewModel.initial.value = true
                     }
                 }
                 is LoadState.Loading -> {
@@ -76,10 +76,15 @@ class NewsFragment(private val type: Int) : Fragment() {
                 }
             }
         }
-//        viewModel.filter()
         binding.swipeRefresh.setOnRefreshListener {
             adapter.refresh()
-//            viewModel.filter()
+//            viewModel.filter("媒体")
+//            adapter.refresh()
+//            viewLifecycleOwner.lifecycleScope.launch {
+//                viewModel.pagingData.collectLatest {
+//                    adapter.submitData(it)
+//                }
+//            }
 //            Log.d("Hello", "onViewCreated: ${viewModel.pagingData}")
         }
     }

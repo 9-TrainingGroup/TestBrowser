@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.FragmentInfoBinding
@@ -25,14 +26,16 @@ class InfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val viewModel by activityViewModels<NewsViewModel>()
         binding.viewPager.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount() = 4
 
             override fun createFragment(position: Int) = when (position) {
-                0 -> NewsFragment(0)
-                1 -> NewsFragment(1)
-                2 -> NewsFragment(2)
-                else -> NewsFragment(3)
+                0 -> NewsFragment(0).also { viewModel.getPagingData("T1348647853363") }
+                1 -> NewsFragment(1).also { viewModel.getPagingData("T1467284926140") }
+                2 -> NewsFragment(2).also { viewModel.getPagingData("T1348648517839") }
+                else -> NewsFragment(3).also { viewModel.getPagingData("T1348649079062") }
             }
         }
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->

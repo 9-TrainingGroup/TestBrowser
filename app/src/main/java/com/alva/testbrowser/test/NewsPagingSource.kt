@@ -13,8 +13,15 @@ class NewsPagingSource(private val newsService: NewsService, private val type: S
             val page = params.key ?: 1
             val news = newsService.searchNews((0..4).shuffled()[0] * 100, type)
             val prevKey = if (page > 1) page - 1 else null
-            val nextKey = if (news.item.isNotEmpty()) page + 1 else null
-            LoadResult.Page(news.item, prevKey, nextKey)
+            val nextKey = page + 1
+            LoadResult.Page(
+                when (type) {
+                    "T1348647853363" -> news.itemTT
+                    "T1467284926140" -> news.itemJX
+                    "T1348648517839" -> news.itemYL
+                    else -> news.itemYD
+                }, prevKey, nextKey
+            )
         } catch (e: Exception) {
             LoadResult.Error(e)
         }

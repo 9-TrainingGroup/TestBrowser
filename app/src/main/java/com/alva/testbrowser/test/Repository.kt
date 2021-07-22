@@ -18,11 +18,8 @@ object Repository {
         }.flow
     }
 
-    fun filter(content: String): Flow<PagingData<NewsItem>> {
-        return getPagingData("T1348647853363").map { pagingData ->
-            pagingData.filter {
-                it.title.contains(content)
-            }
-        }
-    }
+//    fun filter(content: String): Flow<PagingData<NewsItem>> {
+//        return getPagingData("T1348647853363")
+//        }
+//    }
 }
