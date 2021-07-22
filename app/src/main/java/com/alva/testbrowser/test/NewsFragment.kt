@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.FragmentNewsBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -27,7 +29,6 @@ class NewsFragment(val type: Int) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         val adapter = NewsAdapter()
         val viewModel by activityViewModels<NewsViewModel>()
@@ -86,6 +87,9 @@ class NewsFragment(val type: Int) : Fragment() {
 //                }
 //            }
 //            Log.d("Hello", "onViewCreated: ${viewModel.pagingData}")
+        }
+        requireActivity().findViewById<ImageButton>(R.id.refreshNews).setOnClickListener {
+            adapter.refresh()
         }
     }
 

@@ -53,14 +53,13 @@
                     android:background="@drawable/rounded_edittext"
                     android:hint="@string/search_hint"
                     android:imeOptions="actionGo"
-                    android:inputType="textUri"
                     android:maxLines="1"
                     android:selectAllOnFocus="true"
                     android:textAlignment="center"
                     tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
                 <ImageButton
-                    android:id="@+id/refresh"
+                    android:id="@+id/refreshNews"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="8"

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -23,22 +24,26 @@ class NewsActivity : AppCompatActivity() {
 
 //        binding.appbar.layoutParams.height =
 //            windowManager.currentWindowMetrics.bounds.height() / 2 - 56
+        val viewModel by viewModels<NewsViewModel>()
         navController =
             (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
         navController.addOnDestinationChangedListener { controller, destination, _ ->
             controller.navigatorProvider
             if (destination.id == R.id.webFragment) {
                 binding.appbar.setExpanded(false)
+                binding.refreshNews.setImageResource(R.drawable.button_back)
+            } else {
+                binding.refreshNews.setImageResource(R.drawable.button_refresh)
             }
         }
         binding.urlEdit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                s?.trim()
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.filter(s.toString())
+            }
         })
 //        binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
 //
