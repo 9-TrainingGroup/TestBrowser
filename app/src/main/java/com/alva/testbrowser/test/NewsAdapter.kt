@@ -64,7 +64,7 @@ class NewsAdapter : PagingDataAdapter<NewsItem, NewsViewHolder>(DiffCallback) {
             holder.itemView.setOnClickListener {
                 Bundle().apply {
                     putString("NEWS_POSITION", newsItem.url)
-                    it.findNavController().navigate(R.id.action_newsFragment_to_webFragment, this)
+                    it.findNavController().navigate(R.id.action_infoFragment_to_webFragment, this)
                 }
             }
         }

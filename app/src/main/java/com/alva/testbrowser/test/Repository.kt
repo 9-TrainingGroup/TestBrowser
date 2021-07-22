@@ -9,16 +9,19 @@ import kotlinx.coroutines.flow.map
 
 object Repository {
     private val newsService = NewsService.create()
-    private var pagingData = Pager(PagingConfig(50)) { NewsPagingSource(newsService) }.flow
 
-    fun getPagingData(): Flow<PagingData<NewsItem>> {
-        return pagingData
+    fun getPagingData(type: String): Flow<PagingData<NewsItem>> {
+        return Pager(
+            PagingConfig(50)
+        ) {
+            NewsPagingSource(newsService, type)
+        }.flow
     }
 
-    fun filter(): Flow<PagingData<NewsItem>> {
-        return pagingData.map { pagingData ->
+    fun filter(content: String): Flow<PagingData<NewsItem>> {
+        return getPagingData("T1348647853363").map { pagingData ->
             pagingData.filter {
-                it.title.contains("媒体")
+                it.title.contains(content)
             }
         }
     }

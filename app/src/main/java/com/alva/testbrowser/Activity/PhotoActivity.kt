@@ -23,6 +23,8 @@ import com.alva.testbrowser.Adapter.PagerPhotoViewHolder
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.ActivityPhotoBinding
 import com.alva.testbrowser.test.PhotoViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class PhotoActivity : AppCompatActivity() {
@@ -71,7 +73,7 @@ class PhotoActivity : AppCompatActivity() {
                     Log.d("Hello", "onCreate: ${it.key} = ${it.value}")
                 }
                 if (permissions[Manifest.permission.WRITE_EXTERNAL_STORAGE] == true) {
-                    lifecycleScope.launch { savePhoto() }
+                    lifecycleScope.launch(Dispatchers.IO) { savePhoto() }
                 } else {
                     Toast.makeText(this, getString(R.string.save_failed), Toast.LENGTH_SHORT).show()
                 }
@@ -82,7 +84,7 @@ class PhotoActivity : AppCompatActivity() {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT > 28    //已获取权限
             ) {
-                lifecycleScope.launch { savePhoto() }
+                lifecycleScope.launch(Dispatchers.IO) { savePhoto() }
             } else {    //未获取权限
                 requestPermissionLauncher.launch(
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -102,14 +104,32 @@ class PhotoActivity : AppCompatActivity() {
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             ContentValues()
         ) ?: kotlin.run {
-            Toast.makeText(this, getString(R.string.save_failed), Toast.LENGTH_SHORT).show()
+            MainScope().launch {
+                Toast.makeText(
+                    this@PhotoActivity,
+                    getString(R.string.save_failed),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
             return
         }
         this.contentResolver.openOutputStream(saveUri).use {
             if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)) {  //保存图片
-                Toast.makeText(this, getString(R.string.saved_success), Toast.LENGTH_SHORT).show()
+                MainScope().launch {
+                    Toast.makeText(
+                        this@PhotoActivity,
+                        getString(R.string.saved_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             } else {
-                Toast.makeText(this, getString(R.string.save_failed), Toast.LENGTH_SHORT).show()
+                MainScope().launch {
+                    Toast.makeText(
+                        this@PhotoActivity,
+                        getString(R.string.save_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

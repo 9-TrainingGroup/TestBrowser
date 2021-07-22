@@ -1,7 +1,6 @@
 package com.alva.testbrowser.test
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class NewsFragment : Fragment() {
+class NewsFragment(private val type: Int) : Fragment() {
     private var _binding: FragmentNewsBinding? = null
     private val binding get() = _binding!!
 
@@ -31,16 +30,27 @@ class NewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel by activityViewModels<NewsViewModel>()
+
         val adapter = NewsAdapter()
+        val viewModel by activityViewModels<NewsViewModel>()
         binding.recyclerView.adapter =
             adapter.withLoadStateFooter(FooterAdapter { adapter.retry() })
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.pagingData.collectLatest {
-                adapter.submitData(it)
+            when (type) {
+                0 -> viewModel.pagingData.collectLatest {
+                    adapter.submitData(it)
+                }
+                1 -> viewModel.jxData.collectLatest {
+                    adapter.submitData(it)
+                }
+                2 -> viewModel.ylData.collectLatest {
+                    adapter.submitData(it)
+                }
+                3 -> viewModel.ydData.collectLatest {
+                    adapter.submitData(it)
+                }
             }
         }
-        Log.d("Hello", "onViewCreated: ${viewModel.pagingData}")
         viewModel.initial.observe(viewLifecycleOwner, {
             binding.recyclerView.isVisible = it
         })
@@ -68,8 +78,9 @@ class NewsFragment : Fragment() {
         }
 //        viewModel.filter()
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.filter()
-            Log.d("Hello", "onViewCreated: ${viewModel.pagingData}")
+            adapter.refresh()
+//            viewModel.filter()
+//            Log.d("Hello", "onViewCreated: ${viewModel.pagingData}")
         }
     }
 
