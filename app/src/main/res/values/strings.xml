@@ -17,6 +17,7 @@
     <string name="menu_edit">编辑</string>
     <string name="dialog_edit_title">编辑书签</string>
     <string name="dialog_add_title">添加书签</string>
+    <string name="dialog_success">添加成功</string>
     <string name="search_hint">搜索文章或相关内容</string>
     <string name="footer_loading">正在加载</string>
     <string name="footer_error">加载出错，点击重试</string>

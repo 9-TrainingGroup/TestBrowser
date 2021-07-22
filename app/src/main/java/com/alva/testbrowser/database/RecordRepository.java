@@ -55,6 +55,12 @@ public class RecordRepository {
         });
     }
 
+    public void deleteSameBookmark(String url){
+        MyDatabase.databaseWriteExecutor.execute(() ->{
+            bookmarkDao.deleteSameBookmark(url);
+        });
+    }
+
     public void insertHistory(History history) {
         MyDatabase.databaseWriteExecutor.execute(() -> {
             historyDao.insertHistory(history);
@@ -72,4 +78,6 @@ public class RecordRepository {
             historyDao.deleteAllHistories();
         });
     }
+
+
 }

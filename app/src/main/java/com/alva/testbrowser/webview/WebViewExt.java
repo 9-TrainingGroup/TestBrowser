@@ -3,6 +3,7 @@ package com.alva.testbrowser.webview;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -19,9 +20,12 @@ import java.util.Map;
  * @author Alva
  * @since 2021/7/11 17:21
  */
-public class WebViewExt extends WebView {
+public class WebViewExt extends WebView implements AlbumController{
 
     private ProgressView progressView;
+    private AlbumItem album;
+    private BrowserController browserController = null;
+    private boolean foreground;
 
     public WebViewExt(@NonNull Context context) {
         super(context);
@@ -47,6 +51,9 @@ public class WebViewExt extends WebView {
         progressView.setProgress(10);
         addView(progressView);
 
+        this.foreground = false;
+        this.album = new AlbumItem(getContext(), this);
+
         WebSettings settings = getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
@@ -64,6 +71,29 @@ public class WebViewExt extends WebView {
     private int dp2px(Context context, float dp) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
+    }
+
+    public void setAlbumTitle(String title) {
+        album.setAlbumTitle(title);
+    }
+
+    @Override
+    public View getAlbumView() {
+        return album.getAlbumView();
+    }
+
+    @Override
+    public void activate() {
+        requestFocus();
+        foreground = true;
+        album.activate();
+    }
+
+    @Override
+    public void deactivate() {
+        clearFocus();
+        foreground = false;
+        album.deactivate();
     }
 
     public interface Callback {

@@ -1,25 +1,38 @@
-package com.alva.testbrowser.Adapter;
+package com.alva.testbrowser.test;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.alva.testbrowser.R;
 import com.alva.testbrowser.database.Bookmark;
 
 import java.util.List;
 
-public class BookmarkAdapter extends ArrayAdapter<Bookmark> {
+public class BookmarkAdapter1 extends ArrayAdapter<Bookmark> {
     private int resourceID;
     private List<Bookmark> bookmarkList;
 
-    public BookmarkAdapter(Context context, int resource, List<Bookmark> objects) {
+    public BookmarkAdapter1(@NonNull Context context, int resource, @NonNull List<Bookmark> objects) {
         super(context, resource, objects);
         resourceID = resource;
-        bookmarkList = objects;
+        bookmarkList=objects;
+    }
+    public void setBookmarkList(List<Bookmark> bookmarks){
+        bookmarkList = bookmarks;
+        Log.d("Adapter", String.valueOf(bookmarkList.size()));
+        notifyDataSetChanged();
+    }
+
+    public void deleteItem(int position){
+        bookmarkList.remove(position);
+        notifyDataSetChanged();
     }
 
 
@@ -33,18 +46,7 @@ public class BookmarkAdapter extends ArrayAdapter<Bookmark> {
         url.setText(bookmark.getUrl());
         return view;
     }
-
-    public void deleBookmarkItem(int position){
-        bookmarkList.remove(position);
-        notifyDataSetChanged();
-    }
-
-    public void updateBookmarkItem(int position, String title){
-        bookmarkList.get(position).setTitle(title);
-        notifyDataSetChanged();
-    }
-    public void deleteAllBookmark(){
-        bookmarkList.clear();
+    public void clear(){
         notifyDataSetChanged();
     }
 }

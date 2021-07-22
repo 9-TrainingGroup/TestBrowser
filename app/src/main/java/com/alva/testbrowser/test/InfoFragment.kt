@@ -1,6 +1,7 @@
 package com.alva.testbrowser.test
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.FragmentInfoBinding
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class InfoFragment : Fragment() {

@@ -7,13 +7,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -22,18 +25,21 @@ import com.alva.testbrowser.R;
 import com.alva.testbrowser.database.History;
 import com.alva.testbrowser.database.MyDatabase;
 import com.alva.testbrowser.database.RecordViewModel;
+
+import org.jetbrains.annotations.NotNull;
 /*历史记录列表展示及操作*/
 
 public class HistoryFragment extends Fragment{
     MyDatabase dataBase;
     RecordViewModel recordViewModel;
     HistoryAdapter adapter;
+    ListView listView;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.history_layout, container, false);
-        ListView listView = view.findViewById(R.id.history_view);
+        listView = view.findViewById(R.id.history_view);
         ImageButton button = view.findViewById(R.id.historyDelete);
 
 
@@ -52,6 +58,7 @@ public class HistoryFragment extends Fragment{
             }
         });
 
+/*
         //长按监听
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -60,6 +67,15 @@ public class HistoryFragment extends Fragment{
                 //弹出对话框
                 confirm(position,listView);
                 return true;
+            }
+        });
+*/
+
+        listView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                getActivity().getMenuInflater().inflate(R.menu.menu_history,menu);
+                HistoryFragment.super.onCreateContextMenu(menu,v,menuInfo);
             }
         });
 
@@ -125,6 +141,19 @@ public class HistoryFragment extends Fragment{
         dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
     }
 
+
+    @Override
+    public boolean onContextItemSelected(@NonNull @NotNull MenuItem item) {
+        if (item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo){
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            switch (item.getItemId()){
+                case R.id.deleteItem:
+                    History history = recordViewModel.historyList.get(info.position);
+                    confirm(info.position,listView);
+            }
+        }
+        return super.onContextItemSelected(item);
+    }
 
 
 

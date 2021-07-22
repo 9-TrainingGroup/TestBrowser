@@ -31,7 +31,7 @@ class NewsActivity : AppCompatActivity() {
             controller.navigatorProvider
             if (destination.id == R.id.webFragment) {
                 binding.appbar.setExpanded(false)
-                binding.refreshNews.setImageResource(R.drawable.button_back)
+                binding.refreshNews.setImageResource(R.drawable.button_menu)
             } else {
                 binding.refreshNews.setImageResource(R.drawable.button_refresh)
             }

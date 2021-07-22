@@ -43,6 +43,7 @@ public class HistoryAdapter extends ArrayAdapter<History> {
     }
 
     public void clear(){
+        historyList.clear();
         notifyDataSetChanged();
     }
 }

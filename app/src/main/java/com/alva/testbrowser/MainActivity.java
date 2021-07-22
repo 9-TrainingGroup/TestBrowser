@@ -23,10 +23,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.alva.testbrowser.Activity.RecordActivity;
 import com.alva.testbrowser.Adapter.CompleteAdapter;
+import com.alva.testbrowser.database.Bookmark;
 import com.alva.testbrowser.database.RecordViewModel;
 import com.alva.testbrowser.test.NewsActivity;
 import com.alva.testbrowser.ui.UrlBarController;
@@ -91,12 +92,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void init() {
         context = MainActivity.this;
 
+        initDialogTab();
         initView();
         initUrlEdit();
-        initDialogTab();
     }
 
-    private void initView(){
+    private void initView() {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -131,8 +132,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tab_container = dialogView.findViewById(R.id.tab_container);
         tab_openOverView = dialogView.findViewById(R.id.tab_openOverView);
         tab_openOverView.setOnClickListener(view -> {
+            addAlbum(null);
             dialog_tabPreview.cancel();
-
         });
 
         builder.setView(dialogView);
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RecordViewModel record = new RecordViewModel(getApplication());
         record.getAllHistory();
         record.getAllBookmarks();
-        CompleteAdapter adapter = new CompleteAdapter(context, R.layout.item_icon_left, record.historyList,record.bookmarkList);
+        CompleteAdapter adapter = new CompleteAdapter(context, R.layout.item_icon_left, record.historyList, record.bookmarkList);
         urlEdit.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         urlEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -172,15 +173,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String url = ((TextView) view.findViewById(R.id.record_item_time)).getText().toString();
             webView.loadUrl(coverKeywordLoadOrSearch(url));
         });
-        webView.init(new UrlBarController(urlEdit));
 
 
     }
 
-    private synchronized void addAlbum(String url){
+    private synchronized void addAlbum(String url) {
         webView = webViewPool.getWebView(context);
         webViewContainer.addView(webView);
+        webView.init(new UrlBarController(urlEdit, webView));
 
+        if (!url.isEmpty()) {
+            webView.loadUrl(url);
+        } else {
+            webView.loadUrl("https://github.com/9-TrainingGroup/TestBrowser");
+        }
+
+        View albumView = webView.getAlbumView();
+        tab_container.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
     }
 
@@ -244,16 +253,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 webView.reload();
                 break;
             case R.id.drawerDialog:
-                new MaterialDialog.Builder(MainActivity.this)
-                        .title("标题")
-                        .content("内容")
-                        .positiveText("确认")
-                        .negativeText("取消")
-                        .show();
+//                new MaterialDialog.Builder(MainActivity.this)
+//                        .title("标题")\
+//                        .content("内容")
+//                        .positiveText("确认")
+//                        .negativeText("取消")
+//                        .show();
+                Bookmark bookmark = new Bookmark(webView.getTitle(), webView.getUrl());
+                RecordViewModel recordViewModel = new ViewModelProvider(this).get(RecordViewModel.class);
+                recordViewModel.deleteSameBookmark(webView.getUrl());
+                recordViewModel.insertBookmark(bookmark);
+                Toast.makeText(this, "已收藏", Toast.LENGTH_SHORT).show();
                 break;
+
             case R.id.history:
                 Intent intent = new Intent(MainActivity.this, RecordActivity.class);
-                startActivityForResult(intent,1);
+                startActivityForResult(intent, 1);
                 break;
             case R.id.tab:
                 dialog_tabPreview.show();
@@ -262,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
 
     @Override
     protected void onDestroy() {
@@ -277,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 1:
                 if (resultCode == RESULT_OK) {
                     String url = data.getStringExtra("open_url");
-                    Log.d("open-url",url);
+                    Log.d("open-url", url);
                     webView.loadUrl(url);
                 }
                 break;

@@ -17,6 +17,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -69,6 +70,11 @@ class WebFragment : Fragment() {
                                 dialogBinding.editTextUrl.text.toString()
                             )
                         )
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.dialog_success),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     .setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
                         dialog.cancel()
