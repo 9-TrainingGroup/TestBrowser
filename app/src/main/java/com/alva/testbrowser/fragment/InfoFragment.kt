@@ -15,6 +15,13 @@ import com.alva.testbrowser.util.NewsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 
+private val types = listOf(
+    "T1348647853363",
+    "T1467284926140",
+    "T1348648517839",
+    "T1348649079062"
+)
+
 class InfoFragment : Fragment() {
     private var _binding: FragmentInfoBinding? = null
     private val binding get() = _binding!!
@@ -33,7 +40,7 @@ class InfoFragment : Fragment() {
 
         val viewModel by activityViewModels<NewsViewModel>()
         binding.viewPager.adapter = object : FragmentStateAdapter(this) {
-            override fun getItemCount() = 4
+            override fun getItemCount() = types.size
             override fun createFragment(position: Int): Fragment {
                 requireActivity().findViewById<MaterialAutoCompleteTextView>(R.id.searchEdit)
                     .addTextChangedListener(object : TextWatcher {
@@ -51,23 +58,13 @@ class InfoFragment : Fragment() {
                             before: Int,
                             count: Int
                         ) {
-                            when (position) {
-                                0 -> viewModel.getPagingData(s.toString(), "T1348647853363")
-                                1 -> viewModel.getPagingData(s.toString(), "T1467284926140")
-                                2 -> viewModel.getPagingData(s.toString(), "T1348648517839")
-                                else -> viewModel.getPagingData(s.toString(), "T1348649079062")
-                            }
+                            viewModel.getPagingData(s.toString(), types[position])
                         }
 
                         override fun afterTextChanged(s: Editable?) {
                         }
                     })
-                return when (position) {
-                    0 -> NewsFragment(0).also { viewModel.getPagingData("", "T1348647853363") }
-                    1 -> NewsFragment(1).also { viewModel.getPagingData("", "T1467284926140") }
-                    2 -> NewsFragment(2).also { viewModel.getPagingData("", "T1348648517839") }
-                    else -> NewsFragment(3).also { viewModel.getPagingData("", "T1348649079062") }
-                }
+                return NewsFragment(position).also { viewModel.getPagingData("", types[position]) }
             }
         }
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
