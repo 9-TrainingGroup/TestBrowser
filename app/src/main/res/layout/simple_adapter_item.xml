@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TwoLineListItem xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/listPreferredItemHeight"
+    android:mode="twoLine"
+    android:paddingStart="?attr/listPreferredItemPaddingStart"
+    android:paddingEnd="?attr/listPreferredItemPaddingEnd">
 
-
-    <TextView
-        android:id="@+id/ItemText1"
+    <TextView android:id="@+id/ItemText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_marginTop="8dp"
         android:maxLines="1"
-        android:textSize="24sp" />
+        android:textAppearance="?attr/textAppearanceListItem" />
 
-    <TextView
-        android:id="@+id/ItemText2"
+    <TextView android:id="@+id/ItemText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_below="@+id/ItemText1"
+        android:layout_alignStart="@+id/ItemText1"
         android:maxLines="1"
-        android:textSize="24sp" />
+        android:textAppearance="?attr/textAppearanceListItemSecondary" />
 
-
-</LinearLayout>
+</TwoLineListItem>
