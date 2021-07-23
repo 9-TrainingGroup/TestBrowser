@@ -1,7 +1,9 @@
 package com.alva.testbrowser.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -17,8 +19,8 @@ import com.alva.testbrowser.fragment.HistoryFragment;
 /*历史记录和书签总界面,从历史记录按钮点进去，优先显示历史记录*/
 public class RecordActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView bookmarkButton;
-    TextView historybutton;
+    Button bookmarkButton;
+    Button historybutton;
     ImageButton back;
 
     @Override
@@ -31,7 +33,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         back = findViewById(R.id.history_back);
 
 
-        historybutton.setBackgroundColor(0xFFCCCCCC);
+        historybutton.setBackgroundResource(R.drawable.btn_backgroundgray);
         bookmarkButton.setOnClickListener(this);
         historybutton.setOnClickListener(this);
         back.setOnClickListener(this);
@@ -46,13 +48,13 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()){
             case R.id.history_button:
                 replaceFragment(new HistoryFragment());
-                historybutton.setBackgroundColor(0xFFCCCCCC);
-                bookmarkButton.setBackgroundColor(0xFFFFFFFF);
+                bookmarkButton.setBackgroundResource(R.drawable.btn_background);
+                historybutton.setBackgroundResource(R.drawable.btn_backgroundgray);
                 break;
             case R.id.bookmark_button:
                 replaceFragment(new BookMarkFragment());
-                bookmarkButton.setBackgroundColor(0xFFCCCCCC);
-                historybutton.setBackgroundColor(0xFFFFFFFF);
+                historybutton.setBackgroundResource(R.drawable.btn_background);
+                bookmarkButton.setBackgroundResource(R.drawable.btn_backgroundgray);
                 break;
             case R.id.history_back:
                 finish();
