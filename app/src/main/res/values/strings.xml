@@ -1,3 +1,30 @@
 <resources>
-    <string name="app_name">TestBrowser</string>
+    <string name="app_name">浏览器</string>
+    <string name="urlEditHint">Search or type web address</string>
+    <string name="bookmark">书签</string>
+    <string name="history">历史</string>
+    <string name="photo_tag">%d / %d</string>
+    <string name="button_save_image">saveButton</string>
+    <string name="button_back">backButton</string>
+    <string name="button_back_message">再按一次返回键退出</string>
+    <string name="saved_success">存储成功</string>
+    <string name="save_failed">存储失败</string>
+    <string name="menu_delete">删除</string>
+    <string name="dialog_delete_history_title">确定清空历史记录？</string>
+    <string name="dialog_delete_bookmark_title">确定清空书签？</string>
+    <string name="dialog_positive_message">确定</string>
+    <string name="dialog_negative_message">取消</string>
+    <string name="menu_edit">编辑</string>
+    <string name="dialog_edit_title">编辑书签</string>
+    <string name="dialog_add_title">添加书签</string>
+    <string name="dialog_success">添加成功</string>
+    <string name="search_hint">搜索文章或相关内容</string>
+    <string name="footer_loading">正在加载</string>
+    <string name="footer_error">加载出错，点击重试</string>
+    <string name="footer_success">加载完毕</string>
+    <string name="tab_title_tt">头条</string>
+    <string name="tab_title_jx">精选</string>
+    <string name="tab_title_yl">娱乐</string>
+    <string name="tab_title_yd">运动</string>
+    <string name="album_title_tab">Opened Tabs</string>
 </resources>

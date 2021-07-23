@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.supercharge.shimmerlayout.ShimmerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/shimmerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <uk.co.senab.photoview.PhotoView
+        android:id="@+id/pagerPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</io.supercharge.shimmerlayout.ShimmerLayout>
