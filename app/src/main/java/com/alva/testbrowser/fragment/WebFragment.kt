@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 class WebFragment : Fragment() {
     private var _binding: FragmentWebBinding? = null
     private val binding get() = _binding!!
+    private lateinit var webView: WebViewExt
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +51,7 @@ class WebFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel by viewModels<RecordViewModel>()
-        val webViewPool = WebViewPool()
-        val webView: WebViewExt = webViewPool.getWebView(requireContext())
+        webView = WebViewExt(requireContext())
         webView.init()
         webView.loadUrl(arguments?.getString("NEWS_POSITION").toString())
         binding.webView.addView(webView)
@@ -138,6 +138,8 @@ class WebFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        webView.removeAllViews()
+        webView.destroy()
         _binding = null
     }
 }
