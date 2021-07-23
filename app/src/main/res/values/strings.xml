@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestBrowser</string>
+    <string name="app_name">浏览器</string>
     <string name="urlEditHint">Search or type web address</string>
     <string name="bookmark">书签</string>
     <string name="history">历史</string>
