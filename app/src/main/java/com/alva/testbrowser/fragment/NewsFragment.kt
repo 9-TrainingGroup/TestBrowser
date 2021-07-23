@@ -65,7 +65,6 @@ class NewsFragment(val type: Int) : Fragment() {
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(800)
                         binding.swipeRefresh.isRefreshing = false
-                        binding.recyclerView.visibility = View.VISIBLE
                     }
                 }
                 is LoadState.Loading -> {

@@ -58,7 +58,7 @@ class InfoFragment : Fragment() {
                             before: Int,
                             count: Int
                         ) {
-                            viewModel.getPagingData(s.toString(), types[position])
+                            viewModel.getPagingData(s.toString().trim(), types[position])
                         }
 
                         override fun afterTextChanged(s: Editable?) {
