@@ -1,8 +1,10 @@
 package com.alva.testbrowser.activity
 
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowInsetsController
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -18,6 +20,18 @@ class NewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val window = this.window
+        window.statusBarColor = Color.WHITE
+        window.navigationBarColor = Color.WHITE
+        window.insetsController?.setSystemBarsAppearance(
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+        )
+        window.insetsController?.setSystemBarsAppearance(
+            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+        )
 
 //        binding.appbar.layoutParams.height =
 //            windowManager.currentWindowMetrics.bounds.height() / 2 - 56

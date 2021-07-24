@@ -4,14 +4,17 @@ import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.WindowInsetsController
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.get
@@ -31,10 +34,23 @@ class PhotoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoBinding
     private lateinit var viewModel: PhotoViewModel
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPhotoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val window = this.window
+        window.statusBarColor = Color.WHITE
+        window.navigationBarColor = Color.WHITE
+        window.insetsController?.setSystemBarsAppearance(
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+        )
+        window.insetsController?.setSystemBarsAppearance(
+            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+        )
 
 /*        onBackPressedDispatcher.addCallback(this) {
             Toast.makeText(
