@@ -18,16 +18,11 @@ import java.util.List;
 public class HistoryAdapter extends ArrayAdapter<History> {
     private int resourceID;
     private List<History> historyList;
-    MyDatabase database = MyDatabase.getMyDatabase();
 
     public HistoryAdapter(@NonNull Context context, int resource, @NonNull List<History> objects) {
         super(context, resource, objects);
         resourceID = resource;
         historyList = objects;
-    }
-
-    public void initData(){
-
     }
 
 
