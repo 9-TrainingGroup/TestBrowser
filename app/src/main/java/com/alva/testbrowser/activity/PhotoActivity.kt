@@ -40,7 +40,6 @@ class PhotoActivity : AppCompatActivity() {
         binding = ActivityPhotoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val window = this.window
         window.statusBarColor = Color.WHITE
         window.navigationBarColor = Color.WHITE
         window.insetsController?.setSystemBarsAppearance(
@@ -69,18 +68,18 @@ class PhotoActivity : AppCompatActivity() {
 
         viewModel = viewModels<PhotoViewModel>().value
         viewModel.photoList.value = bundle.getStringArrayList("imageUrls")
-        val adapter = PagerPhotoAdapter()
-        binding.viewPager2.adapter = adapter
-        viewModel.photoList.observe(this, {
-            adapter.submitList(it)
-            binding.viewPager2.setCurrentItem(bundle.getInt("index"), false)
-        })
+        PagerPhotoAdapter().apply {
+            binding.viewPager2.adapter = this
+            viewModel.photoList.observe(this@PhotoActivity, {
+                submitList(it)
+                binding.viewPager2.setCurrentItem(bundle.getInt("index"), false)
+            })
+        }
         binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                "${position + 1}/${viewModel.photoList.value?.size}".also {
-                    binding.photoTag.text = it
-                }
+                binding.photoTag.text =
+                    getString(R.string.photo_tag, position + 1, viewModel.photoList.value?.size)
             }
         })
         val requestPermissionLauncher =
@@ -116,7 +115,7 @@ class PhotoActivity : AppCompatActivity() {
         val holder =
             (binding.viewPager2[0] as RecyclerView).findViewHolderForAdapterPosition(binding.viewPager2.currentItem) as PagerPhotoViewHolder
         val bitmap = holder.viewBinding.pagerPhoto.drawable.toBitmap()
-        val saveUri = this.contentResolver.insert(
+        val saveUri = contentResolver.insert(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             ContentValues()
         ) ?: kotlin.run {
@@ -129,7 +128,7 @@ class PhotoActivity : AppCompatActivity() {
             }
             return
         }
-        this.contentResolver.openOutputStream(saveUri).use {
+        contentResolver.openOutputStream(saveUri).use {
             if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)) {  //保存图片
                 MainScope().launch {
                     Toast.makeText(

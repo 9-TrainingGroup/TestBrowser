@@ -57,13 +57,9 @@ class PagerPhotoAdapter : ListAdapter<String, PagerPhotoViewHolder>(DiffCallback
     }
 
     object DiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
-        }
+        override fun areItemsTheSame(oldItem: String, newItem: String) = oldItem == newItem
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
-        }
+        override fun areContentsTheSame(oldItem: String, newItem: String) = oldItem == newItem
     }
 }
 

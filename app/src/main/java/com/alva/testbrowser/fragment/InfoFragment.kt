@@ -1,12 +1,11 @@
 package com.alva.testbrowser.fragment
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alva.testbrowser.R
@@ -43,27 +42,9 @@ class InfoFragment : Fragment() {
             override fun getItemCount() = types.size
             override fun createFragment(position: Int): Fragment {
                 requireActivity().findViewById<MaterialAutoCompleteTextView>(R.id.searchEdit)
-                    .addTextChangedListener(object : TextWatcher {
-                        override fun beforeTextChanged(
-                            s: CharSequence?,
-                            start: Int,
-                            count: Int,
-                            after: Int
-                        ) {
-                        }
-
-                        override fun onTextChanged(
-                            s: CharSequence?,
-                            start: Int,
-                            before: Int,
-                            count: Int
-                        ) {
-                            viewModel.getPagingData(s.toString().trim(), types[position])
-                        }
-
-                        override fun afterTextChanged(s: Editable?) {
-                        }
-                    })
+                    .addTextChangedListener {
+                        viewModel.getPagingData(it.toString().trim(), types[position])
+                    }
                 return NewsFragment(position).also { viewModel.getPagingData("", types[position]) }
             }
         }

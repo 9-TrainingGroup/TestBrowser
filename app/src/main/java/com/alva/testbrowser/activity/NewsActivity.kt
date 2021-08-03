@@ -21,7 +21,6 @@ class NewsActivity : AppCompatActivity() {
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val window = this.window
         window.statusBarColor = Color.WHITE
         window.navigationBarColor = Color.WHITE
         window.insetsController?.setSystemBarsAppearance(

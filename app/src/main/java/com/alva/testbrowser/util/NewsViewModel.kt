@@ -11,8 +11,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class NewsViewModel : ViewModel() {
-    private val repository: NewsRepository = NewsRepository
-
     private val _pagingDataTT: MutableLiveData<PagingData<NewsItem>> = MutableLiveData()
     val pagingDataTT: LiveData<PagingData<NewsItem>> = _pagingDataTT
 
@@ -27,7 +25,7 @@ class NewsViewModel : ViewModel() {
 
     fun getPagingData(content: String, type: String) {
         viewModelScope.launch {
-            repository.getPagingData(type).cachedIn(viewModelScope).map { pagingData ->
+            NewsRepository.getPagingData(type).cachedIn(viewModelScope).map { pagingData ->
                 pagingData.filter {
                     it.title.contains(content)
                 }

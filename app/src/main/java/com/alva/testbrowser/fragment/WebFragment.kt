@@ -1,29 +1,24 @@
 package com.alva.testbrowser.fragment
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebView
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.alva.testbrowser.R
 import com.alva.testbrowser.database.Bookmark
+import com.alva.testbrowser.database.NewsItem
 import com.alva.testbrowser.util.RecordViewModel
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.alva.testbrowser.databinding.FragmentWebBinding
@@ -52,35 +47,34 @@ class WebFragment : Fragment() {
 
         val viewModel by viewModels<RecordViewModel>()
         webView = WebViewExt(requireContext())
-        webView.init()
-        webView.loadUrl(arguments?.getString("NEWS_POSITION").toString())
+        webView.init({ _, _ -> }, 1)
+        webView.loadUrl(arguments?.getParcelable<NewsItem>("NEWS_POSITION")!!.url)
         binding.webView.addView(webView)
         requireActivity().findViewById<ImageButton>(R.id.refreshNews).setOnClickListener {
             val v = View.inflate(it.context, R.layout.dialog_edit_web, null)
             val dialogBinding = DialogEditWebBinding.bind(v)
             dialogBinding.editTextName.setText(webView.title)
             dialogBinding.editTextUrl.setText(webView.url)
-            val builder: AlertDialog =
-                AlertDialog.Builder(it.context)
-                    .setTitle(R.string.dialog_add_title)
-                    .setView(v)
-                    .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
-                        viewModel.insertBookmark(
-                            Bookmark(
-                                dialogBinding.editTextName.text.toString(),
-                                dialogBinding.editTextUrl.text.toString()
-                            )
+            val builder: AlertDialog = AlertDialog.Builder(it.context)
+                .setTitle(R.string.dialog_add_title)
+                .setView(v)
+                .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
+                    viewModel.insertBookmark(
+                        Bookmark(
+                            dialogBinding.editTextName.text.toString(),
+                            dialogBinding.editTextUrl.text.toString()
                         )
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.dialog_success),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    .setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
-                        dialog.cancel()
-                    }
-                    .show()
+                    )
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.dialog_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                .setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
             builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
             builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
             dialogBinding.editTextName.requestFocus()
@@ -91,49 +85,24 @@ class WebFragment : Fragment() {
                     0
                 )
             }
-            dialogBinding.editTextUrl.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (s.toString().isNotEmpty()) {
-                        builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                            setTextColor(Color.BLACK)
-                            isEnabled = true
-                        }
-                    } else {
-                        builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                            setTextColor(Color.GRAY)
-                            isEnabled = false
-                        }
+            dialogBinding.editTextUrl.addTextChangedListener { editable ->
+                if (editable.toString().isBlank()) {
+                    builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+                        setTextColor(Color.GRAY)
+                        isEnabled = false
+                    }
+                } else {
+                    builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+                        setTextColor(Color.BLACK)
+                        isEnabled = true
                     }
                 }
-
-                override fun afterTextChanged(s: Editable?) {}
-            })
+            }
         }
         requireActivity().findViewById<MaterialAutoCompleteTextView>(R.id.searchEdit)
-            .addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    webView.findAllAsync(s.toString().trim())
-                }
-
-                override fun afterTextChanged(s: Editable?) {
-                }
-            })
+            .addTextChangedListener {
+                webView.findAllAsync(it.toString().trim())
+            }
     }
 
     override fun onDestroyView() {
@@ -142,41 +111,4 @@ class WebFragment : Fragment() {
         webView.destroy()
         _binding = null
     }
-}
-
-@SuppressLint("SetJavaScriptEnabled")
-private fun WebViewExt.init() {
-    val progressView = ProgressView(context)
-    progressView.layoutParams = ViewGroup.LayoutParams(
-        ViewGroup.LayoutParams.MATCH_PARENT, dp4px(context, 4F)
-    )
-    progressView.setColor(R.color.cyan)
-    progressView.setProgress(10)
-    addView(progressView)
-
-    val settings = settings
-    settings.javaScriptEnabled = true
-    settings.domStorageEnabled = true
-    settings.cacheMode = WebSettings.LOAD_DEFAULT
-    settings.domStorageEnabled = true
-    settings.useWideViewPort = true
-    settings.loadWithOverviewMode = true
-    settings.builtInZoomControls = true
-    settings.setSupportZoom(true)
-
-    webViewClient = object : WebClient() {
-
-    }
-    webChromeClient = object : WebChromeClient() {
-        override fun onProgressChanged(view: WebView, newProgress: Int) {
-            super.onProgressChanged(view, newProgress)
-            progressView.setProgress(newProgress)
-            progressView.isVisible = newProgress != 100
-        }
-    }
-}
-
-fun dp4px(context: Context, dp: Float): Int {
-    val scale = context.resources.displayMetrics.density
-    return (dp * scale + 0.5f).toInt()
 }

@@ -28,9 +28,12 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel by activityViewModels<WebViewModel>()
-        viewModel.allHistory.observe(viewLifecycleOwner, {
-            binding.recyclerView.adapter = HistoryAdapter(viewModel)
-        })
+        HistoryAdapter(viewModel).apply {
+            binding.recyclerView.adapter = this
+            viewModel.allHistory.observe(viewLifecycleOwner, {
+                this.submitList(it)
+            })
+        }
         binding.deleteButton.setOnClickListener {
             val builder: AlertDialog = AlertDialog.Builder(requireContext())
                 .setTitle(R.string.dialog_delete_history_title)

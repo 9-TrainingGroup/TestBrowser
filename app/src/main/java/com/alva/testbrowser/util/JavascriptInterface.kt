@@ -7,7 +7,7 @@ import android.webkit.JavascriptInterface
 import com.alva.testbrowser.activity.PhotoActivity
 
 class JavascriptInterface(private val context: Context) {
-    private val imageUrls: ArrayList<String> = ArrayList()
+    private val imageUrls = ArrayList<String>()
 
     @JavascriptInterface
     fun clearImageUrl() {

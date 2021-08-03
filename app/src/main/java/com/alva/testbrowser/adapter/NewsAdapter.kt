@@ -1,6 +1,5 @@
 package com.alva.testbrowser.adapter
 
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,64 +30,68 @@ class NewsAdapter : PagingDataAdapter<NewsItem, NewsViewHolder>(DiffCallback) {
             }
             holder.viewBinding.apply {
                 shimmerLayout.apply {
-                    setShimmerColor(Color.argb(178, 255, 255, 255))
+                    setShimmerColor(0x55FFFFFF)
                     setShimmerAngle(30)
                     startShimmerAnimation()
                 }
                 textTitle.text = newsItem.title
                 textAuthor.text = newsItem.author
                 textTime.text = newsItem.time
-            }
-            Glide.with(holder.itemView)
-                .load(newsItem.img)
-                .placeholder(R.drawable.ic_baseline_photo)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        return false
-                    }
+                Glide.with(holder.itemView)
+                    .load(newsItem.img)
+                    .placeholder(R.drawable.ic_baseline_photo)
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            return false
+                        }
 
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        return false.also { holder.viewBinding.shimmerLayout.stopShimmerAnimation() }
-                    }
-                }).into(holder.viewBinding.imageView)
-            holder.itemView.setOnClickListener {
-                Bundle().apply {
-                    putString("NEWS_POSITION", newsItem.url)
-                    it.findNavController().navigate(R.id.action_infoFragment_to_webFragment, this)
-                }
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            return false.also { shimmerLayout.stopShimmerAnimation() }
+                        }
+                    }).into(imageView)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        NewsViewHolder(CellNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
+        val holder = NewsViewHolder(
+            CellNewsBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+        holder.itemView.setOnClickListener {
+            Bundle().apply {
+                putParcelable("NEWS_POSITION", getItem(holder.absoluteAdapterPosition))
+                it.findNavController().navigate(R.id.action_infoFragment_to_webFragment, this)
+            }
+        }
+        return holder
+    }
 
     object DiffCallback : DiffUtil.ItemCallback<NewsItem>() {
-        override fun areItemsTheSame(oldItem: NewsItem, newItem: NewsItem): Boolean {
-            return oldItem.id == newItem.id
-        }
+        override fun areItemsTheSame(oldItem: NewsItem, newItem: NewsItem) =
+            oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: NewsItem, newItem: NewsItem): Boolean {
-            return oldItem == newItem
-        }
+        override fun areContentsTheSame(oldItem: NewsItem, newItem: NewsItem) = oldItem == newItem
     }
 }
 
 class NewsViewHolder(val viewBinding: CellNewsBinding) : RecyclerView.ViewHolder(viewBinding.root)
 
-class FooterAdapter(val retry: () -> Unit) : LoadStateAdapter<FooterViewHolder>() {
+class FooterAdapter(private val retry: () -> Unit) : LoadStateAdapter<FooterViewHolder>() {
     override fun onBindViewHolder(holder: FooterViewHolder, loadState: LoadState) {
         holder.viewBinding.apply {
             when (loadState) {

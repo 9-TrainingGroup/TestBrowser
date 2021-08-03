@@ -43,7 +43,11 @@
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/fragment_web.xml" value="0.2187214611872146" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/fragment_webview.xml" value="0.2187214611872146" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/history_layout.xml" value="0.2187214611872146" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/item_icon_left.xml" value="0.22175925925925927" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/item_icon_right.xml" value="0.22175925925925927" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/list_tag.xml" value="0.22175925925925927" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/pager_photo_view.xml" value="0.22175925925925927" />
+        <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/layout/simple_adapter_item.xml" value="0.22175925925925927" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/menu/menu_bookmark.xml" value="0.22175925925925927" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/menu/menu_history.xml" value="0.22175925925925927" />
         <entry key="..\:/AndroidStudioProjects/TestBrowser/app/src/main/res/menu/menu_news.xml" value="0.22175925925925927" />

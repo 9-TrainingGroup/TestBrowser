@@ -4,13 +4,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.alva.testbrowser.R
@@ -36,9 +35,12 @@ class BookmarkFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel by activityViewModels<WebViewModel>()
-        viewModel.allBookmark.observe(viewLifecycleOwner, {
-            binding.recyclerView.adapter = BookmarkAdapter(viewModel)
-        })
+        BookmarkAdapter(viewModel).apply {
+            binding.recyclerView.adapter = this
+            viewModel.allBookmark.observe(viewLifecycleOwner, {
+                submitList(it)
+            })
+        }
         binding.deleteButton.setOnClickListener {
             val builder: AlertDialog = AlertDialog.Builder(requireContext())
                 .setTitle(R.string.dialog_delete_bookmark_title)
@@ -55,21 +57,20 @@ class BookmarkFragment : Fragment() {
         binding.addButton.setOnClickListener {
             val v = View.inflate(it.context, R.layout.dialog_edit_web, null)
             val dialogBinding = DialogEditWebBinding.bind(v)
-            val builder: AlertDialog =
-                AlertDialog.Builder(it.context)
-                    .setTitle(R.string.dialog_add_title)
-                    .setView(v)
-                    .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
-                        val web = Bookmarktest(
-                            dialogBinding.editTextName.text.toString(),
-                            dialogBinding.editTextUrl.text.toString()
-                        )
-                        viewModel.insertWebs(web)
-                    }
-                    .setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
-                        dialog.cancel()
-                    }
-                    .show()
+            val builder: AlertDialog = AlertDialog.Builder(it.context)
+                .setTitle(R.string.dialog_add_title)
+                .setView(v)
+                .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
+                    val web = Bookmarktest(
+                        dialogBinding.editTextName.text.toString().trim(),
+                        dialogBinding.editTextUrl.text.toString().trim()
+                    )
+                    viewModel.insertWebs(web)
+                }
+                .setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
             builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
                 setTextColor(Color.GRAY)
                 isEnabled = false
@@ -83,31 +84,19 @@ class BookmarkFragment : Fragment() {
                     0
                 )
             }
-            dialogBinding.editTextUrl.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (s.toString().isNotEmpty()) {
-                        builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                            setTextColor(Color.BLACK)
-                            isEnabled = true
-                        }
-                    } else {
-                        builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                            setTextColor(Color.GRAY)
-                            isEnabled = false
-                        }
+            dialogBinding.editTextUrl.addTextChangedListener { editable ->
+                if (editable.toString().isBlank()) {
+                    builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+                        setTextColor(Color.GRAY)
+                        isEnabled = false
+                    }
+                } else {
+                    builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+                        setTextColor(Color.BLACK)
+                        isEnabled = true
                     }
                 }
-
-                override fun afterTextChanged(s: Editable?) {}
-            })
+            }
         }
     }
 
