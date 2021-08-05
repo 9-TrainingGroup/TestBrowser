@@ -7,14 +7,16 @@
     android:paddingStart="?attr/listPreferredItemPaddingStart"
     android:paddingEnd="?attr/listPreferredItemPaddingEnd">
 
-    <TextView android:id="@+id/ItemText1"
+    <TextView
+        android:id="@+id/ItemText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:maxLines="1"
         android:textAppearance="?attr/textAppearanceListItem" />
 
-    <TextView android:id="@+id/ItemText2"
+    <TextView
+        android:id="@+id/ItemText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ItemText1"

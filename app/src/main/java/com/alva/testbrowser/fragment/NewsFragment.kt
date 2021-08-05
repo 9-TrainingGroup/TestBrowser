@@ -17,9 +17,14 @@ import com.alva.testbrowser.util.NewsViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class NewsFragment(val type: Int) : Fragment() {
+class NewsFragment() : Fragment() {
+    constructor(type: Int) : this() {
+        this.type = type
+    }
+
     private var _binding: FragmentNewsBinding? = null
     private val binding get() = _binding!!
+    private var type: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

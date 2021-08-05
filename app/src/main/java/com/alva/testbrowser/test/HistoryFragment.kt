@@ -1,7 +1,5 @@
 package com.alva.testbrowser.test
 
-import android.app.AlertDialog
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.FragmentHistoryBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class HistoryFragment : Fragment() {
     private var _binding: FragmentHistoryBinding? = null
@@ -35,7 +34,7 @@ class HistoryFragment : Fragment() {
             })
         }
         binding.deleteButton.setOnClickListener {
-            val builder: AlertDialog = AlertDialog.Builder(requireContext())
+            MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.dialog_delete_history_title)
                 .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
                     viewModel.deleteAllHistory()
@@ -43,9 +42,8 @@ class HistoryFragment : Fragment() {
                 .setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
                     dialog.cancel()
                 }
+                .create()
                 .show()
-            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
         }
     }
 

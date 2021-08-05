@@ -14,8 +14,8 @@ public final class UiUtils {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static void hideKeyboard(View view) {
         InputMethodManager imm = view.getContext().getSystemService(InputMethodManager.class);
-        if (imm != null){
-            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
     }

@@ -26,28 +26,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookMarkFragment extends Fragment {
-    private List<Bookmark> bookmarkList = new ArrayList<>();
     MyDatabase dataBase;
     RecordViewModel recordViewModel;
     BookmarkAdapter adapter;
+    private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.bookmark_layout,container,false);
+        View view = inflater.inflate(R.layout.bookmark_layout, container, false);
         ListView listView = view.findViewById(R.id.bookmark_view);
         ImageButton button = view.findViewById(R.id.bookmarkDelete);
 
         this.recordViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(RecordViewModel.class);
         this.recordViewModel.getAllBookmarks();
         //BookmarkAdapter1 adapter = new BookmarkAdapter1(getActivity(), R.layout.simple_adapter_item, this.recordViewModel.bookmarkList);
-        adapter = new BookmarkAdapter(getActivity(), R.layout.simple_adapter_item,recordViewModel.bookmarkList);
+        adapter = new BookmarkAdapter(getActivity(), R.layout.simple_adapter_item, recordViewModel.bookmarkList);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bookmark bookmark = recordViewModel.bookmarkList.get(position);
-                getActivity().setResult(Activity.RESULT_OK,new Intent().putExtra("open_url",bookmark.getUrl()));
+                getActivity().setResult(Activity.RESULT_OK, new Intent().putExtra("open_url", bookmark.getUrl()));
                 getActivity().finish();
             }
         });
@@ -56,21 +56,21 @@ public class BookMarkFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Bookmark bookmark= recordViewModel.bookmarkList.get(position);
-                Log.d("longClick",bookmark.getTitle());
+                Bookmark bookmark = recordViewModel.bookmarkList.get(position);
+                Log.d("longClick", bookmark.getTitle());
                 //弹出菜单
-                PopupMenu popupMenu = new PopupMenu(getActivity(),view );
+                PopupMenu popupMenu = new PopupMenu(getActivity(), view);
                 popupMenu.getMenuInflater().inflate(R.menu.menu_bookmark, popupMenu.getMenu());
                 popupMenu.show();
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()){
+                        switch (menuItem.getItemId()) {
                             case R.id.editItem:
-                                optionEdit(position,listView);
+                                optionEdit(position, listView);
                                 break;
                             case R.id.deleteItem:
-                                optionDelete(position,listView);
+                                optionDelete(position, listView);
                                 break;
                             default:
                                 throw new IllegalStateException("Unexpected value: " + menuItem.getItemId());
@@ -112,7 +112,7 @@ public class BookMarkFragment extends Fragment {
         return view;
     }
 
-    public void optionDelete(int position,ListView listView){
+    public void optionDelete(int position, ListView listView) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("DELETE");
         builder.setMessage("是否删除此书签？");
@@ -142,9 +142,9 @@ public class BookMarkFragment extends Fragment {
         ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLUE);
     }
 
-    public void optionEdit(int position,ListView listView){
+    public void optionEdit(int position, ListView listView) {
         final EditText editText = new EditText(getActivity());
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),3);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), 3);
         builder.setTitle("请输入新标题");
         builder.setView(editText);
         editText.setText(recordViewModel.bookmarkList.get(position).getTitle());

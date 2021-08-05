@@ -1,52 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <LinearLayout
+        android:id="@+id/bmcolumn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bmcolumn"
         android:orientation="horizontal">
-        <ImageView android:layout_width="60dp" android:layout_height="60dp"
-                   android:src="@drawable/button_back"
-                   android:layout_marginStart="20dp"
-                   android:layout_marginTop="20dp"
-                   android:id="@+id/bmback"/>
-        <TextView android:layout_width="100dp" android:layout_height="100dp"
-                  android:layout_marginTop="20dp"
-                  android:layout_marginStart="40dp"
-                  android:text="@string/bookmark"
-                  android:textSize="50sp"
-                  android:textColor="@color/black"
-                  android:id="@+id/tobookmark"/>
-        <TextView android:layout_width="100dp" android:layout_height="100dp"
-                  android:layout_marginTop="20dp"
-                  android:layout_marginStart="40dp"
-                  android:text="@string/history"
-                  android:textSize="50sp"
-                  android:id="@+id/tohistory"/>
+
+        <ImageView
+            android:id="@+id/bmback"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/button_back" />
+
+        <TextView
+            android:id="@+id/tobookmark"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/bookmark"
+            android:textColor="@color/black"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/tohistory"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/history"
+            android:textSize="50sp" />
     </LinearLayout>
+
     <FrameLayout
         android:id="@+id/favoritesAndHisotry_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/bmcolumn">
+
         <ListView
             android:id="@+id/favoritesAndHisotry_content_favorite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="#E2E2E2"
-            android:dividerHeight="1dp">
-        </ListView>
+            android:dividerHeight="1dp"></ListView>
+
         <ListView
             android:id="@+id/favoritesAndHisotry_content_history"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="#E2E2E2"
             android:dividerHeight="1dp"
-            android:visibility="gone">
-        </ListView>
+            android:visibility="gone"></ListView>
     </FrameLayout>
 
 </RelativeLayout>

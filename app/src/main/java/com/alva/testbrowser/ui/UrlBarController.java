@@ -14,7 +14,7 @@ public class UrlBarController implements WebViewExt.Callback {
     private EditText mEdit;
     private WebViewExt mWebView;
 
-    public UrlBarController(EditText editText,WebViewExt webView) {
+    public UrlBarController(EditText editText, WebViewExt webView) {
         mEdit = editText;
         mWebView = webView;
     }

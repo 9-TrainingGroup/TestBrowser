@@ -31,11 +31,11 @@
             android:id="@+id/bookmarkDelete"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="188dp"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
             android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/button_delete" />

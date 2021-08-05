@@ -1,7 +1,9 @@
 package com.alva.testbrowser.database;
 
 import android.content.Context;
+
 import androidx.lifecycle.LiveData;
+
 import java.util.List;
 
 public class RecordRepository {
@@ -22,14 +24,22 @@ public class RecordRepository {
         allBookmarks = bookmarkDao.getAll();
         allHistories = historyDao.getAll();
     }
+
     public LiveData<List<Bookmark>> getAllBookmarksLive() {
         return allBookmarksLive;
     }
+
     public LiveData<List<History>> getAllHistoriesLive() {
         return allHistoriesLive;
     }
-    public List<Bookmark>  getAllBookmarks(){ return allBookmarks; }
-    public List<History> getAllHistories(){ return allHistories; }
+
+    public List<Bookmark> getAllBookmarks() {
+        return allBookmarks;
+    }
+
+    public List<History> getAllHistories() {
+        return allHistories;
+    }
 
     public void insertBookmarks(Bookmark bookmark) {
         MyDatabase.databaseWriteExecutor.execute(() -> {
@@ -46,7 +56,8 @@ public class RecordRepository {
     public void deleteBookmarks(Bookmark bookmark) {
         MyDatabase.databaseWriteExecutor.execute(() -> {
             bookmarkDao.deleteBookmark(bookmark);
-        });;
+        });
+        ;
     }
 
     public void deleteAllBookmarks() {
@@ -55,8 +66,8 @@ public class RecordRepository {
         });
     }
 
-    public void deleteSameBookmark(String url){
-        MyDatabase.databaseWriteExecutor.execute(() ->{
+    public void deleteSameBookmark(String url) {
+        MyDatabase.databaseWriteExecutor.execute(() -> {
             bookmarkDao.deleteSameBookmark(url);
         });
     }

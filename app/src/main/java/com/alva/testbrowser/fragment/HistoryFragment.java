@@ -29,7 +29,7 @@ import com.alva.testbrowser.util.RecordViewModel;
 import org.jetbrains.annotations.NotNull;
 /*历史记录列表展示及操作*/
 
-public class HistoryFragment extends Fragment{
+public class HistoryFragment extends Fragment {
     MyDatabase dataBase;
     RecordViewModel recordViewModel;
     HistoryAdapter adapter;
@@ -46,14 +46,14 @@ public class HistoryFragment extends Fragment{
         recordViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(RecordViewModel.class);
         recordViewModel.getAllHistory();
 
-        adapter = new HistoryAdapter(getActivity(), R.layout.simple_adapter_item,recordViewModel.historyList);
+        adapter = new HistoryAdapter(getActivity(), R.layout.simple_adapter_item, recordViewModel.historyList);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 History history = recordViewModel.historyList.get(position);
-                getActivity().setResult(Activity.RESULT_OK,new Intent().putExtra("open_url",history.getUrl()));
+                getActivity().setResult(Activity.RESULT_OK, new Intent().putExtra("open_url", history.getUrl()));
                 getActivity().finish();
             }
         });
@@ -74,8 +74,8 @@ public class HistoryFragment extends Fragment{
         listView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                getActivity().getMenuInflater().inflate(R.menu.menu_history,menu);
-                HistoryFragment.super.onCreateContextMenu(menu,v,menuInfo);
+                getActivity().getMenuInflater().inflate(R.menu.menu_history, menu);
+                HistoryFragment.super.onCreateContextMenu(menu, v, menuInfo);
             }
         });
 
@@ -110,7 +110,7 @@ public class HistoryFragment extends Fragment{
         return view;
     }
 
-    public void confirm(int position,ListView listView){
+    public void confirm(int position, ListView listView) {
         AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(getActivity());
         dialogbuilder.setTitle("DELETE");
         dialogbuilder.setMessage("确认删除吗");
@@ -120,9 +120,9 @@ public class HistoryFragment extends Fragment{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 History history = recordViewModel.historyList.get(position);
-                Log.d("output_title",history.getTitle());
+                Log.d("output_title", history.getTitle());
                 recordViewModel.deleteHistory(history);
-                Log.d("delete_url",history.getUrl());
+                Log.d("delete_url", history.getUrl());
                 recordViewModel.getAllHistory();
                 //从列表中删除
                 adapter.deleteItem(position);
@@ -144,17 +144,16 @@ public class HistoryFragment extends Fragment{
 
     @Override
     public boolean onContextItemSelected(@NonNull @NotNull MenuItem item) {
-        if (item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo){
+        if (item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.deleteItem:
                     History history = recordViewModel.historyList.get(info.position);
-                    confirm(info.position,listView);
+                    confirm(info.position, listView);
             }
         }
         return super.onContextItemSelected(item);
     }
-
 
 
 }

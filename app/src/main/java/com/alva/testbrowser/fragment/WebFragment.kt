@@ -2,7 +2,6 @@ package com.alva.testbrowser.fragment
 
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -23,6 +22,7 @@ import com.alva.testbrowser.util.RecordViewModel
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.alva.testbrowser.databinding.FragmentWebBinding
 import com.alva.testbrowser.webview.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -47,7 +47,7 @@ class WebFragment : Fragment() {
 
         val viewModel by viewModels<RecordViewModel>()
         webView = WebViewExt(requireContext())
-        webView.init({ _, _ -> }, 1)
+        webView.init({ _, _ -> }, 1, ImageButton(requireContext()), ImageButton(requireContext()))
         webView.loadUrl(arguments?.getParcelable<NewsItem>("NEWS_POSITION")!!.url)
         binding.webView.addView(webView)
         requireActivity().findViewById<ImageButton>(R.id.refreshNews).setOnClickListener {
@@ -55,7 +55,7 @@ class WebFragment : Fragment() {
             val dialogBinding = DialogEditWebBinding.bind(v)
             dialogBinding.editTextName.setText(webView.title)
             dialogBinding.editTextUrl.setText(webView.url)
-            val builder: AlertDialog = AlertDialog.Builder(it.context)
+            val builder = MaterialAlertDialogBuilder(it.context)
                 .setTitle(R.string.dialog_add_title)
                 .setView(v)
                 .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
@@ -75,8 +75,6 @@ class WebFragment : Fragment() {
                     dialog.cancel()
                 }
                 .show()
-            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
             dialogBinding.editTextName.requestFocus()
             viewLifecycleOwner.lifecycleScope.launch {
                 delay(100)
@@ -86,17 +84,8 @@ class WebFragment : Fragment() {
                 )
             }
             dialogBinding.editTextUrl.addTextChangedListener { editable ->
-                if (editable.toString().isBlank()) {
-                    builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                        setTextColor(Color.GRAY)
-                        isEnabled = false
-                    }
-                } else {
-                    builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                        setTextColor(Color.BLACK)
-                        isEnabled = true
-                    }
-                }
+                builder.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
+                    editable.toString().isNotBlank()
             }
         }
         requireActivity().findViewById<MaterialAutoCompleteTextView>(R.id.searchEdit)

@@ -14,8 +14,6 @@
             android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            app:contentScrim="@color/white"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="false">
 
@@ -63,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="8"
-                    android:background="#FFFFFF"
+                    android:background="@android:color/transparent"
                     android:clickable="true"
                     android:contentDescription="@string/button_back"
                     android:focusable="true"

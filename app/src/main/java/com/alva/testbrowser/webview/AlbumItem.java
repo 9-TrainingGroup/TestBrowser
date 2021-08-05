@@ -15,29 +15,29 @@ class AlbumItem {
 
     private final Context context;
     private final AlbumController albumController;
-    private ImageView albumClose;
     public int index;
-
+    private ImageView albumClose;
     private View albumView;
-    View getAlbumView() {
-        return albumView;
-    }
-
     private TextView albumTitle;
-    void setAlbumTitle(String title) {
-        albumTitle.setText(title);
-    }
-
     private BrowserController browserController;
-    void setBrowserController(BrowserController browserController) {
-        this.browserController = browserController;
-    }
 
-    AlbumItem(Context context, AlbumController albumController,int index) {
+    AlbumItem(Context context, AlbumController albumController, int index) {
         this.context = context;
         this.albumController = albumController;
         this.index = index;
         initUI();
+    }
+
+    View getAlbumView() {
+        return albumView;
+    }
+
+    void setAlbumTitle(String title) {
+        albumTitle.setText(title);
+    }
+
+    void setBrowserController(BrowserController browserController) {
+        this.browserController = browserController;
     }
 
     @SuppressLint("InflateParams")

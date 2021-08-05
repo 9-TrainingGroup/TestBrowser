@@ -26,107 +26,11 @@ import java.util.List;
  */
 public class CompleteAdapter extends BaseAdapter implements Filterable {
 
-    private class CompleteFilter extends Filter {
-        @Override
-        protected FilterResults performFiltering(CharSequence prefix) {
-            if (prefix == null) {
-                return new FilterResults();
-            }
-
-            resultList.clear();
-            for (CompleteItem item : originalList) {
-                if (item.getTitle().contains(prefix) || item.getTitle().toLowerCase().contains(prefix) || item.getURL().contains(prefix)) {
-                    if (item.getTitle().contains(prefix) || item.getTitle().toLowerCase().contains(prefix)) {
-                        item.setIndex(item.getTitle().indexOf(prefix.toString()));
-                    } else if (item.getURL().contains(prefix)) {
-                        item.setIndex(item.getURL().indexOf(prefix.toString()));
-                    }
-                    resultList.add(item);
-                }
-            }
-
-            Collections.sort(resultList, (first, second) -> Integer.compare(first.getIndex(), second.getIndex()));
-
-            FilterResults results = new FilterResults();
-            results.values = resultList;
-            results.count = resultList.size();
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            notifyDataSetChanged();
-        }
-    }
-
-    private static class CompleteItem {
-        private final String title;
-        private final String time;
-
-        String getTitle() {
-            return title;
-        }
-
-        private final String url;
-
-        String getURL() {
-            return url;
-        }
-
-        private int index = Integer.MAX_VALUE;
-
-        int getIndex() {
-            return index;
-        }
-
-        String getTime() {
-            return time;
-        }
-
-        void setIndex(int index) {
-            this.index = index;
-        }
-
-        private CompleteItem(String title, String url, String time) {
-            this.title = title;
-            this.url = url;
-            this.time = time;
-        }
-
-        @Override
-        public boolean equals(Object object) {
-            if (!(object instanceof CompleteItem)) {
-                return false;
-            }
-
-            CompleteItem item = (CompleteItem) object;
-            return item.getTitle().equals(title) && item.getURL().equals(url);
-        }
-
-        @Override
-        public int hashCode() {
-            if (title == null || url == null) {
-                return 0;
-            }
-
-            return title.hashCode() & url.hashCode();
-        }
-    }
-
-    private static class Holder {
-        private ImageView iconView;
-        private TextView titleView;
-        private TextView urlView;
-    }
-
     private final Context context;
     private final int layoutResId;
     private final List<CompleteItem> originalList;
     private final List<CompleteItem> resultList;
     private final CompleteFilter filter = new CompleteFilter();
-
-
     public CompleteAdapter(Context context, int layoutResId, List<History> historyList, List<Bookmark> bookmarkList) {
         this.context = context;
         this.layoutResId = layoutResId;
@@ -140,8 +44,8 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
             CompleteItem completeItem = new CompleteItem(a.getTitle(), a.getUrl(), a.getTime());
             originalList.add(completeItem);
         }
-        for (Bookmark a : bookmarkList){
-            CompleteItem completeItem = new CompleteItem(a.getTitle(), a.getUrl(),"BookMark");
+        for (Bookmark a : bookmarkList) {
+            CompleteItem completeItem = new CompleteItem(a.getTitle(), a.getUrl(), "BookMark");
             originalList.add(completeItem);
         }
     }
@@ -183,9 +87,9 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
         holder.urlView.setVisibility(View.GONE);
         holder.urlView.setText(item.url);
 
-        if (item.getTime().equals("BookMark")){
+        if (item.getTime().equals("BookMark")) {
             holder.iconView.setImageResource(R.drawable.button_menu);
-        }else {
+        } else {
             holder.iconView.setImageResource(R.drawable.button_history);
         }
         holder.iconView.setVisibility(View.VISIBLE);
@@ -196,5 +100,97 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
     @Override
     public Filter getFilter() {
         return filter;
+    }
+
+    private static class CompleteItem {
+        private final String title;
+        private final String time;
+        private final String url;
+        private int index = Integer.MAX_VALUE;
+
+        private CompleteItem(String title, String url, String time) {
+            this.title = title;
+            this.url = url;
+            this.time = time;
+        }
+
+        String getTitle() {
+            return title;
+        }
+
+        String getURL() {
+            return url;
+        }
+
+        int getIndex() {
+            return index;
+        }
+
+        void setIndex(int index) {
+            this.index = index;
+        }
+
+        String getTime() {
+            return time;
+        }
+
+        @Override
+        public boolean equals(Object object) {
+            if (!(object instanceof CompleteItem)) {
+                return false;
+            }
+
+            CompleteItem item = (CompleteItem) object;
+            return item.getTitle().equals(title) && item.getURL().equals(url);
+        }
+
+        @Override
+        public int hashCode() {
+            if (title == null || url == null) {
+                return 0;
+            }
+
+            return title.hashCode() & url.hashCode();
+        }
+    }
+
+    private static class Holder {
+        private ImageView iconView;
+        private TextView titleView;
+        private TextView urlView;
+    }
+
+    private class CompleteFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence prefix) {
+            if (prefix == null) {
+                return new FilterResults();
+            }
+
+            resultList.clear();
+            for (CompleteItem item : originalList) {
+                if (item.getTitle().contains(prefix) || item.getTitle().toLowerCase().contains(prefix) || item.getURL().contains(prefix)) {
+                    if (item.getTitle().contains(prefix) || item.getTitle().toLowerCase().contains(prefix)) {
+                        item.setIndex(item.getTitle().indexOf(prefix.toString()));
+                    } else if (item.getURL().contains(prefix)) {
+                        item.setIndex(item.getURL().indexOf(prefix.toString()));
+                    }
+                    resultList.add(item);
+                }
+            }
+
+            Collections.sort(resultList, (first, second) -> Integer.compare(first.getIndex(), second.getIndex()));
+
+            FilterResults results = new FilterResults();
+            results.values = resultList;
+            results.count = resultList.size();
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            notifyDataSetChanged();
+        }
     }
 }

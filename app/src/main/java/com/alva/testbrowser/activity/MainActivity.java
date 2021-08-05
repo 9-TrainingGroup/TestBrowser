@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
@@ -50,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AlertDialog dialog_tabPreview;
     private LinearLayout tab_container;
     private ImageButton tab_openOverView;
+    private ImageButton goBack;
+    private ImageButton goForward;
 
     private FrameLayout webViewContainer;
     private WebViewPool webViewPool;
@@ -57,6 +58,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private WebViewExt webView;
     private long exitTime;
     private Context context;
+
+    private static String coverKeywordLoadOrSearch(String keyword) {
+        keyword = keyword.trim();
+
+        if (keyword.startsWith("www.")) {
+            keyword = HTTP + keyword;
+        } else if (keyword.startsWith("ftp.")) {
+            keyword = "ftp://" + keyword;
+        }
+
+        boolean containsPeriod = keyword.contains(".");
+        boolean isIPAddress = (TextUtils.isDigitsOnly(keyword.replace(".", ""))
+                && (keyword.replace(".", "").length() >= 4) && keyword.contains("."));
+        boolean aboutScheme = keyword.contains("about:");
+        boolean validURL = (keyword.startsWith("ftp://") || keyword.startsWith(HTTP)
+                || keyword.startsWith(FILE) || keyword.startsWith(HTTPS))
+                || isIPAddress;
+        boolean isSearch = ((keyword.contains(" ") || !containsPeriod) && !aboutScheme);
+
+        if (isIPAddress
+                && (!keyword.startsWith(HTTP) || !keyword.startsWith(HTTPS))) {
+            keyword = HTTP + keyword;
+        }
+
+        String coverUrl;
+        if (isSearch) {
+            try {
+                keyword = URLEncoder.encode(keyword, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            coverUrl = "http://www.baidu.com/s?wd=" + keyword + "&ie=UTF-8";
+        } else if (!validURL) {
+            coverUrl = HTTP + keyword;
+        } else {
+            coverUrl = keyword;
+        }
+        return coverUrl;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
-                finish();
+                finishAndRemoveTask();
                 System.exit(0);
             }
         }
@@ -98,15 +138,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
-        Window window = this.getWindow();
-        window.setStatusBarColor(getResources().getColor(android.R.color.white));
-        window.setNavigationBarColor(getResources().getColor(android.R.color.white));
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
         webViewContainer = findViewById(R.id.webViewContainer);
         urlEdit = findViewById(R.id.urlEdit);
-        ImageButton goBack = findViewById(R.id.goBack);
-        ImageButton goForward = findViewById(R.id.goForward);
+        goBack = findViewById(R.id.goBack);
+        goForward = findViewById(R.id.goForward);
         ImageButton refresh = findViewById(R.id.refresh);
         ImageButton history = findViewById(R.id.history);
         ImageButton drawerDialog = findViewById(R.id.drawerDialog);
@@ -180,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             webView.deactivate();
         }
         webView = webViewPool.getWebView(context);
-        webView.init(new UrlBarController(urlEdit, webView), webViewPool.getSize());
+        webView.init(new UrlBarController(urlEdit, webView), webViewPool.getSize(), goBack, goForward);
         webView.setBrowserController(this);
 
         if (!url.isEmpty()) {
@@ -198,46 +233,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         webView.setIndex(webViewPool.getSize() - 1);
     }
 
-
-    private static String coverKeywordLoadOrSearch(String keyword) {
-        keyword = keyword.trim();
-
-        if (keyword.startsWith("www.")) {
-            keyword = HTTP + keyword;
-        } else if (keyword.startsWith("ftp.")) {
-            keyword = "ftp://" + keyword;
-        }
-
-        boolean containsPeriod = keyword.contains(".");
-        boolean isIPAddress = (TextUtils.isDigitsOnly(keyword.replace(".", ""))
-                && (keyword.replace(".", "").length() >= 4) && keyword.contains("."));
-        boolean aboutScheme = keyword.contains("about:");
-        boolean validURL = (keyword.startsWith("ftp://") || keyword.startsWith(HTTP)
-                || keyword.startsWith(FILE) || keyword.startsWith(HTTPS))
-                || isIPAddress;
-        boolean isSearch = ((keyword.contains(" ") || !containsPeriod) && !aboutScheme);
-
-        if (isIPAddress
-                && (!keyword.startsWith(HTTP) || !keyword.startsWith(HTTPS))) {
-            keyword = HTTP + keyword;
-        }
-
-        String coverUrl;
-        if (isSearch) {
-            try {
-                keyword = URLEncoder.encode(keyword, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            coverUrl = "http://www.baidu.com/s?wd=" + keyword + "&ie=UTF-8";
-        } else if (!validURL) {
-            coverUrl = HTTP + keyword;
-        } else {
-            coverUrl = keyword;
-        }
-        return coverUrl;
-    }
-
     /**
      * 主页clickListener
      */
@@ -252,7 +247,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.goForward:
-                webView.goForward();
+                if (webView.canGoForward()) {
+                    webView.goForward();
+                } else {
+                    webView.loadUrl("https://www.baidu.com");
+                    webView.clearHistory();
+                }
                 break;
             case R.id.refresh:
                 webView.reload();

@@ -24,9 +24,9 @@ public class BookmarkAdapter extends ArrayAdapter<Bookmark> {
 
 
     @Override
-    public View getView(int position,View convertView,ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         Bookmark bookmark = getItem(position);
-        View view = LayoutInflater.from(getContext()).inflate(resourceID,parent,false);
+        View view = LayoutInflater.from(getContext()).inflate(resourceID, parent, false);
         TextView title = view.findViewById(R.id.ItemText1);
         TextView url = view.findViewById(R.id.ItemText2);
         title.setText(bookmark.getTitle());
@@ -34,16 +34,17 @@ public class BookmarkAdapter extends ArrayAdapter<Bookmark> {
         return view;
     }
 
-    public void deleBookmarkItem(int position){
+    public void deleBookmarkItem(int position) {
         bookmarkList.remove(position);
         notifyDataSetChanged();
     }
 
-    public void updateBookmarkItem(int position, String title){
+    public void updateBookmarkItem(int position, String title) {
         bookmarkList.get(position).setTitle(title);
         notifyDataSetChanged();
     }
-    public void deleteAllBookmark(){
+
+    public void deleteAllBookmark() {
         bookmarkList.clear();
         notifyDataSetChanged();
     }

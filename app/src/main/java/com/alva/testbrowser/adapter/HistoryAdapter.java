@@ -27,9 +27,9 @@ public class HistoryAdapter extends ArrayAdapter<History> {
 
 
     @Override
-    public View getView(int position,View convertView,ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         History history = getItem(position);
-        View view = LayoutInflater.from(getContext()).inflate(resourceID,parent,false);
+        View view = LayoutInflater.from(getContext()).inflate(resourceID, parent, false);
         TextView title = view.findViewById(R.id.ItemText1);
         TextView url = view.findViewById(R.id.ItemText2);
         title.setText(history.getTitle());
@@ -38,12 +38,12 @@ public class HistoryAdapter extends ArrayAdapter<History> {
     }
 
     //删除指定项并刷新listview
-    public void deleteItem(int position){
+    public void deleteItem(int position) {
         historyList.remove(position);
         notifyDataSetChanged();
     }
 
-    public void clear(){
+    public void clear() {
         historyList.clear();
         notifyDataSetChanged();
     }

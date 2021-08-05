@@ -4,28 +4,28 @@ import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.WindowInsetsController
+import android.view.Window
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.get
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.alva.testbrowser.R
 import com.alva.testbrowser.adapter.PagerPhotoAdapter
 import com.alva.testbrowser.adapter.PagerPhotoViewHolder
-import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.ActivityPhotoBinding
 import com.alva.testbrowser.util.PhotoViewModel
+import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -34,22 +34,22 @@ class PhotoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoBinding
     private lateinit var viewModel: PhotoViewModel
 
-    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+        setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+
         super.onCreate(savedInstanceState)
         binding = ActivityPhotoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        window.statusBarColor = Color.WHITE
-        window.navigationBarColor = Color.WHITE
-        window.insetsController?.setSystemBarsAppearance(
-            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-        )
-        window.insetsController?.setSystemBarsAppearance(
-            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
-            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-        )
+        window.sharedElementEnterTransition = MaterialContainerTransform().apply {
+            addTarget(binding.constraint)
+            duration = 300
+        }
+        window.sharedElementExitTransition = MaterialContainerTransform().apply {
+            addTarget(binding.constraint)
+            duration = 300
+        }
 
 /*        onBackPressedDispatcher.addCallback(this) {
             Toast.makeText(

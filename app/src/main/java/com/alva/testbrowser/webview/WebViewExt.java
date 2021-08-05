@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @author Alva
  * @since 2021/7/11 17:21
  */
-public class WebViewExt extends WebView implements AlbumController{
+public class WebViewExt extends WebView implements AlbumController {
 
     private ProgressView progressView;
     private AlbumItem album;
@@ -43,7 +44,7 @@ public class WebViewExt extends WebView implements AlbumController{
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    public void init(Callback callback,int index) {
+    public void init(Callback callback, int index, ImageButton goBack, ImageButton goForward) {
         progressView = new ProgressView(getContext());
         progressView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2px(getContext(), 4)));
         progressView.setColor(R.color.cyan);
@@ -51,7 +52,7 @@ public class WebViewExt extends WebView implements AlbumController{
         addView(progressView);
 
         this.foreground = false;
-        this.album = new AlbumItem(getContext(), this,index);
+        this.album = new AlbumItem(getContext(), this, index);
 
         WebSettings settings = getSettings();
         settings.setJavaScriptEnabled(true);
@@ -63,7 +64,7 @@ public class WebViewExt extends WebView implements AlbumController{
         settings.setBuiltInZoomControls(true);
         settings.setSupportZoom(true);
 
-        setWebViewClient(new WebClient());
+        setWebViewClient(new WebClient(goBack, goForward));
         setWebChromeClient(new ChromeClient(callback, progressView));
     }
 
@@ -100,21 +101,22 @@ public class WebViewExt extends WebView implements AlbumController{
         album.deactivate();
     }
 
-    public interface Callback {
-        void onReceivedTitle(WebView view, String title);
+    public int getIndex() {
+        return this.album.index;
     }
 
-    public void setIndex(int index){
+    public void setIndex(int index) {
         this.album.index = index;
     }
-
-    public int getIndex(){return this.album.index;}
-
-
 
     @Override
     public void loadUrl(@NonNull String url, @NonNull Map<String, String> additionalHttpHeaders) {
         super.loadUrl(url, additionalHttpHeaders);
+    }
+
+
+    public interface Callback {
+        void onReceivedTitle(WebView view, String title);
     }
 
 }

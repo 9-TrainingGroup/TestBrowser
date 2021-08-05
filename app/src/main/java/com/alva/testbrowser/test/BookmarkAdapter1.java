@@ -22,31 +22,33 @@ public class BookmarkAdapter1 extends ArrayAdapter<Bookmark> {
     public BookmarkAdapter1(@NonNull Context context, int resource, @NonNull List<Bookmark> objects) {
         super(context, resource, objects);
         resourceID = resource;
-        bookmarkList=objects;
+        bookmarkList = objects;
     }
-    public void setBookmarkList(List<Bookmark> bookmarks){
+
+    public void setBookmarkList(List<Bookmark> bookmarks) {
         bookmarkList = bookmarks;
         Log.d("Adapter", String.valueOf(bookmarkList.size()));
         notifyDataSetChanged();
     }
 
-    public void deleteItem(int position){
+    public void deleteItem(int position) {
         bookmarkList.remove(position);
         notifyDataSetChanged();
     }
 
 
     @Override
-    public View getView(int position,View convertView,ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         Bookmark bookmark = getItem(position);
-        View view = LayoutInflater.from(getContext()).inflate(resourceID,parent,false);
+        View view = LayoutInflater.from(getContext()).inflate(resourceID, parent, false);
         TextView title = view.findViewById(R.id.ItemText1);
         TextView url = view.findViewById(R.id.ItemText2);
         title.setText(bookmark.getTitle());
         url.setText(bookmark.getUrl());
         return view;
     }
-    public void clear(){
+
+    public void clear() {
         notifyDataSetChanged();
     }
 }

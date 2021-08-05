@@ -1,5 +1,7 @@
 package com.alva.testbrowser.util
 
+import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -23,11 +25,13 @@ class JavascriptInterface(private val context: Context) {
     fun openImage(url: String) {
         val index = imageUrls.indexOf(url)
         val bundle = Bundle()
-        val intent = Intent()
+        val intent = Intent(context, PhotoActivity::class.java)
         bundle.putStringArrayList("imageUrls", imageUrls)
         bundle.putInt("index", index)
         intent.putExtra("bundle", bundle)
-        intent.setClass(context, PhotoActivity::class.java)
-        context.startActivity(intent)
+        context.startActivity(
+            intent,
+            ActivityOptions.makeSceneTransitionAnimation(context as Activity).toBundle()
+        )
     }
 }

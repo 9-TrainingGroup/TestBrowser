@@ -14,14 +14,14 @@ import java.util.List;
 public class WebViewPool {
     private static final String DEMO_URL = "https://www.baidu.com";
     private static final String APP_CACAHE_DIRNAME = "webCache";
+    private static final byte[] lock = new byte[]{};
     private static List<WebViewExt> available = new ArrayList<>();
     private static List<WebViewExt> inUse = new ArrayList<>();
-    private static final byte[] lock = new byte[]{};
     private static int maxSize = 1;
-    private int currentSize = 0;
     private static long startTimes = 0;
     private static volatile WebViewPool instance = null;
- 
+    private int currentSize = 0;
+
     public static WebViewPool getInstance() {
         if (instance == null) {
             synchronized (WebViewPool.class) {
@@ -32,7 +32,7 @@ public class WebViewPool {
         }
         return instance;
     }
- 
+
     /**
      * Webview 初始化
      * 最好放在application oncreate里
@@ -44,7 +44,7 @@ public class WebViewPool {
             available.add(webView);
         }
     }
- 
+
     /**
      * 获取webview
      */
@@ -65,23 +65,23 @@ public class WebViewPool {
         }
     }
 
-    public WebViewExt getWebViewByIndex(Context context,int index){
-        synchronized (lock){
-            if (inUse.size() < index + 1){
+    public WebViewExt getWebViewByIndex(Context context, int index) {
+        synchronized (lock) {
+            if (inUse.size() < index + 1) {
                 return null;
             }
             return inUse.get(index);
         }
     }
 
-    private void setIndex(){
+    private void setIndex() {
         int n = 0;
-        for (WebViewExt webViewExt: inUse){
+        for (WebViewExt webViewExt : inUse) {
             webViewExt.setIndex(n++);
         }
     }
 
- 
+
     /**
      * 回收webview ,不解绑
      *
@@ -96,12 +96,12 @@ public class WebViewPool {
         webView.clearHistory();
         synchronized (lock) {
             inUse.remove(webView);
-                webView = null;
+            webView = null;
             currentSize--;
         }
         setIndex();
     }
- 
+
     /**
      * 回收webview ,解绑
      *
@@ -126,10 +126,10 @@ public class WebViewPool {
         }
     }
 
-    public int getSize(){
+    public int getSize() {
         return inUse.size();
     }
- 
+
     /**
      * 设置webview池个数
      *

@@ -9,18 +9,18 @@ import java.util.List;
 public interface BookmarkDao {
 
     /*添加书签
-    * url不可重复*/
+     * url不可重复*/
     @Insert
-    void insertBookmark(Bookmark ... bookmarks);
+    void insertBookmark(Bookmark... bookmarks);
 
     /*更改书签title
-    * 参数：title*/
+     * 参数：title*/
     @Update
-    void updateTitle(Bookmark ... bookmarks);
+    void updateTitle(Bookmark... bookmarks);
 
     /*删除此书签*/
     @Delete
-    void deleteBookmark(Bookmark ... bookmarks);
+    void deleteBookmark(Bookmark... bookmarks);
 
     /*删除全部书签*/
     @Query("delete from bookmark")

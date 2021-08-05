@@ -16,7 +16,7 @@ public interface HistoryDao {
 
     /*删除历史记录*/
     @Delete
-    void deleteHistory(History ... histories);
+    void deleteHistory(History... histories);
 
     /*删除所有历史记录*/
     @Query("DELETE FROM history")

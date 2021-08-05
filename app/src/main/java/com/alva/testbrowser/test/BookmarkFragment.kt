@@ -2,7 +2,6 @@ package com.alva.testbrowser.test
 
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.alva.testbrowser.databinding.FragmentBookmarkBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -42,7 +42,7 @@ class BookmarkFragment : Fragment() {
             })
         }
         binding.deleteButton.setOnClickListener {
-            val builder: AlertDialog = AlertDialog.Builder(requireContext())
+            MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.dialog_delete_bookmark_title)
                 .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
                     viewModel.deleteAllBookmark()
@@ -50,14 +50,13 @@ class BookmarkFragment : Fragment() {
                 .setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
                     dialog.cancel()
                 }
+                .create()
                 .show()
-            builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
         }
         binding.addButton.setOnClickListener {
             val v = View.inflate(it.context, R.layout.dialog_edit_web, null)
             val dialogBinding = DialogEditWebBinding.bind(v)
-            val builder: AlertDialog = AlertDialog.Builder(it.context)
+            val builder = MaterialAlertDialogBuilder(it.context)
                 .setTitle(R.string.dialog_add_title)
                 .setView(v)
                 .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
@@ -71,11 +70,7 @@ class BookmarkFragment : Fragment() {
                     dialog.cancel()
                 }
                 .show()
-            builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                setTextColor(Color.GRAY)
-                isEnabled = false
-            }
-            builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+            builder.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
             dialogBinding.editTextName.requestFocus()
             lifecycleScope.launch {
                 delay(100)
@@ -85,20 +80,19 @@ class BookmarkFragment : Fragment() {
                 )
             }
             dialogBinding.editTextUrl.addTextChangedListener { editable ->
-                if (editable.toString().isBlank()) {
-                    builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                        setTextColor(Color.GRAY)
-                        isEnabled = false
-                    }
-                } else {
-                    builder.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                        setTextColor(Color.BLACK)
-                        isEnabled = true
-                    }
-                }
+                builder.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
+                    editable.toString().isNotBlank()
             }
         }
     }
+
+/*    override fun onContextItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.editItem -> {
+            }
+        }
+        return super.onContextItemSelected(item)
+    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()
