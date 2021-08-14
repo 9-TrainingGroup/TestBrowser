@@ -5,44 +5,40 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
-interface BookmarkDao {
-    @Insert
-    suspend fun insertWebs(vararg webs: Bookmarktest)
+interface WebDao {
+    @Insert(entity = Bookmarks::class)
+    suspend fun insertWebs(vararg webs: Bookmarks)
 
-    @Update
-    suspend fun updateWebs(vararg webs: Bookmarktest)
+    @Insert(entity = Histories::class)
+    suspend fun insertWebs(vararg webs: Histories)
 
-    @Delete
-    suspend fun deleteWebs(vararg webs: Bookmarktest)
+    @Update(entity = Bookmarks::class)
+    suspend fun updateWebs(vararg webs: Bookmarks)
 
-    @Query("DELETE FROM bookmarktest")
-    suspend fun deleteAllWebs()
+    @Delete(entity = Bookmarks::class)
+    suspend fun deleteWebs(vararg webs: Bookmarks)
 
-    @Query("SELECT * FROM bookmarktest ORDER BY id DESC")
-    fun getAllWebsLive(): LiveData<List<Bookmarktest>>
+    @Delete(entity = Histories::class)
+    suspend fun deleteWebs(vararg webs: Histories)
+
+    @Query("DELETE FROM bookmarks")
+    suspend fun deleteAllBookmarks()
+
+    @Query("DELETE FROM histories")
+    suspend fun deleteAllHistories()
+
+    @Query("SELECT * FROM bookmarks ORDER BY id DESC")
+    fun getAllBookmarks(): LiveData<List<Bookmarks>>
+
+    @Query("SELECT * FROM histories ORDER BY id DESC")
+    fun getAllHistories(): LiveData<List<Histories>>
 }
 
-@Dao
-interface HistoryDao {
-    @Insert
-    suspend fun insertWebs(vararg webs: Historytest)
-
-    @Delete
-    suspend fun deleteWebs(vararg webs: Historytest)
-
-    @Query("DELETE FROM historytest")
-    suspend fun deleteAllWebs()
-
-    @Query("SELECT * FROM historytest ORDER BY id DESC")
-    fun getAllWebsLive(): LiveData<List<Historytest>>
-}
-
-@Database(entities = [Bookmarktest::class, Historytest::class], version = 1, exportSchema = false)
+@Database(entities = [Bookmarks::class, Histories::class], version = 1, exportSchema = false)
 abstract class WebsDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: WebsDatabase? = null
-
 
         @Synchronized
         fun getDatabase(context: Context): WebsDatabase {
@@ -57,44 +53,42 @@ abstract class WebsDatabase : RoomDatabase() {
         }
     }
 
-    abstract fun bookmarkDao(): BookmarkDao
-    abstract fun historyDao(): HistoryDao
+    abstract fun webDao(): WebDao
 }
 
 class WebsRepository(context: Context) {
     private val websDatabase = WebsDatabase.getDatabase(context.applicationContext)
-    private val bookmarkDao = websDatabase.bookmarkDao()
-    private val historyDao = websDatabase.historyDao()
+    private val webDao = websDatabase.webDao()
 
-    val allBookmark: LiveData<List<Bookmarktest>> = bookmarkDao.getAllWebsLive()
+    val allBookmark: LiveData<List<Bookmarks>> = webDao.getAllBookmarks()
 
-    val allHistory: LiveData<List<Historytest>> = historyDao.getAllWebsLive()
+    val allHistory: LiveData<List<Histories>> = webDao.getAllHistories()
 
-    suspend fun insertWebs(webs: Bookmarktest) {
-        bookmarkDao.insertWebs(webs)
+    suspend fun insertWebs(webs: Bookmarks) {
+        webDao.insertWebs(webs)
     }
 
-    suspend fun insertWebs(webs: Historytest) {
-        historyDao.insertWebs(webs)
+    suspend fun insertWebs(webs: Histories) {
+        webDao.insertWebs(webs)
     }
 
-    suspend fun updateWebs(webs: Bookmarktest) {
-        bookmarkDao.updateWebs(webs)
+    suspend fun updateWebs(webs: Bookmarks) {
+        webDao.updateWebs(webs)
     }
 
-    suspend fun deleteWebs(webs: Bookmarktest) {
-        bookmarkDao.deleteWebs(webs)
+    suspend fun deleteWebs(webs: Bookmarks) {
+        webDao.deleteWebs(webs)
     }
 
-    suspend fun deleteWebs(webs: Historytest) {
-        historyDao.deleteWebs(webs)
+    suspend fun deleteWebs(webs: Histories) {
+        webDao.deleteWebs(webs)
     }
 
     suspend fun deleteAllBookmark() {
-        bookmarkDao.deleteAllWebs()
+        webDao.deleteAllBookmarks()
     }
 
     suspend fun deleteAllHistory() {
-        historyDao.deleteAllWebs()
+        webDao.deleteAllHistories()
     }
 }

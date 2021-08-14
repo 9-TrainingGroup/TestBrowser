@@ -1,12 +1,9 @@
 package com.alva.testbrowser.webview;
 
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.ImageButton;
 
-import com.alva.testbrowser.R;
 import com.alva.testbrowser.database.History;
 import com.alva.testbrowser.database.MyDatabase;
 

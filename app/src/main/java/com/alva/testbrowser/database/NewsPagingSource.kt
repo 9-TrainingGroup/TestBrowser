@@ -1,7 +1,6 @@
 package com.alva.testbrowser.database
 
-import androidx.paging.PagingSource
-import androidx.paging.PagingState
+import androidx.paging.*
 import java.lang.Exception
 
 class NewsPagingSource(private val newsService: NewsService, private val type: String) :

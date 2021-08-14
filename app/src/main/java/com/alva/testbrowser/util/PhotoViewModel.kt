@@ -1,9 +1,8 @@
 package com.alva.testbrowser.util
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 
-class PhotoViewModel(application: Application) : AndroidViewModel(application) {
-    val photoList: MutableLiveData<List<String>> = MutableLiveData<List<String>>()
+class PhotoViewModel : ViewModel() {
+    val photoList = liveData { emit(JavascriptInterface.imageUrls) }
 }

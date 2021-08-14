@@ -1,8 +1,6 @@
 package com.alva.testbrowser.database
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 
 object NewsRepository {

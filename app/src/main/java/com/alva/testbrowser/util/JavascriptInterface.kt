@@ -4,12 +4,14 @@ import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.webkit.JavascriptInterface
 import com.alva.testbrowser.activity.PhotoActivity
 
 class JavascriptInterface(private val context: Context) {
-    private val imageUrls = ArrayList<String>()
+    companion object {
+        val imageUrls = ArrayList<String>()
+        var index: Int = 0
+    }
 
     @JavascriptInterface
     fun clearImageUrl() {
@@ -23,14 +25,9 @@ class JavascriptInterface(private val context: Context) {
 
     @JavascriptInterface
     fun openImage(url: String) {
-        val index = imageUrls.indexOf(url)
-        val bundle = Bundle()
-        val intent = Intent(context, PhotoActivity::class.java)
-        bundle.putStringArrayList("imageUrls", imageUrls)
-        bundle.putInt("index", index)
-        intent.putExtra("bundle", bundle)
+        index = imageUrls.indexOf(url)
         context.startActivity(
-            intent,
+            Intent(context, PhotoActivity::class.java),
             ActivityOptions.makeSceneTransitionAnimation(context as Activity).toBundle()
         )
     }

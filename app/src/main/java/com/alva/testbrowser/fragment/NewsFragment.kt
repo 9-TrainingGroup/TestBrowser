@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import com.alva.testbrowser.adapter.FooterAdapter
 import com.alva.testbrowser.adapter.NewsAdapter
@@ -15,16 +17,12 @@ import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.FragmentNewsBinding
 import com.alva.testbrowser.util.NewsViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class NewsFragment() : Fragment() {
-    constructor(type: Int) : this() {
-        this.type = type
-    }
-
+class NewsFragment : Fragment() {
     private var _binding: FragmentNewsBinding? = null
     private val binding get() = _binding!!
-    private var type: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,27 +40,15 @@ class NewsFragment() : Fragment() {
         val viewModel by activityViewModels<NewsViewModel>()
         binding.recyclerView.adapter =
             adapter.withLoadStateFooter(FooterAdapter { adapter.retry() })
-        when (type) {
-            0 -> viewModel.pagingDataTT.observe(viewLifecycleOwner, {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    adapter.submitData(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                when (arguments?.get("POSITION")) {
+                    0 -> viewModel.pagingDataTT.collect { adapter.submitData(it) }
+                    1 -> viewModel.pagingDataJX.collect { adapter.submitData(it) }
+                    2 -> viewModel.pagingDataYL.collect { adapter.submitData(it) }
+                    else -> viewModel.pagingDataYD.collect { adapter.submitData(it) }
                 }
-            })
-            1 -> viewModel.pagingDataJX.observe(viewLifecycleOwner, {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    adapter.submitData(it)
-                }
-            })
-            2 -> viewModel.pagingDataYL.observe(viewLifecycleOwner, {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    adapter.submitData(it)
-                }
-            })
-            else -> viewModel.pagingDataYD.observe(viewLifecycleOwner, {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    adapter.submitData(it)
-                }
-            })
+            }
         }
         adapter.addLoadStateListener {
             when (it.refresh) {

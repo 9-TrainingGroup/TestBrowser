@@ -5,8 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.forEach
 import androidx.core.view.get
-import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -19,9 +20,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 class BookmarkAdapter(private val viewModel: WebViewModel) :
-    ListAdapter<Bookmarktest, WebViewHolder>(DiffCallback) {
+    ListAdapter<Bookmarks, WebViewHolder>(DiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WebViewHolder {
         val holder = WebViewHolder(
             CellBookmarkBinding.inflate(
@@ -39,70 +39,71 @@ class BookmarkAdapter(private val viewModel: WebViewModel) :
         }
         holder.itemView.setOnCreateContextMenuListener { menu, view, _ ->
             MenuInflater(view.context).inflate(R.menu.menu_bookmark, menu)
-            menu[0].setOnMenuItemClickListener {
-                val v = View.inflate(view.context, R.layout.dialog_edit_web, null)
-                val binding = DialogEditWebBinding.bind(v)
-                binding.editTextName.setText(getItem(holder.absoluteAdapterPosition).name)
-                binding.editTextUrl.setText(getItem(holder.absoluteAdapterPosition).url)
-                val builder = MaterialAlertDialogBuilder(view.context)
-                    .setTitle(R.string.dialog_add_title)
-                    .setView(v)
-                    .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
-                        val web = Bookmarktest(
-                            binding.editTextName.text.toString().trim(),
-                            binding.editTextUrl.text.toString().trim()
-                        )
-                        web.id = getItem(holder.absoluteAdapterPosition).id
-                        viewModel.updateWebs(web)
-                    }.setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
-                        dialog.cancel()
+            menu.forEach { item ->
+                item.setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.editItem -> {
+                            val v = View.inflate(view.context, R.layout.dialog_edit_web, null)
+                            val binding = DialogEditWebBinding.bind(v)
+                            binding.editTextName.setText(getItem(holder.absoluteAdapterPosition).name)
+                            binding.editTextUrl.setText(getItem(holder.absoluteAdapterPosition).url)
+                            val builder = MaterialAlertDialogBuilder(view.context)
+                                .setTitle(R.string.dialog_add_title)
+                                .setView(v)
+                                .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
+                                    val web = Bookmarks(
+                                        id = getItem(holder.absoluteAdapterPosition).id,
+                                        name = binding.editTextName.text.toString().trim(),
+                                        url = binding.editTextUrl.text.toString().trim()
+                                    )
+                                    viewModel.updateWebs(web)
+                                }.setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
+                                    dialog.cancel()
+                                }
+                                .show()
+                            binding.editTextName.requestFocus()
+                            viewModel.viewModelScope.launch {
+                                delay(100)
+                                (view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
+                                    binding.editTextName,
+                                    InputMethodManager.SHOW_IMPLICIT
+                                )
+                            }
+                            binding.editTextUrl.doAfterTextChanged {
+                                builder.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
+                                    it.toString().isNotBlank()
+                            }
+                        }
+                        R.id.deleteItem -> viewModel.deleteWebs(getItem(holder.absoluteAdapterPosition))
                     }
-                    .show()
-                binding.editTextName.requestFocus()
-                viewModel.viewModelScope.launch {
-                    delay(100)
-                    (view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
-                        binding.editTextName,
-                        0
-                    )
+                    return@setOnMenuItemClickListener false
                 }
-                binding.editTextUrl.addTextChangedListener {
-                    builder.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
-                        it.toString().isNotBlank()
-                }
-                return@setOnMenuItemClickListener false
-            }
-            menu[1].setOnMenuItemClickListener {
-                viewModel.deleteWebs(getItem(holder.absoluteAdapterPosition))
-                return@setOnMenuItemClickListener false
             }
         }
         return holder
     }
 
     override fun onBindViewHolder(holder: WebViewHolder, position: Int) {
-        holder.viewBinding.textView.apply {
+        holder.viewBinding.textViewName.apply {
+            text = getItem(position).name
             if (getItem(position).name.isEmpty()) {
-                text = getItem(position).url
-                textSize = 20F
-            } else {
-                text = getItem(position).name
-                textSize = 34F
+                text = "未知网站"
             }
         }
+        holder.viewBinding.textViewUrl.text = getItem(position).url
     }
 
-    object DiffCallback : DiffUtil.ItemCallback<Bookmarktest>() {
-        override fun areItemsTheSame(oldItem: Bookmarktest, newItem: Bookmarktest) =
+    object DiffCallback : DiffUtil.ItemCallback<Bookmarks>() {
+        override fun areItemsTheSame(oldItem: Bookmarks, newItem: Bookmarks) =
             oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: Bookmarktest, newItem: Bookmarktest) =
+        override fun areContentsTheSame(oldItem: Bookmarks, newItem: Bookmarks) =
             oldItem == newItem
     }
 }
 
 class HistoryAdapter(private val viewModel: WebViewModel) :
-    ListAdapter<Historytest, WebViewHolder>(DiffCallback) {
+    ListAdapter<Histories, WebViewHolder>(DiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WebViewHolder {
         val holder = WebViewHolder(
             CellBookmarkBinding.inflate(
@@ -129,14 +130,15 @@ class HistoryAdapter(private val viewModel: WebViewModel) :
     }
 
     override fun onBindViewHolder(holder: WebViewHolder, position: Int) {
-        holder.viewBinding.textView.text = getItem(position).name
+        holder.viewBinding.textViewName.text = getItem(position).name
+        holder.viewBinding.textViewUrl.text = getItem(position).url
     }
 
-    object DiffCallback : DiffUtil.ItemCallback<Historytest>() {
-        override fun areItemsTheSame(oldItem: Historytest, newItem: Historytest) =
+    object DiffCallback : DiffUtil.ItemCallback<Histories>() {
+        override fun areItemsTheSame(oldItem: Histories, newItem: Histories) =
             oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: Historytest, newItem: Historytest) =
+        override fun areContentsTheSame(oldItem: Histories, newItem: Histories) =
             oldItem == newItem
     }
 }

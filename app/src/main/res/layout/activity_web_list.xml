@@ -18,7 +18,7 @@
         app:tabIndicatorFullWidth="false"
         app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/bule"
-        app:tabTextAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:tabTextAppearance="@style/TextAppearance.AppCompat.Large"
         app:tabTextColor="@color/black">
 
         <com.google.android.material.tabs.TabItem
@@ -44,8 +44,8 @@
 
     <ImageView
         android:id="@+id/backButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginBottom="8dp"
         android:clickable="true"

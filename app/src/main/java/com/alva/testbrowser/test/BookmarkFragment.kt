@@ -8,9 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.alva.testbrowser.databinding.FragmentBookmarkBinding
@@ -37,6 +38,12 @@ class BookmarkFragment : Fragment() {
         val viewModel by activityViewModels<WebViewModel>()
         BookmarkAdapter(viewModel).apply {
             binding.recyclerView.adapter = this
+            binding.recyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
             viewModel.allBookmark.observe(viewLifecycleOwner, {
                 submitList(it)
             })
@@ -60,9 +67,9 @@ class BookmarkFragment : Fragment() {
                 .setTitle(R.string.dialog_add_title)
                 .setView(v)
                 .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
-                    val web = Bookmarktest(
-                        dialogBinding.editTextName.text.toString().trim(),
-                        dialogBinding.editTextUrl.text.toString().trim()
+                    val web = Bookmarks(
+                        name = dialogBinding.editTextName.text.toString().trim(),
+                        url = dialogBinding.editTextUrl.text.toString().trim()
                     )
                     viewModel.insertWebs(web)
                 }
@@ -76,10 +83,10 @@ class BookmarkFragment : Fragment() {
                 delay(100)
                 (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
                     dialogBinding.editTextName,
-                    0
+                    InputMethodManager.SHOW_IMPLICIT
                 )
             }
-            dialogBinding.editTextUrl.addTextChangedListener { editable ->
+            dialogBinding.editTextUrl.doAfterTextChanged { editable ->
                 builder.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
                     editable.toString().isNotBlank()
             }

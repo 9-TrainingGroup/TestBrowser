@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.FragmentHistoryBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -29,6 +30,12 @@ class HistoryFragment : Fragment() {
         val viewModel by activityViewModels<WebViewModel>()
         HistoryAdapter(viewModel).apply {
             binding.recyclerView.adapter = this
+            binding.recyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
             viewModel.allHistory.observe(viewLifecycleOwner, {
                 this.submitList(it)
             })

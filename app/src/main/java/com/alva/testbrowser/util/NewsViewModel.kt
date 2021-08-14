@@ -1,30 +1,32 @@
 package com.alva.testbrowser.util
 
 import androidx.lifecycle.*
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.filter
+import androidx.paging.*
 import com.alva.testbrowser.database.NewsItem
 import com.alva.testbrowser.database.NewsRepository
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 
 class NewsViewModel : ViewModel() {
-    private val _pagingDataTT: MutableLiveData<PagingData<NewsItem>> = MutableLiveData()
-    val pagingDataTT: LiveData<PagingData<NewsItem>> = _pagingDataTT
+    private val _pagingDataTT: MutableStateFlow<PagingData<NewsItem>>
+            by lazy { MutableStateFlow(PagingData.empty()) }
+    val pagingDataTT: StateFlow<PagingData<NewsItem>> get() = _pagingDataTT
 
-    private val _pagingDataJX: MutableLiveData<PagingData<NewsItem>> = MutableLiveData()
-    val pagingDataJX: LiveData<PagingData<NewsItem>> = _pagingDataJX
+    private val _pagingDataJX: MutableStateFlow<PagingData<NewsItem>>
+            by lazy { MutableStateFlow(PagingData.empty()) }
+    val pagingDataJX: StateFlow<PagingData<NewsItem>> get() = _pagingDataJX
 
-    private val _pagingDataYL: MutableLiveData<PagingData<NewsItem>> = MutableLiveData()
-    val pagingDataYL: LiveData<PagingData<NewsItem>> = _pagingDataYL
+    private val _pagingDataYL: MutableStateFlow<PagingData<NewsItem>>
+            by lazy { MutableStateFlow(PagingData.empty()) }
+    val pagingDataYL: StateFlow<PagingData<NewsItem>> get() = _pagingDataYL
 
-    private val _pagingDataYD: MutableLiveData<PagingData<NewsItem>> = MutableLiveData()
-    val pagingDataYD: LiveData<PagingData<NewsItem>> = _pagingDataYD
+    private val _pagingDataYD: MutableStateFlow<PagingData<NewsItem>>
+            by lazy { MutableStateFlow(PagingData.empty()) }
+    val pagingDataYD: StateFlow<PagingData<NewsItem>> get() = _pagingDataYD
 
-    fun getPagingData(content: String, type: String) {
-        viewModelScope.launch {
+    suspend fun getPagingData(content: String, type: String) {
+        withContext(Dispatchers.IO) {
             NewsRepository.getPagingData(type).cachedIn(viewModelScope).map { pagingData ->
                 pagingData.filter {
                     it.title.contains(content)

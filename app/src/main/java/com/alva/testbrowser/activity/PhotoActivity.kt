@@ -23,6 +23,7 @@ import com.alva.testbrowser.R
 import com.alva.testbrowser.adapter.PagerPhotoAdapter
 import com.alva.testbrowser.adapter.PagerPhotoViewHolder
 import com.alva.testbrowser.databinding.ActivityPhotoBinding
+import com.alva.testbrowser.util.JavascriptInterface
 import com.alva.testbrowser.util.PhotoViewModel
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
@@ -32,7 +33,7 @@ import kotlinx.coroutines.launch
 
 class PhotoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoBinding
-    private lateinit var viewModel: PhotoViewModel
+    private val viewModel by viewModels<PhotoViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
@@ -64,24 +65,24 @@ class PhotoActivity : AppCompatActivity() {
             }
         }*/
 
-        val bundle = intent.getBundleExtra("bundle")!!
-
-        viewModel = viewModels<PhotoViewModel>().value
-        viewModel.photoList.value = bundle.getStringArrayList("imageUrls")
-        PagerPhotoAdapter().apply {
-            binding.viewPager2.adapter = this
+        val pagerPhotoAdapter by lazy { PagerPhotoAdapter() }
+        binding.viewPager2.apply {
+            adapter = pagerPhotoAdapter
             viewModel.photoList.observe(this@PhotoActivity, {
-                submitList(it)
-                binding.viewPager2.setCurrentItem(bundle.getInt("index"), false)
+                pagerPhotoAdapter.submitList(it)
+                setCurrentItem(JavascriptInterface.index, false)
+            })
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    binding.photoTag.text = getString(
+                        R.string.photo_tag,
+                        position + 1,
+                        pagerPhotoAdapter.itemCount
+                    )
+                }
             })
         }
-        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                binding.photoTag.text =
-                    getString(R.string.photo_tag, position + 1, viewModel.photoList.value?.size)
-            }
-        })
         val requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->    //动态申请权限
                 permissions.entries.forEach {
@@ -90,7 +91,7 @@ class PhotoActivity : AppCompatActivity() {
                 if (permissions[Manifest.permission.WRITE_EXTERNAL_STORAGE] == true) {
                     lifecycleScope.launch(Dispatchers.IO) { savePhoto() }
                 } else {
-                    Toast.makeText(this, getString(R.string.save_failed), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.save_fail), Toast.LENGTH_SHORT).show()
                 }
             }
         binding.saveButton.setOnClickListener {
@@ -122,7 +123,7 @@ class PhotoActivity : AppCompatActivity() {
             MainScope().launch {
                 Toast.makeText(
                     this@PhotoActivity,
-                    getString(R.string.save_failed),
+                    getString(R.string.save_fail),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -133,7 +134,7 @@ class PhotoActivity : AppCompatActivity() {
                 MainScope().launch {
                     Toast.makeText(
                         this@PhotoActivity,
-                        getString(R.string.saved_success),
+                        getString(R.string.save_success),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -141,7 +142,7 @@ class PhotoActivity : AppCompatActivity() {
                 MainScope().launch {
                     Toast.makeText(
                         this@PhotoActivity,
-                        getString(R.string.save_failed),
+                        getString(R.string.save_fail),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

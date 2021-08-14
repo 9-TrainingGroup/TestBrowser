@@ -2,7 +2,6 @@ package com.alva.testbrowser.fragment
 
 import android.app.AlertDialog
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,8 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.alva.testbrowser.R
@@ -41,7 +39,6 @@ class WebFragment : Fragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -80,16 +77,16 @@ class WebFragment : Fragment() {
                 delay(100)
                 (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
                     dialogBinding.editTextName,
-                    0
+                    InputMethodManager.SHOW_IMPLICIT
                 )
             }
-            dialogBinding.editTextUrl.addTextChangedListener { editable ->
+            dialogBinding.editTextUrl.doAfterTextChanged { editable ->
                 builder.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
                     editable.toString().isNotBlank()
             }
         }
         requireActivity().findViewById<MaterialAutoCompleteTextView>(R.id.searchEdit)
-            .addTextChangedListener {
+            .doAfterTextChanged {
                 webView.findAllAsync(it.toString().trim())
             }
     }
