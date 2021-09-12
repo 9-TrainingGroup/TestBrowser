@@ -1,44 +1,39 @@
 package com.alva.testbrowser.test
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class WebViewModel(application: Application) : AndroidViewModel(application) {
-    private val websRepository = WebsRepository(application)
+@HiltViewModel
+class WebViewModel @Inject constructor(
+    private val websRepository: WebsRepository
+) : ViewModel() {
+    val allBookmark = websRepository.getAllBookmarks().asLiveData(Dispatchers.IO)
 
-    val allBookmark: LiveData<List<Bookmarks>> = websRepository.allBookmark
+    val allHistory = websRepository.getAllHistories().asLiveData(Dispatchers.IO)
 
-    val allHistory: LiveData<List<Histories>> = websRepository.allHistory
-
-    fun insertWebs(webs: Bookmarks) {
+    fun insertWebs(webs: Bookmarks) =
         viewModelScope.launch(Dispatchers.IO) { websRepository.insertWebs(webs) }
-    }
 
-    fun insertWebs(webs: Histories) {
+    fun insertWebs(webs: Histories) =
         viewModelScope.launch(Dispatchers.IO) { websRepository.insertWebs(webs) }
-    }
 
-    fun updateWebs(webs: Bookmarks) {
+    fun updateWebs(webs: Bookmarks) =
         viewModelScope.launch(Dispatchers.IO) { websRepository.updateWebs(webs) }
-    }
 
-    fun deleteWebs(webs: Bookmarks) {
+    fun deleteWebs(webs: Bookmarks) =
         viewModelScope.launch(Dispatchers.IO) { websRepository.deleteWebs(webs) }
-    }
 
-    fun deleteWebs(webs: Histories) {
+    fun deleteWebs(webs: Histories) =
         viewModelScope.launch(Dispatchers.IO) { websRepository.deleteWebs(webs) }
-    }
 
-    fun deleteAllBookmark() {
+    fun deleteAllBookmark() =
         viewModelScope.launch(Dispatchers.IO) { websRepository.deleteAllBookmark() }
-    }
 
-    fun deleteAllHistory() {
+    fun deleteAllHistory() =
         viewModelScope.launch(Dispatchers.IO) { websRepository.deleteAllHistory() }
-    }
 }

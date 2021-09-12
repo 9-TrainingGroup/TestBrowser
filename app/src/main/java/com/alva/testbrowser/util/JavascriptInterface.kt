@@ -14,14 +14,10 @@ class JavascriptInterface(private val context: Context) {
     }
 
     @JavascriptInterface
-    fun clearImageUrl() {
-        imageUrls.clear()
-    }
+    fun clearImageUrl() = imageUrls.clear()
 
     @JavascriptInterface
-    fun getImageUrl(url: String) {
-        imageUrls.add(url)
-    }
+    fun getImageUrl(url: String) = imageUrls.add(url)
 
     @JavascriptInterface
     fun openImage(url: String) {

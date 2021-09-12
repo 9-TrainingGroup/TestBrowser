@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity
-data class Bookmarks @JvmOverloads constructor(
+data class Bookmarks @JvmOverloads constructor( //Java中调用kotlin的方法
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val url: String
@@ -14,7 +14,7 @@ data class Bookmarks @JvmOverloads constructor(
 
 @Parcelize
 @Entity
-data class Histories @JvmOverloads constructor(
+data class Histories @JvmOverloads constructor( //Java中调用kotlin的方法
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val url: String

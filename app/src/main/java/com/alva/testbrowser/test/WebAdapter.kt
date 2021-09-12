@@ -1,14 +1,13 @@
 package com.alva.testbrowser.test
 
-import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.view.*
-import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +16,6 @@ import com.alva.testbrowser.activity.MainActivity
 import com.alva.testbrowser.databinding.CellBookmarkBinding
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class BookmarkAdapter(private val viewModel: WebViewModel) :
     ListAdapter<Bookmarks, WebViewHolder>(DiffCallback) {
@@ -47,7 +44,7 @@ class BookmarkAdapter(private val viewModel: WebViewModel) :
                             val binding = DialogEditWebBinding.bind(v)
                             binding.editTextName.setText(getItem(holder.absoluteAdapterPosition).name)
                             binding.editTextUrl.setText(getItem(holder.absoluteAdapterPosition).url)
-                            val builder = MaterialAlertDialogBuilder(view.context)
+                            val dialog: AlertDialog = MaterialAlertDialogBuilder(view.context)
                                 .setTitle(R.string.dialog_add_title)
                                 .setView(v)
                                 .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
@@ -60,17 +57,14 @@ class BookmarkAdapter(private val viewModel: WebViewModel) :
                                 }.setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
                                     dialog.cancel()
                                 }
-                                .show()
+                                .create()
+                            dialog.window?.attributes?.gravity = Gravity.BOTTOM
+                            dialog.show()
                             binding.editTextName.requestFocus()
-                            viewModel.viewModelScope.launch {
-                                delay(100)
-                                (view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
-                                    binding.editTextName,
-                                    InputMethodManager.SHOW_IMPLICIT
-                                )
-                            }
+                            ViewCompat.getWindowInsetsController(v)
+                                ?.show(WindowInsetsCompat.Type.ime())
                             binding.editTextUrl.doAfterTextChanged {
-                                builder.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
+                                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
                                     it.toString().isNotBlank()
                             }
                         }

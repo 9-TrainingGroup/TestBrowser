@@ -1,7 +1,5 @@
 package com.alva.testbrowser.adapter
 
-import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,23 +9,19 @@ import androidx.paging.LoadStateAdapter
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.alva.testbrowser.R
 import com.alva.testbrowser.database.NewsItem
 import com.alva.testbrowser.databinding.CellNewsBinding
 import com.alva.testbrowser.databinding.FooterNewsBinding
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
+import com.alva.testbrowser.fragment.InfoFragmentDirections
+import javax.inject.Inject
 
-class NewsAdapter : PagingDataAdapter<NewsItem, NewsViewHolder>(DiffCallback) {
+class NewsAdapter @Inject constructor() :
+    PagingDataAdapter<NewsItem, NewsViewHolder>(DiffCallback) {
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val newsItem = getItem(position)
         if (newsItem != null) {
-            if (newsItem.url == "") {
-                newsItem.url = "https://3g.163.com/news/article/${newsItem.id}.html"
-            }
             holder.viewBinding.apply {
                 shimmerLayout.apply {
                     setShimmerColor(0x55FFFFFF)
@@ -37,29 +31,12 @@ class NewsAdapter : PagingDataAdapter<NewsItem, NewsViewHolder>(DiffCallback) {
                 textTitle.text = newsItem.title
                 textAuthor.text = newsItem.author
                 textTime.text = newsItem.time
-                Glide.with(holder.itemView)
-                    .load(newsItem.img)
-                    .placeholder(R.drawable.ic_baseline_photo)
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            return false
-                        }
-
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            return false.also { shimmerLayout.stopShimmerAnimation() }
-                        }
-                    }).into(imageView)
+                imageView.load(newsItem.img) {
+                    placeholder(R.drawable.ic_baseline_photo)
+                    listener { _, _ ->
+                        shimmerLayout.stopShimmerAnimation()
+                    }
+                }
             }
         }
     }
@@ -73,10 +50,13 @@ class NewsAdapter : PagingDataAdapter<NewsItem, NewsViewHolder>(DiffCallback) {
             )
         )
         holder.itemView.setOnClickListener {
-            Bundle().apply {
-                putParcelable("NEWS_POSITION", getItem(holder.absoluteAdapterPosition))
-                it.findNavController().navigate(R.id.action_infoFragment_to_webFragment, this)
+            val url = if (getItem(holder.absoluteAdapterPosition)?.url.isNullOrEmpty()) {
+                "https://3g.163.com/news/article/${getItem(holder.absoluteAdapterPosition)?.id}.html"
+            } else {
+                getItem(holder.absoluteAdapterPosition)?.url
             }
+            val action = InfoFragmentDirections.actionInfoFragmentToWebFragment(url)
+            it.findNavController().navigate(action)
         }
         return holder
     }

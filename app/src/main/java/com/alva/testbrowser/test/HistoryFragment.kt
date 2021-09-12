@@ -14,6 +14,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class HistoryFragment : Fragment() {
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by activityViewModels<WebViewModel>()
+    private val historyAdapter by lazy { HistoryAdapter(viewModel) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,19 +29,18 @@ class HistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel by activityViewModels<WebViewModel>()
-        HistoryAdapter(viewModel).apply {
-            binding.recyclerView.adapter = this
-            binding.recyclerView.addItemDecoration(
+        binding.recyclerView.apply {
+            adapter = historyAdapter
+            addItemDecoration(
                 DividerItemDecoration(
                     requireContext(),
                     DividerItemDecoration.VERTICAL
                 )
             )
-            viewModel.allHistory.observe(viewLifecycleOwner, {
-                this.submitList(it)
-            })
         }
+        viewModel.allHistory.observe(viewLifecycleOwner, {
+            historyAdapter.submitList(it)
+        })
         binding.deleteButton.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.dialog_delete_history_title)

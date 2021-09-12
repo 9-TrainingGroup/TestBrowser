@@ -1,16 +1,14 @@
 package com.alva.testbrowser.database
 
 import androidx.paging.*
-import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-object NewsRepository {
-    private val newsService = NewsService.create()
-
-    fun getPagingData(type: String): Flow<PagingData<NewsItem>> {
-        return Pager(
-            PagingConfig(50)
-        ) {
-            NewsPagingSource(newsService, type)
-        }.flow
-    }
+class NewsRepository @Inject constructor(
+    private val newsService: NewsService
+) {
+    fun getPagingData(type: String) = Pager(
+        PagingConfig(50)
+    ) {
+        NewsPagingSource(newsService, type)
+    }.flow
 }

@@ -1,37 +1,34 @@
 package com.alva.testbrowser.activity
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.ActivityNewsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NewsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityNewsBinding
-    private lateinit var navController: NavController
+    val binding by lazy { ActivityNewsBinding.inflate(layoutInflater) }
+    private val navController by lazy { binding.fragmentContainerView.getFragment<NavHostFragment>().navController }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        binding.appbar.layoutParams.height =
-//            windowManager.currentWindowMetrics.bounds.height() / 2 - 56
-        navController =
-            (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
-        navController.addOnDestinationChangedListener { controller, destination, _ ->
-            controller.navigatorProvider
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.appbar.setExpanded(false)
+        }, 800)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.webFragment) {
-                binding.appbar.setExpanded(false)
                 binding.refreshNews.setImageResource(R.drawable.button_menu)
+                binding.appbar.setExpanded(false)
             } else {
                 binding.refreshNews.setImageResource(R.drawable.button_refresh)
             }
         }
-//        binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-//
-//        })
     }
 
 }

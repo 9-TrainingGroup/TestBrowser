@@ -4,11 +4,16 @@ import androidx.lifecycle.*
 import androidx.paging.*
 import com.alva.testbrowser.database.NewsItem
 import com.alva.testbrowser.database.NewsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class NewsViewModel : ViewModel() {
+@HiltViewModel
+class NewsViewModel @Inject constructor(
+    private val newsRepository: NewsRepository
+) : ViewModel() {
     private val _pagingDataTT: MutableStateFlow<PagingData<NewsItem>>
             by lazy { MutableStateFlow(PagingData.empty()) }
     val pagingDataTT: StateFlow<PagingData<NewsItem>> get() = _pagingDataTT
@@ -25,9 +30,9 @@ class NewsViewModel : ViewModel() {
             by lazy { MutableStateFlow(PagingData.empty()) }
     val pagingDataYD: StateFlow<PagingData<NewsItem>> get() = _pagingDataYD
 
-    suspend fun getPagingData(content: String, type: String) {
+    suspend fun getPagingData(content: String, type: String) =
         withContext(Dispatchers.IO) {
-            NewsRepository.getPagingData(type).cachedIn(viewModelScope).map { pagingData ->
+            newsRepository.getPagingData(type).cachedIn(viewModelScope).map { pagingData ->
                 pagingData.filter {
                     it.title.contains(content)
                 }
@@ -40,5 +45,4 @@ class NewsViewModel : ViewModel() {
                 }
             }
         }
-    }
 }

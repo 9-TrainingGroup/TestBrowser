@@ -49,7 +49,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/rounded_edittext"
                     android:hint="@string/search_hint"
-                    android:imeOptions="actionGo"
+                    android:inputType="text"
                     android:maxLines="1"
                     android:selectAllOnFocus="true"
                     android:textAlignment="center"

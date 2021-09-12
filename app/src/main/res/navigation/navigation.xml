@@ -18,10 +18,14 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
-
     <fragment
         android:id="@+id/webFragment"
         android:name="com.alva.testbrowser.fragment.WebFragment"
         android:label="fragment_web"
-        tools:layout="@layout/fragment_web" />
+        tools:layout="@layout/fragment_web">
+        <argument
+            android:name="news_url"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

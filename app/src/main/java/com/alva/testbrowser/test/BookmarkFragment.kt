@@ -1,27 +1,24 @@
 package com.alva.testbrowser.test
 
-import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.alva.testbrowser.R
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.alva.testbrowser.databinding.FragmentBookmarkBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class BookmarkFragment : Fragment() {
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by activityViewModels<WebViewModel>()
+    private val bookmarkAdapter by lazy { BookmarkAdapter(viewModel) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,19 +32,18 @@ class BookmarkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel by activityViewModels<WebViewModel>()
-        BookmarkAdapter(viewModel).apply {
-            binding.recyclerView.adapter = this
-            binding.recyclerView.addItemDecoration(
+        binding.recyclerView.apply {
+            adapter = bookmarkAdapter
+            addItemDecoration(
                 DividerItemDecoration(
                     requireContext(),
                     DividerItemDecoration.VERTICAL
                 )
             )
-            viewModel.allBookmark.observe(viewLifecycleOwner, {
-                submitList(it)
-            })
         }
+        viewModel.allBookmark.observe(viewLifecycleOwner, {
+            bookmarkAdapter.submitList(it)
+        })
         binding.deleteButton.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.dialog_delete_bookmark_title)
@@ -63,7 +59,7 @@ class BookmarkFragment : Fragment() {
         binding.addButton.setOnClickListener {
             val v = View.inflate(it.context, R.layout.dialog_edit_web, null)
             val dialogBinding = DialogEditWebBinding.bind(v)
-            val builder = MaterialAlertDialogBuilder(it.context)
+            val dialog: AlertDialog = MaterialAlertDialogBuilder(it.context)
                 .setTitle(R.string.dialog_add_title)
                 .setView(v)
                 .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
@@ -76,18 +72,14 @@ class BookmarkFragment : Fragment() {
                 .setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
                     dialog.cancel()
                 }
-                .show()
-            builder.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+                .create()
+            dialog.window?.attributes?.gravity = Gravity.BOTTOM
+            dialog.show()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
             dialogBinding.editTextName.requestFocus()
-            lifecycleScope.launch {
-                delay(100)
-                (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
-                    dialogBinding.editTextName,
-                    InputMethodManager.SHOW_IMPLICIT
-                )
-            }
+            ViewCompat.getWindowInsetsController(v)?.show(WindowInsetsCompat.Type.ime())
             dialogBinding.editTextUrl.doAfterTextChanged { editable ->
-                builder.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
                     editable.toString().isNotBlank()
             }
         }

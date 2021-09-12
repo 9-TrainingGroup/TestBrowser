@@ -27,20 +27,24 @@ import com.alva.testbrowser.util.JavascriptInterface
 import com.alva.testbrowser.util.PhotoViewModel
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class PhotoActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityPhotoBinding
-    private val viewModel by viewModels<PhotoViewModel>()
+    private val binding by lazy { ActivityPhotoBinding.inflate(layoutInflater) }
+
+    @Inject
+    lateinit var pagerPhotoAdapter: PagerPhotoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
 
         super.onCreate(savedInstanceState)
-        binding = ActivityPhotoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         window.sharedElementEnterTransition = MaterialContainerTransform().apply {
@@ -65,7 +69,7 @@ class PhotoActivity : AppCompatActivity() {
             }
         }*/
 
-        val pagerPhotoAdapter by lazy { PagerPhotoAdapter() }
+        val viewModel by viewModels<PhotoViewModel>()
         binding.viewPager2.apply {
             adapter = pagerPhotoAdapter
             viewModel.photoList.observe(this@PhotoActivity, {

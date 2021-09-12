@@ -7,8 +7,8 @@ class NewsPagingSource(private val newsService: NewsService, private val type: S
     PagingSource<Int, NewsItem>() {
     override fun getRefreshKey(state: PagingState<Int, NewsItem>): Int? = null
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NewsItem> {
-        return try {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NewsItem> =
+        try {
             val page = params.key ?: 1
             val news = newsService.searchNews((0..4).shuffled()[0] * 100, type)
             val prevKey = if (page > 1) page - 1 else null
@@ -24,5 +24,4 @@ class NewsPagingSource(private val newsService: NewsService, private val type: S
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
-    }
 }

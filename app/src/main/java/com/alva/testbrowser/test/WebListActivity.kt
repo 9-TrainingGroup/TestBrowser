@@ -6,13 +6,14 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alva.testbrowser.*
 import com.alva.testbrowser.databinding.ActivityWebListBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class WebListActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityWebListBinding
+    private val binding by lazy { ActivityWebListBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityWebListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.viewPager.adapter = object : FragmentStateAdapter(this) {

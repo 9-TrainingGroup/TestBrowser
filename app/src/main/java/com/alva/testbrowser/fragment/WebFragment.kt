@@ -1,34 +1,30 @@
 package com.alva.testbrowser.fragment
 
-import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.alva.testbrowser.R
+import com.alva.testbrowser.activity.NewsActivity
 import com.alva.testbrowser.database.Bookmark
-import com.alva.testbrowser.database.NewsItem
 import com.alva.testbrowser.util.RecordViewModel
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.alva.testbrowser.databinding.FragmentWebBinding
 import com.alva.testbrowser.webview.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class WebFragment : Fragment() {
     private var _binding: FragmentWebBinding? = null
     private val binding get() = _binding!!
     private lateinit var webView: WebViewExt
+    private val args by navArgs<WebFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,14 +41,14 @@ class WebFragment : Fragment() {
         val viewModel by viewModels<RecordViewModel>()
         webView = WebViewExt(requireContext())
         webView.init({ _, _ -> }, 1, ImageButton(requireContext()), ImageButton(requireContext()))
-        webView.loadUrl(arguments?.getParcelable<NewsItem>("NEWS_POSITION")!!.url)
+        args.newsUrl?.let { webView.loadUrl(it) }
         binding.webView.addView(webView)
-        requireActivity().findViewById<ImageButton>(R.id.refreshNews).setOnClickListener {
+        (requireActivity() as NewsActivity).binding.refreshNews.setOnClickListener {
             val v = View.inflate(it.context, R.layout.dialog_edit_web, null)
             val dialogBinding = DialogEditWebBinding.bind(v)
             dialogBinding.editTextName.setText(webView.title)
             dialogBinding.editTextUrl.setText(webView.url)
-            val builder = MaterialAlertDialogBuilder(it.context)
+            val dialog: AlertDialog = MaterialAlertDialogBuilder(it.context)
                 .setTitle(R.string.dialog_add_title)
                 .setView(v)
                 .setPositiveButton(R.string.dialog_positive_message) { _, _ ->
@@ -71,24 +67,19 @@ class WebFragment : Fragment() {
                 .setNegativeButton(R.string.dialog_negative_message) { dialog, _ ->
                     dialog.cancel()
                 }
-                .show()
+                .create()
+            dialog.window?.attributes?.gravity = Gravity.BOTTOM
+            dialog.show()
             dialogBinding.editTextName.requestFocus()
-            viewLifecycleOwner.lifecycleScope.launch {
-                delay(100)
-                (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
-                    dialogBinding.editTextName,
-                    InputMethodManager.SHOW_IMPLICIT
-                )
-            }
+            ViewCompat.getWindowInsetsController(v)?.show(WindowInsetsCompat.Type.ime())
             dialogBinding.editTextUrl.doAfterTextChanged { editable ->
-                builder.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
                     editable.toString().isNotBlank()
             }
         }
-        requireActivity().findViewById<MaterialAutoCompleteTextView>(R.id.searchEdit)
-            .doAfterTextChanged {
-                webView.findAllAsync(it.toString().trim())
-            }
+        (requireActivity() as NewsActivity).binding.searchEdit.doAfterTextChanged {
+            webView.findAllAsync(it.toString().trim())
+        }
     }
 
     override fun onDestroyView() {
