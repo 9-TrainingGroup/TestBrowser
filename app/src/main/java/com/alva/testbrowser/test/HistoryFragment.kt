@@ -38,9 +38,9 @@ class HistoryFragment : Fragment() {
                 )
             )
         }
-        viewModel.allHistory.observe(viewLifecycleOwner, {
+        viewModel.allHistory.observe(viewLifecycleOwner) {
             historyAdapter.submitList(it)
-        })
+        }
         binding.deleteButton.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.dialog_delete_history_title)

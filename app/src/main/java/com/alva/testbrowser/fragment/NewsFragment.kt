@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.navGraphViewModels
@@ -55,25 +56,23 @@ class NewsFragment : Fragment() {
                 }
             }
         }
-        newsAdapter.addLoadStateListener {
-            when (it.refresh) {
-                is LoadState.NotLoading -> {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        delay(800)
-                        binding.swipeRefresh.isRefreshing = false
+        viewLifecycleOwner.lifecycleScope.launch {
+            newsAdapter.loadStateFlow.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+                .collectLatest {
+                    when (it.refresh) {
+                        is LoadState.NotLoading -> {
+                            delay(800)
+                            binding.swipeRefresh.isRefreshing = false
+                        }
+                        is LoadState.Loading -> binding.swipeRefresh.isRefreshing = true
+                        is LoadState.Error -> {
+                            delay(3000)
+                            binding.swipeRefresh.isRefreshing = false
+                            newsAdapter.refresh()
+                                .run { binding.swipeRefresh.isRefreshing = true }
+                        }
                     }
                 }
-                is LoadState.Loading -> {
-                    binding.swipeRefresh.isRefreshing = true
-                }
-                is LoadState.Error -> {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        delay(3000)
-                        binding.swipeRefresh.isRefreshing = false
-                        newsAdapter.refresh().run { binding.swipeRefresh.isRefreshing = true }
-                    }
-                }
-            }
         }
         binding.swipeRefresh.setOnRefreshListener {
             newsAdapter.refresh()

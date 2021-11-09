@@ -72,10 +72,10 @@ class PhotoActivity : AppCompatActivity() {
         val viewModel by viewModels<PhotoViewModel>()
         binding.viewPager2.apply {
             adapter = pagerPhotoAdapter
-            viewModel.photoList.observe(this@PhotoActivity, {
+            viewModel.photoList.observe(this@PhotoActivity) {
                 pagerPhotoAdapter.submitList(it)
                 setCurrentItem(JavascriptInterface.index, false)
-            })
+            }
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)

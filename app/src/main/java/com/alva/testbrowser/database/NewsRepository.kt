@@ -7,7 +7,11 @@ class NewsRepository @Inject constructor(
     private val newsService: NewsService
 ) {
     fun getPagingData(type: String) = Pager(
-        PagingConfig(50)
+        PagingConfig(
+            pageSize = 100,
+            prefetchDistance = 1,
+            initialLoadSize = 100
+        )
     ) {
         NewsPagingSource(newsService, type)
     }.flow
