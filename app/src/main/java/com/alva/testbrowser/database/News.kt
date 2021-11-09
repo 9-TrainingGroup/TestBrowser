@@ -1,26 +1,26 @@
 package com.alva.testbrowser.database
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Parcelize
 @Serializable
 data class News(
-    @SerializedName("T1348647853363") val itemTT: List<NewsItem>,
-    @SerializedName("T1467284926140") val itemJX: List<NewsItem>,
-    @SerializedName("T1348648517839") val itemYL: List<NewsItem>,
-    @SerializedName("T1348649079062") val itemYD: List<NewsItem>
+    @SerialName("T1348647853363") val itemTT: List<NewsItem> = emptyList(),
+    @SerialName("T1467284926140") val itemJX: List<NewsItem> = emptyList(),
+    @SerialName("T1348648517839") val itemYL: List<NewsItem> = emptyList(),
+    @SerialName("T1348649079062") val itemYD: List<NewsItem> = emptyList()
 ) : Parcelable
 
 @Parcelize
 @Serializable
 data class NewsItem(
-    @SerializedName("postid") val id: String,
-    @SerializedName("title") val title: String,
-    @SerializedName("imgsrc") val img: String,
-    @SerializedName("source") val author: String,
-    @SerializedName("lmodify") val time: String,
-    @SerializedName("url") val url: String
+    @SerialName("postid") val id: String = "",
+    @SerialName("title") val title: String = "",
+    @SerialName("imgsrc") val img: String = "",
+    @SerialName("source") val author: String = "",
+    @SerialName("lmodify") val time: String = "",
+    @SerialName("url") val url: String = ""
 ) : Parcelable

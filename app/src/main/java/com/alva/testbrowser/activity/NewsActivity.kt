@@ -2,7 +2,6 @@ package com.alva.testbrowser.activity
 
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.alva.testbrowser.R
@@ -18,7 +17,7 @@ class NewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        Handler(Looper.getMainLooper()).postDelayed({
+        Handler(mainLooper).postDelayed({
             binding.appbar.setExpanded(false)
         }, 800)
         navController.addOnDestinationChangedListener { _, destination, _ ->

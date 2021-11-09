@@ -18,7 +18,12 @@ import com.alva.testbrowser.fragment.InfoFragmentDirections
 import javax.inject.Inject
 
 class NewsAdapter @Inject constructor() :
-    PagingDataAdapter<NewsItem, NewsViewHolder>(DiffCallback) {
+    PagingDataAdapter<NewsItem, NewsViewHolder>(object : DiffUtil.ItemCallback<NewsItem>() {
+        override fun areItemsTheSame(oldItem: NewsItem, newItem: NewsItem) =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: NewsItem, newItem: NewsItem) = oldItem == newItem
+    }) {
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val newsItem = getItem(position)
         if (newsItem != null) {
@@ -59,13 +64,6 @@ class NewsAdapter @Inject constructor() :
             it.findNavController().navigate(action)
         }
         return holder
-    }
-
-    object DiffCallback : DiffUtil.ItemCallback<NewsItem>() {
-        override fun areItemsTheSame(oldItem: NewsItem, newItem: NewsItem) =
-            oldItem.id == newItem.id
-
-        override fun areContentsTheSame(oldItem: NewsItem, newItem: NewsItem) = oldItem == newItem
     }
 }
 

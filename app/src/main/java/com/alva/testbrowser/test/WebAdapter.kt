@@ -18,7 +18,13 @@ import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class BookmarkAdapter(private val viewModel: WebViewModel) :
-    ListAdapter<Bookmarks, WebViewHolder>(DiffCallback) {
+    ListAdapter<Bookmarks, WebViewHolder>(object : DiffUtil.ItemCallback<Bookmarks>() {
+        override fun areItemsTheSame(oldItem: Bookmarks, newItem: Bookmarks) =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: Bookmarks, newItem: Bookmarks) =
+            oldItem == newItem
+    }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WebViewHolder {
         val holder = WebViewHolder(
             CellBookmarkBinding.inflate(
@@ -86,18 +92,16 @@ class BookmarkAdapter(private val viewModel: WebViewModel) :
         }
         holder.viewBinding.textViewUrl.text = getItem(position).url
     }
-
-    object DiffCallback : DiffUtil.ItemCallback<Bookmarks>() {
-        override fun areItemsTheSame(oldItem: Bookmarks, newItem: Bookmarks) =
-            oldItem.id == newItem.id
-
-        override fun areContentsTheSame(oldItem: Bookmarks, newItem: Bookmarks) =
-            oldItem == newItem
-    }
 }
 
 class HistoryAdapter(private val viewModel: WebViewModel) :
-    ListAdapter<Histories, WebViewHolder>(DiffCallback) {
+    ListAdapter<Histories, WebViewHolder>(object : DiffUtil.ItemCallback<Histories>() {
+        override fun areItemsTheSame(oldItem: Histories, newItem: Histories) =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: Histories, newItem: Histories) =
+            oldItem == newItem
+    }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WebViewHolder {
         val holder = WebViewHolder(
             CellBookmarkBinding.inflate(
@@ -126,14 +130,6 @@ class HistoryAdapter(private val viewModel: WebViewModel) :
     override fun onBindViewHolder(holder: WebViewHolder, position: Int) {
         holder.viewBinding.textViewName.text = getItem(position).name
         holder.viewBinding.textViewUrl.text = getItem(position).url
-    }
-
-    object DiffCallback : DiffUtil.ItemCallback<Histories>() {
-        override fun areItemsTheSame(oldItem: Histories, newItem: Histories) =
-            oldItem.id == newItem.id
-
-        override fun areContentsTheSame(oldItem: Histories, newItem: Histories) =
-            oldItem == newItem
     }
 }
 

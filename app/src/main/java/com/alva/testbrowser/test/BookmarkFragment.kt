@@ -41,9 +41,9 @@ class BookmarkFragment : Fragment() {
                 )
             )
         }
-        viewModel.allBookmark.observe(viewLifecycleOwner, {
+        viewModel.allBookmark.observe(viewLifecycleOwner) {
             bookmarkAdapter.submitList(it)
-        })
+        }
         binding.deleteButton.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.dialog_delete_bookmark_title)

@@ -11,7 +11,11 @@ import com.alva.testbrowser.databinding.PagerPhotoViewBinding
 import javax.inject.Inject
 
 class PagerPhotoAdapter @Inject constructor() :
-    ListAdapter<String, PagerPhotoViewHolder>(DiffCallback) {
+    ListAdapter<String, PagerPhotoViewHolder>(object : DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String) = oldItem == newItem
+
+        override fun areContentsTheSame(oldItem: String, newItem: String) = oldItem == newItem
+    }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PagerPhotoViewHolder(
         PagerPhotoViewBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -34,12 +38,6 @@ class PagerPhotoAdapter @Inject constructor() :
                 }
             }
         }
-    }
-
-    object DiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String) = oldItem == newItem
-
-        override fun areContentsTheSame(oldItem: String, newItem: String) = oldItem == newItem
     }
 }
 
