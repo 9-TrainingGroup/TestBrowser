@@ -1,13 +1,19 @@
 package com.alva.testbrowser.util
 
-import androidx.lifecycle.*
-import androidx.paging.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.filter
 import com.alva.testbrowser.database.NewsItem
 import com.alva.testbrowser.database.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,8 +36,8 @@ class NewsViewModel @Inject constructor(
             by lazy { MutableStateFlow(PagingData.empty()) }
     val pagingDataYD: StateFlow<PagingData<NewsItem>> get() = _pagingDataYD
 
-    suspend fun getPagingData(content: String, type: String) =
-        withContext(Dispatchers.IO) {
+    fun getPagingData(content: String, type: String) =
+        viewModelScope.launch(Dispatchers.IO) {
             newsRepository.getPagingData(type).cachedIn(viewModelScope).map { pagingData ->
                 pagingData.filter {
                     it.title.contains(content)

@@ -2,22 +2,21 @@ package com.alva.testbrowser.fragment
 
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.alva.testbrowser.R
 import com.alva.testbrowser.activity.NewsActivity
 import com.alva.testbrowser.database.Bookmark
-import com.alva.testbrowser.util.RecordViewModel
 import com.alva.testbrowser.databinding.DialogEditWebBinding
 import com.alva.testbrowser.databinding.FragmentWebBinding
-import com.alva.testbrowser.webview.*
+import com.alva.testbrowser.util.RecordViewModel
+import com.alva.testbrowser.webview.WebViewExt
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class WebFragment : Fragment() {
@@ -71,7 +70,8 @@ class WebFragment : Fragment() {
             dialog.window?.attributes?.gravity = Gravity.BOTTOM
             dialog.show()
             dialogBinding.editTextName.requestFocus()
-            ViewCompat.getWindowInsetsController(v)?.show(WindowInsetsCompat.Type.ime())
+            WindowCompat.getInsetsController(requireActivity().window, v)
+                .show(WindowInsets.Type.ime())
             dialogBinding.editTextUrl.doAfterTextChanged { editable ->
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
                     editable.toString().isNotBlank()

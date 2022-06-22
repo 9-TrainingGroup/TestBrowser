@@ -31,7 +31,7 @@ class WebListActivity : AppCompatActivity() {
             }
         }.attach()
         binding.backButton.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 }
