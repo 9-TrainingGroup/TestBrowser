@@ -2,11 +2,10 @@ package com.alva.testbrowser.test
 
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.alva.testbrowser.R
@@ -77,7 +76,8 @@ class BookmarkFragment : Fragment() {
             dialog.show()
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
             dialogBinding.editTextName.requestFocus()
-            ViewCompat.getWindowInsetsController(v)?.show(WindowInsetsCompat.Type.ime())
+            WindowCompat.getInsetsController(requireActivity().window, v)
+                .show(WindowInsets.Type.ime())
             dialogBinding.editTextUrl.doAfterTextChanged { editable ->
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
                     editable.toString().isNotBlank()

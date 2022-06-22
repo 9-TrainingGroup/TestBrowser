@@ -112,7 +112,7 @@ class PhotoActivity : AppCompatActivity() {
             }
         }
         binding.backButton.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 

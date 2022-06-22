@@ -1,10 +1,10 @@
 package com.alva.testbrowser.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,9 +12,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.navGraphViewModels
 import androidx.paging.LoadState
 import com.alva.testbrowser.R
+import com.alva.testbrowser.activity.NewsActivity
 import com.alva.testbrowser.adapter.FooterAdapter
 import com.alva.testbrowser.adapter.NewsAdapter
-import com.alva.testbrowser.activity.NewsActivity
 import com.alva.testbrowser.databinding.FragmentNewsBinding
 import com.alva.testbrowser.util.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,7 +48,7 @@ class NewsFragment : Fragment() {
             newsAdapter.withLoadStateFooter(FooterAdapter { newsAdapter.retry() })
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                when (arguments?.get("POSITION")) {
+                when (arguments?.getInt("POSITION")) {
                     0 -> viewModel.pagingDataTT.collectLatest { newsAdapter.submitData(it) }
                     1 -> viewModel.pagingDataJX.collectLatest { newsAdapter.submitData(it) }
                     2 -> viewModel.pagingDataYL.collectLatest { newsAdapter.submitData(it) }

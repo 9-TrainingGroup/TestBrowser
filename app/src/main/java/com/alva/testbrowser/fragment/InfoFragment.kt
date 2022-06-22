@@ -1,12 +1,11 @@
 package com.alva.testbrowser.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.Fragment
 import androidx.navigation.navGraphViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alva.testbrowser.R
@@ -15,7 +14,6 @@ import com.alva.testbrowser.databinding.FragmentInfoBinding
 import com.alva.testbrowser.util.NewsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 private val types = listOf(
     "T1348647853363",
@@ -46,18 +44,14 @@ class InfoFragment : Fragment() {
             override fun getItemCount() = types.size
             override fun createFragment(position: Int): Fragment {
                 (requireActivity() as NewsActivity).binding.searchEdit.doAfterTextChanged {
-                    lifecycleScope.launch {
-                        viewModel.getPagingData(it.toString().trim(), types[position])
-                    }
+                    viewModel.getPagingData(it.toString().trim(), types[position])
                 }
                 return NewsFragment().also {
                     Bundle().apply {
                         putInt("POSITION", position)
                         it.arguments = this
                     }
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.getPagingData("", types[position])
-                    }
+                    viewModel.getPagingData("", types[position])
                 }
             }
         }
